@@ -2,13 +2,18 @@
 ;;;===================================================
 ;;;
 ;;; OM-XMM
-;;; (c) IRCAM Paul Best, Jean Bresson, Diemo Schwarz (2018)
 ;;;
 ;;;===================================================
 
 (:om-lib
- (:version 0.1)
- (:source-files )
+ (:version 1.0)
+ (:source-files 
+  (:pathname (:directory (:relative "sources")) (:name "xmm-init"))
+  (:pathname (:directory (:relative "sources")) (:name "xmm-bindings"))
+  (:pathname (:directory (:relative "sources")) (:name "xmm-om-objects"))
+  )
+ (:symbols)
+ (:author "P. Best (2018)")
  )
 
 
