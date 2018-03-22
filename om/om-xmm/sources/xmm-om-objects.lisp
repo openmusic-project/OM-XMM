@@ -4,6 +4,10 @@
 
 (in-package :xmm)
 
+(defclass xmmiae (om-cleanup-mixin data-stream)
+((iae-obj :accessor iae-obj :initform nil)
+ (markers-track :accessor markers)))
+
 
 (defun test-xmm (entry)
   (print opennXMM))
