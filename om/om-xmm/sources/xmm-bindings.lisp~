@@ -1,9 +1,0 @@
-(in-package :xmm)
-
-(cffi::defcfun ("opennXMM" opennXMM) :char)
-(cffi::defcfun ("trainXMM" trainXMM) :int (xmm :pointer) (length :int) (label :char))
-
-
-;; (listen *terminal-io*)
-;; (setq test (openxmm))
-;; (closexmm test)
