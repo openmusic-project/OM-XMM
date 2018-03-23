@@ -13,9 +13,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-char opennXMM(){
-    return 'Y';
-}
+
+
 
 
 std::string toString(char c){
@@ -27,21 +26,20 @@ std::string toString(char c){
 }
 
 
+void* initXMM(){
+    static xmm::HierarchicalHMM mhhmm = new xmm::HierarchicalHMM(false);
+    return &mhhmm;
+}
 
-int trainXMM(void* ptr, int sample_num, void* sample_sizes, void* labls){
+int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, void* model){
     
-    const float*** descr = static_cast<const float***>(ptr);
+    const float*** descr = static_cast<const float***>(descptr);
     const int* sizes = static_cast<const int*>(sample_sizes);
     const char* labels = static_cast<char*>(labls);
-    
-    
-    const std::vector<std::string> descr_names {"Total Energy","Fundamental Frequency","Spectral Centroid","Loudness","Sharpness","Spread","Harmonic Energy","Inharmonicity", "Noisiness"};
-    
+    xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
     
     xmm::TrainingSet *mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
     mdataset->dimension=9;
-    mdataset->column_names.resize(9);
-    mdataset->column_names.set(descr_names);
     
     try{
         //For each sample
@@ -49,8 +47,6 @@ int trainXMM(void* ptr, int sample_num, void* sample_sizes, void* labls){
             
             //Build Phrase
             mdataset->addPhrase(j, toString(labels[j]));
-            mdataset->getPhrase(j)->column_names.resize(9);
-            mdataset->getPhrase(j)->column_names =descr_names;
             mdataset->getPhrase(j)->dimension =9;
             for(int it =0; it < sizes[j]; it++){
                 std::vector<float> observation = *new std::vector<float>(9);
@@ -63,8 +59,7 @@ int trainXMM(void* ptr, int sample_num, void* sample_sizes, void* labls){
         }
         
         //Train the model
-        xmm::HierarchicalHMM mhhmm = new xmm::HierarchicalHMM(false);
-        mhhmm.train(mdataset);
+        mhhmm->train(mdataset);
         
         
         //Counter for each label : in one sample, how many times each label has been recognized
@@ -79,30 +74,27 @@ int trainXMM(void* ptr, int sample_num, void* sample_sizes, void* labls){
         std::cout<<"\n";
         
         std::cout<<"Num of obs : "<<mdataset->size()<<std::endl;
-        
-        
-        
         //////////////////////////////
         //////////// TEST ////////////
         //////////////////////////////
         
         float accuracy = 0;
         for(int j=0; j<sample_num;j++){
-            
+        
             //reset results to 0
             for(auto it =results.begin(); it!=results.end(); it++){
                 it->second = 0;
             }
-            
+        
             for(int k=0; k<sizes[j];k++){
                 std::vector<float> observation = *new std::vector<float>(9);
-                
+        
                 for(int i =0; i<9; i++){
-                    observation[i] = descr[j][i][10];
+                    observation[i] = descr[j][i][k];
                 }
-                mhhmm.filter(observation);
-                results[mhhmm.results.likeliest]++;
-                mhhmm.reset();
+                mhhmm->filter(observation);
+                results[mhhmm->results.likeliest]++;
+                mhhmm->reset();
             }
             //find most recognized value in the sample
             int max =0;
@@ -117,18 +109,11 @@ int trainXMM(void* ptr, int sample_num, void* sample_sizes, void* labls){
             if(predicted[0]==labels[j]){
                 accuracy++;
             }
-        }
-        accuracy = accuracy/sample_num;
-        std::cout<<"Accuracy :"<<accuracy;
+            }
+            accuracy = accuracy/sample_num;
+            std::cout<<"Accuracy :"<<accuracy;
         
-        //        std::ofstream file_id;
-        //        file_id.open("/Users/best/Desktop/model.json");
-        //        Json::FastWriter writer;
-        //        std::cout << writer.write(mhhmm.toJson());
-        //        file_id << writer.write(mhhmm.toJson());
-        //        file_id.close();
-        
-        
+
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur : " << Exp.what() << ".\n";
@@ -138,4 +123,46 @@ int trainXMM(void* ptr, int sample_num, void* sample_sizes, void* labls){
     return int('Y');
 }
 
+
+
+int runXMM(void* descptr, int sample_size, void* model){
+    xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
+    const float** descr = static_cast<const float**>(descptr);
+    
+    for(int k=0; k<sample_size;k++){
+        std::vector<float> observation = *new std::vector<float>(9);
+        mhhmm->reset();
+
+        for(int i =0; i<9; i++){
+            observation[i] = descr[i][k];
+        }
+        mhhmm->filter(observation);
+    }
+    return mhhmm->results.likeliest[0];
+}
+
+           
+           
+           
+
+//                  SAVE TO JSON
+//
+//        std::ofstream file_id;
+//        file_id.open("/Users/best/Desktop/model.json");
+//        Json::FastWriter writer;
+//        std::cout << writer.write(mhhmm.toJson());
+//        file_id << writer.write(mhhmm.toJson());
+//        file_id.close();
+           
+           
+
+
+           
+           
+           
+           
+           
+           
+           
+           
 

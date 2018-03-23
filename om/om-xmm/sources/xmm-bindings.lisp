@@ -1,7 +1,8 @@
 (in-package :xmm)
 
-(cffi::defcfun ("opennXMM" opennXMM) :char)
-(cffi::defcfun ("trainXMM" trainXMM) :int (descrs :pointer) (sample_num :int) (sample_sizes :pointer) (laabels :pointer))
+(cffi::defcfun ("trainXMM" trainXMM) :int (descrs :pointer) (sample_num :int) (sample_sizes :pointer) (laabels :pointer) (modelptr :pointer))
+(cffi::defcfun ("initXMM" initXMM) :pointer)
+(cffi::defcfun ("runXMM" runXMM) :int (descrs :pointer) (sample_size :int) (modelptr :pointer))
 
 
 ;; (listen *terminal-io*)

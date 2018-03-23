@@ -1,3 +1,6 @@
 [submodule "xmm"]
 	path = xmm
 	url = https://github.com/Ircam-RnD/xmm
+[submodule "xmmfork"]
+	path = xmmfork
+	url = git://github.com/lamipaul/xmm.git
