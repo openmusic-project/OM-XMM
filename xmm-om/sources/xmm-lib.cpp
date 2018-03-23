@@ -37,9 +37,14 @@ int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, voi
     const int* sizes = static_cast<const int*>(sample_sizes);
     const char* labels = static_cast<char*>(labls);
     xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
-    
     xmm::TrainingSet *mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
+    
+    const std::vector<std::string> descr_names {"Total Energy","Fundamental Frequency","Spectral Centroid","Loudness","Sharpness","Spread","Harmonic Energy","Inharmonicity", "Noisiness"};
+    mdataset->column_names.resize(9);
+    mdataset->column_names.set(descr_names);
     mdataset->dimension=9;
+    
+    
     
     try{
         //For each sample
@@ -47,6 +52,8 @@ int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, voi
             
             //Build Phrase
             mdataset->addPhrase(j, toString(labels[j]));
+            mdataset->getPhrase(j)->column_names.resize(9);
+            mdataset->getPhrase(j)->column_names =descr_names;
             mdataset->getPhrase(j)->dimension =9;
             for(int it =0; it < sizes[j]; it++){
                 std::vector<float> observation = *new std::vector<float>(9);
@@ -81,11 +88,8 @@ int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, voi
         float accuracy = 0;
         for(int j=0; j<sample_num;j++){
         
-            //reset results to 0
-            for(auto it =results.begin(); it!=results.end(); it++){
-                it->second = 0;
-            }
-        
+            
+            mhhmm->reset();
             for(int k=0; k<sizes[j];k++){
                 std::vector<float> observation = *new std::vector<float>(9);
         
@@ -93,25 +97,16 @@ int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, voi
                     observation[i] = descr[j][i][k];
                 }
                 mhhmm->filter(observation);
-                results[mhhmm->results.likeliest]++;
-                mhhmm->reset();
             }
-            //find most recognized value in the sample
-            int max =0;
-            std::string predicted=" ";
-            for(auto it = results.begin(); it!=results.end();it++){
-                if(it->second>max){
-                    predicted=it->first;
-                }
-            }
-            std::cout<<"Predicted: "<<predicted<<", Actual: "<<labels[j];
-            std::cout<<", actual was estimated "<<results[toString(labels[j])]<<" times over" <<sizes[j]<<std::endl;
-            if(predicted[0]==labels[j]){
+            char predicted=mhhmm->results.likeliest[0];
+            
+            std::cout<<"Predicted: "<<predicted<<", Actual: "<<labels[j]<<std::endl;
+            if(predicted==labels[j]){
                 accuracy++;
             }
-            }
-            accuracy = accuracy/sample_num;
-            std::cout<<"Accuracy :"<<accuracy;
+        }
+        accuracy = accuracy/sample_num;
+        std::cout<<"Accuracy :"<<accuracy;
         
 
     }catch ( const std::exception & Exp )
