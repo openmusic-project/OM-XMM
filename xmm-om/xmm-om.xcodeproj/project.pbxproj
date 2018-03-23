@@ -7,14 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		400220A420641180004295F7 /* include-xmm.h in Headers */ = {isa = PBXBuildFile; fileRef = 400220A320641180004295F7 /* include-xmm.h */; };
+		4037CFEB206503AA001D69FF /* libxmm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4037CFEA206503AA001D69FF /* libxmm.a */; };
 		40FE495D2064064C00D30DC3 /* xmm-lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40FE495B2064064C00D30DC3 /* xmm-lib.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		40FE494E2064061600D30DC3 /* libxmm-om.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libxmm-om.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		400220A120641147004295F7 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../xmm/src; sourceTree = "<group>"; };
+		400220A320641180004295F7 /* include-xmm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "include-xmm.h"; sourceTree = "<group>"; };
+		4037CFEA206503AA001D69FF /* libxmm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libxmm.a; sourceTree = "<group>"; };
+		40FE494E2064061600D30DC3 /* lispworks-startup.lisp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = "lispworks-startup.lisp"; path = "libxmm-om.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40FE495B2064064C00D30DC3 /* xmm-lib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "xmm-lib.cpp"; sourceTree = "<group>"; };
 		40FE495C2064064C00D30DC3 /* xmm-lib.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "xmm-lib.hpp"; sourceTree = "<group>"; };
-		40FE499B20640BF600D30DC3 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../xmm/src; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -22,25 +26,44 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4037CFEB206503AA001D69FF /* libxmm.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		400220A02064113A004295F7 /* XMM */ = {
+			isa = PBXGroup;
+			children = (
+				400220A120641147004295F7 /* src */,
+			);
+			name = XMM;
+			path = sources;
+			sourceTree = "<group>";
+		};
+		403CDAD82064FA9500D2BA26 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4037CFEA206503AA001D69FF /* libxmm.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		40FE49452064061600D30DC3 = {
 			isa = PBXGroup;
 			children = (
-				40FE499A20640BD800D30DC3 /* XMM */,
+				400220A02064113A004295F7 /* XMM */,
 				40FE499920640B6400D30DC3 /* sources */,
 				40FE494F2064061600D30DC3 /* Products */,
+				403CDAD82064FA9500D2BA26 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		40FE494F2064061600D30DC3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				40FE494E2064061600D30DC3 /* libxmm-om.dylib */,
+				40FE494E2064061600D30DC3 /* lispworks-startup.lisp */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -50,16 +73,9 @@
 			children = (
 				40FE495B2064064C00D30DC3 /* xmm-lib.cpp */,
 				40FE495C2064064C00D30DC3 /* xmm-lib.hpp */,
+				400220A320641180004295F7 /* include-xmm.h */,
 			);
 			path = sources;
-			sourceTree = "<group>";
-		};
-		40FE499A20640BD800D30DC3 /* XMM */ = {
-			isa = PBXGroup;
-			children = (
-				40FE499B20640BF600D30DC3 /* src */,
-			);
-			name = XMM;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -69,6 +85,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				400220A420641180004295F7 /* include-xmm.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +106,7 @@
 			);
 			name = "xmm-om";
 			productName = "xmm-om";
-			productReference = 40FE494E2064061600D30DC3 /* libxmm-om.dylib */;
+			productReference = 40FE494E2064061600D30DC3 /* lispworks-startup.lisp */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -246,6 +263,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -257,6 +278,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

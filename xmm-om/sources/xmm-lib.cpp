@@ -4,12 +4,12 @@
 //
 //  Created by Paul Best on 12/03/2018.
 //
-#include "../../xmm/src/xmm.h"
+
+
+#include "include-xmm.h"
+#include "stdlib.h"
 #include "xmm-lib.hpp"
-
-//#include "../../xmm/src/models/hmm/xmmHierarchicalHmm.hpp"
-
-#include "../../xmm/src/core/trainingset/xmmTrainingSet.hpp"
+//#include <xmmTrainingSet.hpp>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -33,6 +33,7 @@ int trainXMM(void* ptr, int sample_num, void* sample_sizes, void* labls){
     const float*** descr = static_cast<const float***>(ptr);
     const int* sizes = static_cast<const int*>(sample_sizes);
     const char* labels = static_cast<char*>(labls);
+    
     
     const std::vector<std::string> descr_names {"Total Energy","Fundamental Frequency","Spectral Centroid","Loudness","Sharpness","Spread","Harmonic Energy","Inharmonicity", "Noisiness"};
     
