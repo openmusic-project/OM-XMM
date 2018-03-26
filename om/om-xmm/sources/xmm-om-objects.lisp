@@ -9,14 +9,14 @@
 
 ;;; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)
 (defclass xmmobj (om::om-cleanup-mixin)
-  ((dataset :accessor dataset :form nil :initarg :dataset)
+  ((dataset :accessor dataset :initform nil :initarg :dataset :type :list)
    (model-ptr :accessor model-ptr :initform nil)
    ))
 
 (defmethod om::om-cleanup ((self xmmobj))
   (when (model-ptr self)
     (om::om-print (format nil "deleting model of ~A [~A]" self (model-ptr self)) "GC")
-    (xmm-free (model-ptr self))
+    (xmm::xmm-free (model-ptr self))
   ))
 
 (defmethod initialize-instance ((self xmmobj) &rest initargs)
@@ -29,57 +29,71 @@
 (defmethod om::om-init-instance ((self xmmobj) &optional args)
 
   (call-next-method)
-  (print (dataset self))
   
   ;;;; LEARN
-  (learn self (dataset self))
-
+  (learn self)
   self)
 
 
 
+;;test : outputs the accuracy for prediction on labelled data
+;;data is a list of samples
+;;each sample is a list of 2 (desc-matrix , label) 
+;;descriptor matrix is a list of descriptor vectors
+(defmethod test((self xmmobj) data)
+  (let ((accuracy 0)
+        (num-samples (length data)))
+    (loop for sample in data
+          do (let ((pred (make-string 1 :initial-element (run self (car sample))))
+                   (real (cadr sample)))
+               (if (string= pred real) (setf accuracy (1+ accuracy)))
+              (print "pred: " )
+              (print pred )
+              (print " actual: ")
+              (print real)))
+    (/ accuracy num-samples))
+)
 
-;;run-model(list) :
-;;list is a matrix of descriptors for 1 sample 
+;;run : output a predicted label for unlabelled data
+;;data is a matrix of descriptors for 1 sample 
 ;;descriptor matrix is a list of descriptor vectors
 
-(defmethod run-model ((self xmmobj) data)
-  (let ((descr (fli:allocate-foreign-object :type :pointer :nelems (length list)))
-        (size (length (car list))))
+(defmethod run((self xmmobj) data)
+  (let ((descr (fli:allocate-foreign-object :type :pointer :nelems (length data)))
+        (size (length (car data))))
     ;;Loop for each descriptor
-    (loop for i from 0 to (1- (length list))  
+    (loop for i from 0 to (1- (length data))  
           do (setf (fli:dereference descr :type :pointer :index i) 
-                   (fli:allocate-foreign-object :type :float :nelems size :initial-contents (nth i list))))
-    (code-char (xmm-run descr (length (car list)) (model-ptr self))))
+                   (fli:allocate-foreign-object :type :float :nelems size :initial-contents (nth i data))))
+    (code-char (xmm-run descr size (model-ptr self))))
 )
 
 
 
-;;learn(list) :
-;;list is a list of samples. 
-;;each sample is a list of size 2 : the descriptor matrix, and the label
+;;learn : trains the model with the dataset 
+;;data is a list of samples. 
+;;each sample is a list of size 2  (descriptor matrix, label)
 ;;descriptor matrix is a list of descriptor vectors
-;;each descriptor vector is a list of values 
 
-(defmethod learn ((self xmmobj) list)
-  (let ((laabels (fli:allocate-foreign-object :type :char :nelems (length list)))
-        (descrs (fli:allocate-foreign-object :type :pointer :nelems (length list)))
-        (sizes (fli:allocate-foreign-object :type :int :nelems (length list))))       
-
+(defmethod learn ((self xmmobj))
+  (let* ((data (dataset self))
+        (laabels (fli:allocate-foreign-object :type :char :nelems (length data)))
+        (descrs (fli:allocate-foreign-object :type :pointer :nelems (length data)))
+        (sizes (fli:allocate-foreign-object :type :int :nelems (length data))))       
+    (if (null data) (return-from learn "empty data"))
     ;;Loop for each sample
-    (loop for j from 0 to (1- (length list))
-          do (let ((size (length (car (car (nth j list))))))
-                 (setf (fli:dereference laabels :type :char :index j) (char (cadr (nth j list)) 0))
-                 (setf (fli:dereference descrs :type :pointer :index j) (fli:allocate-foreign-object :type :pointer :nelems (length (car (nth j list)))))
+    (loop for j from 0 to (1- (length data))
+          do (let ((size (length (car (car (nth j data))))))
+                 (setf (fli:dereference laabels :type :char :index j) (char (cadr (nth j data)) 0))
+                 (setf (fli:dereference descrs :type :pointer :index j) (fli:allocate-foreign-object :type :pointer :nelems (length (car (nth j data)))))
                  (setf (fli:dereference sizes :type :int :index j) size)
                ;;Loop for each descriptor
-               (loop for i from 0 to (1- (length (car (nth j list))))  
+               (loop for i from 0 to (1- (length (car (nth j data))))  
                      do (setf (fli:dereference (fli:dereference descrs :type :pointer :index j) :type :pointer :index i) 
-                              (fli:allocate-foreign-object :type :float :nelems size :initial-contents (loop for x in (nth i (car (nth j list))) do (coerce x 'single-float)))))))
+                              (fli:allocate-foreign-object :type :float :nelems size :initial-contents (nth i (car (nth j data))))))))
     
     
-    (code-char (xmm-train descrs (length list) sizes laabels (model-ptr self)))
-;;FREE MEMORY
+    (code-char (xmm-train descrs (length (dataset self)) sizes laabels (model-ptr self)))
 ))
 
 

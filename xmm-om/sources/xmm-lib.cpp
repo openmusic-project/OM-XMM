@@ -70,31 +70,6 @@ int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, voi
         //Train the model
         mhhmm->train(mdataset);
         
-        
-        ////////////////////
-        /////// TEST ///////
-        ////////////////////
-        float accuracy = 0;
-        char predicted = ' ';
-        for(int j=0; j<sample_num;j++){
-            mhhmm->reset();
-            for(int k=0; k<sizes[j];k++){
-                std::vector<float> observation = *new std::vector<float>(DESC_NUM);
-                for(int i =0; i<DESC_NUM; i++){
-                    observation[i] = descr[j][i][k];
-                }
-                mhhmm->filter(observation);
-            }
-            predicted=mhhmm->results.likeliest[0];
-            std::cout<<"Predicted: "<<predicted<<", Actual: "<<labels[j]<<std::endl;
-            if(predicted==labels[j]){
-                accuracy++;
-            }
-        }
-        accuracy = accuracy/sample_num;
-        std::cout<<"Accuracy :"<<accuracy;
-        
-
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur : " << Exp.what() << ".\n";
@@ -141,7 +116,29 @@ void free_model(void* model){
 
 
            
-           
+
+//        ////////////////////
+//        /////// TEST ///////
+//        ////////////////////
+//        float accuracy = 0;
+//        char predicted = ' ';
+//        for(int j=0; j<sample_num;j++){
+//            mhhmm->reset();
+//            for(int k=0; k<sizes[j];k++){
+//                std::vector<float> observation = *new std::vector<float>(DESC_NUM);
+//                for(int i =0; i<DESC_NUM; i++){
+//                    observation[i] = descr[j][i][k];
+//                }
+//                mhhmm->filter(observation);
+//            }
+//            predicted=mhhmm->results.likeliest[0];
+//            std::cout<<"Predicted: "<<predicted<<", Actual: "<<labels[j]<<std::endl;
+//            if(predicted==labels[j]){
+//                accuracy++;
+//            }
+//        }
+//        accuracy = accuracy/sample_num;
+//        std::cout<<"Accuracy :"<<accuracy;
            
            
            
