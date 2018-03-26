@@ -14,7 +14,7 @@
 #include <sstream>
 #include <string>
 static const int DESC_NUM=9;
-
+static const std::vector<std::string> descr_names {"Total Energy","Fundamental Frequency","Spectral Centroid","Loudness","Sharpness","Spread","Harmonic Energy","Inharmonicity", "Noisiness"};
 
 
 std::string toString(char c){
@@ -32,24 +32,20 @@ void* initXMM(){
 }
 
 int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, void* model){
-    
+    //init variables from pointers
     const float*** descr = static_cast<const float***>(descptr);
     const int* sizes = static_cast<const int*>(sample_sizes);
     const char* labels = static_cast<char*>(labls);
     xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
+    //init trainingset
     xmm::TrainingSet *mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
-    
-    const std::vector<std::string> descr_names {"Total Energy","Fundamental Frequency","Spectral Centroid","Loudness","Sharpness","Spread","Harmonic Energy","Inharmonicity", "Noisiness"};
     mdataset->column_names.resize(DESC_NUM);
     mdataset->column_names.set(descr_names);
     mdataset->dimension=9;
     
-    
-    
     try{
         //For each sample
         for(int j=0; j<sample_num; j++){
-            
             //Build Phrase
             mdataset->addPhrase(j, toString(labels[j]));
             mdataset->getPhrase(j)->column_names.resize(DESC_NUM);
@@ -64,23 +60,16 @@ int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, voi
                 mdataset->getPhrase(j)->record(observation);
             }
         }
+        //Print dataset info
+        std::cout<<"Labels : "<<std::endl;
+        for(std::set<std::string>::iterator it = mdataset->labels().begin(); it !=  mdataset->labels().end(); it++){
+            std::cout << *it ;
+        }
+        std::cout<<"\n Num of obs : "<<mdataset->size()<<std::endl;
         
         //Train the model
         mhhmm->train(mdataset);
         
-        
-        //Counter for each label : in one sample, how many times each label has been recognized
-        std::map<std::string, int> results;
-        
-        //Print labels
-        std::cout<<"Labels : "<<std::endl;
-        for(std::set<std::string>::iterator it = mdataset->labels().begin(); it !=  mdataset->labels().end(); it++){
-            std::cout << *it ;
-            results.insert(std::pair<std::string, int>(*it,0));
-        }
-        std::cout<<"\n";
-        
-        std::cout<<"Num of obs : "<<mdataset->size()<<std::endl;
         
         ////////////////////
         /////// TEST ///////
@@ -110,8 +99,6 @@ int trainXMM(void* descptr, int sample_num, void* sample_sizes, void* labls, voi
     {
         std::cerr << "\nErreur : " << Exp.what() << ".\n";
     }
-    
-    // FREE MEMORY !!!
     return int('Y');
 }
 
@@ -145,7 +132,11 @@ int save_model_JSON(char* pathptr, void* model){
     file_id.close();
     return 'Y';
 }
-           
+
+void free_model(void* model){
+    xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
+    delete mhhmm;
+}
            
 
 

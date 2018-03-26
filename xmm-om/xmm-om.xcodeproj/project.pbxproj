@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		400220A420641180004295F7 /* include-xmm.h in Headers */ = {isa = PBXBuildFile; fileRef = 400220A320641180004295F7 /* include-xmm.h */; };
-		4037CFEB206503AA001D69FF /* libxmm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4037CFEA206503AA001D69FF /* libxmm.a */; };
+		401F3F3320691E2F00AFD583 /* libxmm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4037CFEA206503AA001D69FF /* libxmm.a */; };
 		40FE495D2064064C00D30DC3 /* xmm-lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40FE495B2064064C00D30DC3 /* xmm-lib.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		400220A320641180004295F7 /* include-xmm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "include-xmm.h"; sourceTree = "<group>"; };
-		402EA1062065276D00D07257 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../xmmfork/src; sourceTree = "<group>"; };
+		401F3F3220691D9500AFD583 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../xmm/src; sourceTree = "<group>"; };
 		4037CFEA206503AA001D69FF /* libxmm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libxmm.a; sourceTree = "<group>"; };
 		40FE494E2064061600D30DC3 /* lispworks-startup.lisp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = "lispworks-startup.lisp"; path = "libxmm-om.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40FE495B2064064C00D30DC3 /* xmm-lib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "xmm-lib.cpp"; sourceTree = "<group>"; };
@@ -26,7 +26,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4037CFEB206503AA001D69FF /* libxmm.a in Frameworks */,
+				401F3F3320691E2F00AFD583 /* libxmm.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,7 +36,7 @@
 		400220A02064113A004295F7 /* XMM */ = {
 			isa = PBXGroup;
 			children = (
-				402EA1062065276D00D07257 /* src */,
+				401F3F3220691D9500AFD583 /* src */,
 			);
 			name = XMM;
 			path = sources;

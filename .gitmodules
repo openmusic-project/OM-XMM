@@ -1,3 +1,6 @@
 [submodule "xmmfork"]
 	path = xmmfork
 	url = git://github.com/lamipaul/xmm.git
+[submodule "xmm"]
+	path = xmm
+	url = https://github.com/lamipaul/xmm.git
