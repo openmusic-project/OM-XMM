@@ -76,7 +76,10 @@
     (loop for i from 0 to (1- (length data))  
           do (setf (fli:dereference descr :type :pointer :index i) 
                    (fli:allocate-foreign-object :type :float :nelems size :initial-contents (nth i data))))
-    (code-char (xmm-run descr size (length (columns self)) (model-ptr self))))
+    (let ((result (code-char (xmm-run descr size (length (columns self)) (model-ptr self)))))
+      ;free pointer
+      (fli::free-foreign-object descr)
+      result))
 )
 
 

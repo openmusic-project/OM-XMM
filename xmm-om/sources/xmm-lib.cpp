@@ -30,11 +30,11 @@ void* initXMM(){
 
 
 void* initDataset(int numcolumns){
-    static xmm::TrainingSet *mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
+    static xmm::TrainingSet* mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
     mdataset->dimension=numcolumns;
     mdataset->column_names.resize(numcolumns);
     const std::vector<std::string> vec(numcolumns, "col");
-    mdataset->column_names.set(vec);
+    mdataset->column_names= vec;
     return mdataset;
 }
 
@@ -46,7 +46,7 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
     const int* sizes = static_cast<const int*>(sample_sizes);
     const char* labels = static_cast<char*>(labls);
     xmm::TrainingSet* mdataset = static_cast<xmm::TrainingSet*>(dataset);
-    std::vector<float> &observation = *new std::vector<float>(mdataset->dimension.get());
+    std::vector<float> *observation = new std::vector<float>(mdataset->dimension.get());
     try{
         mdataset->empty();
         //For each sample
@@ -59,16 +59,16 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
             for(int it =0; it < sizes[j]; it++){
                 //Add each sound descriptor to the phrase
                 for(int i =0; i<mdataset->dimension.get(); i++){
-                    observation[i] = descr[j][i][it];
+                    observation->at(i) = descr[j][i][it];
                 }
-                mdataset->getPhrase(j)->record(observation);
+                mdataset->getPhrase(j)->record(*observation);
             }
         }
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur fillDataset : " << Exp.what() << ".\n";
     }
-    delete &observation;
+    delete observation;
     return int('Y');
 }
 
@@ -89,17 +89,17 @@ int trainXMM(void* dataset, void* model){
 
 
 int runXMM(void* descptr, int sample_size, int columnnum, void* model){
-    xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
+    xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
     const float** descr = static_cast<const float**>(descptr);
-    std::vector<float> &observation = *new std::vector<float>(columnnum);
+    std::vector<float> *observation = new std::vector<float>(columnnum);
     mhhmm->reset();
     for(int k=0; k<sample_size;k++){
         for(int i =0; i<columnnum; i++){
-            observation[i] = descr[i][k];
+            observation->at(i) = descr[i][k];
         }
-        mhhmm->filter(observation);
+        mhhmm->filter(*observation);
     }
-    delete &observation;
+    delete observation;
     return mhhmm->results.likeliest[0];
 }
 
@@ -120,14 +120,14 @@ void* importJson(char* pathptr, void* modelptr){
     const char* path = static_cast<const char*>(pathptr);
     xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(modelptr);
     std::ifstream file(path, std::ifstream::binary);
-    Json::Value json;
+    Json::Value json = new Json::Value();
     file>>json;
     static char* labls = (char*)malloc((mhhmm->models.size()+1)*sizeof(char));
     try{
         mhhmm->fromJson(json);
         int i =0;
-        for(auto it = mhhmm->models.begin(); it!=mhhmm->models.end();it++){
-            labls[i]=it->first[0];
+        for(auto &model : mhhmm->models){
+            labls[i]= model.first[0];
             i++;
         }
         labls[i]='0';
