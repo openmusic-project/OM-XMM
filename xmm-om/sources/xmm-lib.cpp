@@ -88,16 +88,23 @@ int trainXMM(void* dataset, void* model){
 
 
 
-int runXMM(void* descptr, int sample_size, int columnnum, void* model){
+int runXMM(void* descptr, int sample_size, int columnnum, void* model, bool reset){
     xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
     const float** descr = static_cast<const float**>(descptr);
     std::vector<float> *observation = new std::vector<float>(columnnum);
-    mhhmm->reset();
-    for(int k=0; k<sample_size;k++){
-        for(int i =0; i<columnnum; i++){
-            observation->at(i) = descr[i][k];
+    try{
+        if(reset){
+            mhhmm->reset();
         }
-        mhhmm->filter(*observation);
+        for(int k=0; k<sample_size;k++){
+            for(int i =0; i<columnnum; i++){
+                observation->at(i) = descr[i][k];
+            }
+            mhhmm->filter(*observation);
+        }
+    }catch ( const std::exception & Exp )
+    {
+        std::cerr << "\nErreur run : " << Exp.what() << ".\n";
     }
     delete observation;
     return mhhmm->results.likeliest[0];
@@ -106,25 +113,32 @@ int runXMM(void* descptr, int sample_size, int columnnum, void* model){
 
 int save_model_JSON(char* pathptr, void* model){
     xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
-    const char* path = static_cast<const char*>(pathptr);
-    
-    std::ofstream file_id;
-    file_id.open(path);
-    Json::FastWriter writer;
-    file_id << writer.write(mhhmm->toJson());
-    file_id.close();
+    try{
+        const char* path = static_cast<const char*>(pathptr);
+        std::ofstream file_id(path);
+        file_id << mhhmm->xmm::HierarchicalHMM::toJson().toStyledString().c_str();
+        file_id.close();
+    }catch(const std::exception & Exp ){
+        std::cerr << "\nErreur export : " << Exp.what() << ".\n";
+    }
     return 'Y';
 }
 
 void* importJson(char* pathptr, void* modelptr){
     const char* path = static_cast<const char*>(pathptr);
-    xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(modelptr);
-    std::ifstream file(path, std::ifstream::binary);
-    Json::Value json = new Json::Value();
-    file>>json;
+    xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(modelptr);
     static char* labls = (char*)malloc((mhhmm->models.size()+1)*sizeof(char));
+
     try{
-        mhhmm->fromJson(json);
+        std::ifstream file(path);
+        Json::Value json;
+        Json::Reader reader;
+        std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        
+        if (reader.parse(str, json)) {
+            mhhmm->xmm::HierarchicalHMM::fromJson(json);
+        }else{throw std::runtime_error("unable to parse json value");}
+        
         int i =0;
         for(auto &model : mhhmm->models){
             labls[i]= model.first[0];

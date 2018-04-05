@@ -44,6 +44,7 @@
 
 
 ;;test : outputs the accuracy for prediction on labelled data
+;;fills errors list with number of error for each actual label
 ;;data is a list of samples
 ;;each sample is a list of 2 (desc-matrix , label) 
 ;;descriptor matrix is a list of descriptor vectors
@@ -68,27 +69,29 @@
 ;;run : output a predicted label for unlabelled data
 ;;data is a matrix of descriptors for 1 sample 
 ;;descriptor matrix is a list of descriptor vectors
-
-(defmethod run((self xmmobj) data)
+;;reset : if nil : the model's passed results will be kept, influencing the next results. else, model's results will be reset
+(defmethod run((self xmmobj) data &optional (reset 1))
   (let ((descr (fli:allocate-foreign-object :type :pointer :nelems (length data)))
-        (size (length (car data))))
-    ;;Loop for each descriptor
-    (loop for i from 0 to (1- (length data))  
-          do (setf (fli:dereference descr :type :pointer :index i) 
-                   (fli:allocate-foreign-object :type :float :nelems size :initial-contents (nth i data))))
-    (let ((result (code-char (xmm-run descr size (length (columns self)) (model-ptr self)))))
-      ;free pointer
-      (fli::free-foreign-object descr)
-      result))
+        (size (length (car data)))
+        (result #\0))
+    (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
+      (progn
+        ;;Loop for each descriptor
+        (loop for i from 0 to (1- (length data))  
+              do (setf (fli:dereference descr :type :pointer :index i) 
+                       (fli:allocate-foreign-object :type :float :nelems size :initial-contents (nth i data))))
+
+        (setf result (code-char (xmm-run descr size (length (columns self)) (model-ptr self) reset)))
+        ;free pointer
+        (loop for i from 0 to (1- (length data))
+               do (fli:free-foreign-object (fli:dereference descr :type :pointer :index i)))
+        (fli::free-foreign-object descr)
+         result)))
 )
 
 
 
-;;learn : trains the model with the dataset 
-;;data is a list of samples. 
-;;each sample is a list of size 2  (descriptor matrix, label)
-;;descriptor matrix is a list of descriptor vectors
-
+;;Builds the xmm trainingset object with the attibute (dataset) and stores it in data-ptr
 (defmethod fill_data((self xmmobj))
   (let* ((data (dataset self))
         (laabels (fli:allocate-foreign-object :type :char :nelems (length data)))
@@ -122,9 +125,10 @@
 
 (defmethod export-json((self xmmobj) path)
   (let ((path-ptr (fli:allocate-foreign-object :type :char :nelems (length path) :initial-contents (coerce path 'list))))
-  (xmm-save path-ptr (model-ptr self))
-  (fli::free-foreign-object path-ptr))
-)
+  (xmm-save path-ptr  (model-ptr self))
+  (fli::free-foreign-object path-ptr)
+  (om::om-print (format nil "Saved model at ~A " path) "XMM")
+))
 
 (defmethod import-json((self xmmobj) path)
   (let* ((path-ptr (fli:allocate-foreign-object :type :char :nelems (length path) :initial-contents (coerce path 'list)))
