@@ -31,10 +31,15 @@ void* initXMM(){
 
 void* initDataset(int numcolumns){
     static xmm::TrainingSet* mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
-    mdataset->dimension=numcolumns;
-    mdataset->column_names.resize(numcolumns);
-    const std::vector<std::string> vec(numcolumns, "col");
-    mdataset->column_names= vec;
+    try{
+        mdataset->dimension=numcolumns;
+        mdataset->column_names.resize(numcolumns); //initdata segmentation violation here
+        const std::vector<std::string> vec(numcolumns, "col");
+        mdataset->column_names= vec;
+    }catch ( const std::exception & Exp )
+    {
+        std::cerr << "\nErreur initDataset : " << Exp.what() << ".\n";
+    }
     return mdataset;
 }
 
@@ -44,7 +49,7 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
     //init variables from pointers
     const float*** descr = static_cast<const float***>(descptr);
     const int* sizes = static_cast<const int*>(sample_sizes);
-    const char* labels = static_cast<char*>(labls);
+    const char** labels = static_cast<const char**>(labls);
     xmm::TrainingSet* mdataset = static_cast<xmm::TrainingSet*>(dataset);
     std::vector<float> *observation = new std::vector<float>(mdataset->dimension.get());
     try{
@@ -52,7 +57,8 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
         //For each sample
         for(int j=0; j<sample_num; j++){
             //Build Phrase
-            mdataset->addPhrase(j, toString(labels[j]));
+            std::cout<<labels[j]<<std::endl;
+            mdataset->addPhrase(j, labels[j]);
             mdataset->getPhrase(j)->column_names.resize(mdataset->column_names.size());
             mdataset->getPhrase(j)->column_names = mdataset->column_names.get();
             mdataset->getPhrase(j)->dimension =mdataset->column_names.size();
@@ -63,6 +69,9 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
                 }
                 mdataset->getPhrase(j)->record(*observation);
             }
+        }
+        for(auto &label : mdataset->labels()){
+            std::cout<<label<<std::endl;
         }
     }catch ( const std::exception & Exp )
     {
@@ -89,6 +98,9 @@ int trainXMM(void* dataset, void* model){
 
 
 int runXMM(void* descptr, int sample_size, int columnnum, void* model, bool reset){
+    if(!model){
+        std::cout<<"Model Pointer is null !";
+    }
     xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
     const float** descr = static_cast<const float**>(descptr);
     std::vector<float> *observation = new std::vector<float>(columnnum);
@@ -114,7 +126,10 @@ int runXMM(void* descptr, int sample_size, int columnnum, void* model, bool rese
 int save_model_JSON(char* pathptr, void* model){
     xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
     try{
-        const char* path = static_cast<const char*>(pathptr);
+        for(auto &model : mhhmm->models){
+            std::cout<<model.first<<std::endl;
+        }
+            const char* path = static_cast<const char*>(pathptr);
         std::ofstream file_id(path);
         file_id << mhhmm->xmm::HierarchicalHMM::toJson().toStyledString().c_str();
         file_id.close();
@@ -124,41 +139,56 @@ int save_model_JSON(char* pathptr, void* model){
     return 'Y';
 }
 
-void* importJson(char* pathptr, void* modelptr){
+int importJson(char* pathptr, void* modelptr, void* lablptr){
     const char* path = static_cast<const char*>(pathptr);
     xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(modelptr);
-    static char* labls = (char*)malloc((mhhmm->models.size()+1)*sizeof(char));
-
+    //char** labls=(char**)malloc((mhhmm->models.size()+1)*__SIZEOF_POINTER__);
+    char** labls=static_cast<char**>(lablptr);
     try{
         std::ifstream file(path);
+        if(!file.good()){
+            throw "file doesn't exist";
+            return 0;
+        }
         Json::Value json;
         Json::Reader reader;
         std::string str((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         
+        //Load model from json file
         if (reader.parse(str, json)) {
             mhhmm->xmm::HierarchicalHMM::fromJson(json);
         }else{throw std::runtime_error("unable to parse json value");}
         
-        int i =0;
+        //Prepare labels list for OM
+        int j, i =0;
         for(auto &model : mhhmm->models){
-            labls[i]= model.first[0];
+            j=0;
+            labls[i]=(char*)malloc((model.first.size()+1)*sizeof(char));
+            for(auto lettre : model.first){
+                labls[i][j]= lettre ;
+                j++;
+            }
+            labls[i][model.first.size()]='0';
             i++;
         }
-        labls[i]='0';
+        labls[i]=(char*)malloc(sizeof(char));
+        labls[i][0]='0';
     }catch(const std::exception & Exp )
     {
         std::cerr << "\nErreur import : " << Exp.what() << ".\n";
     }
-    return labls;
+    return int(mhhmm->models.size());
 }
 
 void free_model(void* model, void* dataset){
     try{
         if(dataset){
+            static_cast<xmm::TrainingSet*>(dataset)->clear();
             free (dataset);
             std::cout<<"dataset freed"<<std::endl;
         }
         if(model){
+            static_cast<xmm::HierarchicalHMM*>(model)->clear();
             free(model);
             std::cout<<"model freed"<<std::endl;
         }
