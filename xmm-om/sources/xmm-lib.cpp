@@ -57,7 +57,6 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
         //For each sample
         for(int j=0; j<sample_num; j++){
             //Build Phrase
-            std::cout<<labels[j]<<std::endl;
             mdataset->addPhrase(j, labels[j]);
             mdataset->getPhrase(j)->column_names.resize(mdataset->column_names.size());
             mdataset->getPhrase(j)->column_names = mdataset->column_names.get();
@@ -126,10 +125,7 @@ int runXMM(void* descptr, int sample_size, int columnnum, void* model, bool rese
 int save_model_JSON(char* pathptr, void* model){
     xmm::HierarchicalHMM* mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
     try{
-        for(auto &model : mhhmm->models){
-            std::cout<<model.first<<std::endl;
-        }
-            const char* path = static_cast<const char*>(pathptr);
+        const char* path = static_cast<const char*>(pathptr);
         std::ofstream file_id(path);
         file_id << mhhmm->xmm::HierarchicalHMM::toJson().toStyledString().c_str();
         file_id.close();
