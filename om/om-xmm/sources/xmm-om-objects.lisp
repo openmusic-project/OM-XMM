@@ -55,11 +55,11 @@
         (num-samples (length data)))
     (setf (errors self) (make-list (length (labls self)) :initial-element 0))
     (loop for sample in data
-          do (let* ((pred (make-string 1 :initial-element (run self (car sample))))
+          do (let* ((pred (run self (car sample)))
                    (real (cadr sample))
                    (pos (position real (labls self) :test #'equal)))
-               ;(print (format nil "pred: ~A " pred ))
-               ;(print (format nil " actual: ~A ~d" real pos))
+               ;(print (format nil "pred: ~A " pred))
+               ;(print (format nil " actual: ~A " real))
                (if (not pos) (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
                  (if (string= pred real) 
                      (setf accuracy (1+ accuracy)) 
@@ -75,21 +75,34 @@
 (defmethod run((self xmmobj) data &optional (reset 1))
   (let ((descr (fli:allocate-foreign-object :type :pointer :nelems (length data)))
         (size (length (car data)))
-        (result #\0))
+        (resultptr (fli:allocate-foreign-object :type :char :nelems 20))
+        (likelihood 0)
+        (cur)
+        (i 0)
+        (result (make-string 20)))
     (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
       (progn
-        ;;Loop for each descriptor
+        ;;Loop for each descriptor, and build data in pointer to send to xmm
         (loop for i from 0 to (1- (length data))  
               do (setf (fli:dereference descr :type :pointer :index i) 
                        (fli:allocate-foreign-object :type :float :nelems size :initial-contents (to-float (nth i data)))))
-
-        (setf result (code-char (xmm-run descr size (length (column-names self)) (model-ptr self) reset)))
+        (setf likelihood (xmm-run descr size (length (column-names self)) (model-ptr self) reset resultptr))
+        (setf cur (fli:dereference resultptr :type :char :index 0))
+        (loop until (char= cur #\0) do
+              (progn 
+                (setf (char result i) cur)
+                (incf i)
+                (setf cur (fli:dereference resultptr :type :char :index i))))
+        (setf result (subseq result 0 i))
         ;free pointer
         (loop for i from 0 to (1- (length data))
                do (fli:free-foreign-object (fli:dereference descr :type :pointer :index i)))
-        (fli::free-foreign-object descr)
+        (fli:free-foreign-object descr)
+        (fli:free-foreign-object resultptr)
          result)))
 )
+
+
 
 (defun to-float (list)
   (loop for elem in list collect
@@ -99,6 +112,9 @@
   (loop for i from 0 to (1- (length str)) collect
         (char str i)
 ))
+
+
+
 
 ;;Builds the xmm trainingset object with the attibute (dataset) and stores it in data-ptr
 (defmethod fill_data((self xmmobj))
@@ -139,6 +155,8 @@
 
 
 
+
+
 (defmethod export-json((self xmmobj) path)
   (let ((path-ptr (fli:allocate-foreign-object :type :char :nelems (length path) :initial-contents (coerce path 'list))))
   (xmm-save path-ptr  (model-ptr self))
@@ -170,11 +188,11 @@
                     (progn
                       (setf temp (append temp (list cur)))
                       (setf id (1+ id))
-                      (setf i (1+ i))
                       (setf cur (fli::dereference ptr :type :char :index id))
                       ))
               (if temp
                   (setf (labls self) (append (labls self) (list (concatenate 'string temp)))))
+              (setf i (1+ i))
               ))
       (fli:free-foreign-object lablptr)
       (fli:free-foreign-object path-ptr)

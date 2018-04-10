@@ -32,6 +32,7 @@ void* initXMM(){
 void* initDataset(int numcolumns){
     static xmm::TrainingSet* mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
     try{
+        mdataset->clear();
         mdataset->dimension=numcolumns;
         mdataset->column_names.resize(numcolumns); //initdata segmentation violation here
         const std::vector<std::string> vec(numcolumns, "col");
@@ -69,9 +70,6 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
                 mdataset->getPhrase(j)->record(*observation);
             }
         }
-        for(auto &label : mdataset->labels()){
-            std::cout<<label<<std::endl;
-        }
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur fillDataset : " << Exp.what() << ".\n";
@@ -96,15 +94,17 @@ int trainXMM(void* dataset, void* model){
 
 
 
-int runXMM(void* descptr, int sample_size, int columnnum, void* model, bool reset){
+float runXMM(void* descptr, int sample_size, int columnnum, void* model, bool reset, void* outptr){
     if(!model){
         std::cout<<"Model Pointer is null !";
     }
     xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
     const float** descr = static_cast<const float**>(descptr);
     std::vector<float> *observation = new std::vector<float>(columnnum);
+    char* out = static_cast<char*>(outptr);
     try{
         if(reset){
+            std::cout<<"juste pour etre sur";
             mhhmm->reset();
         }
         for(int k=0; k<sample_size;k++){
@@ -112,13 +112,15 @@ int runXMM(void* descptr, int sample_size, int columnnum, void* model, bool rese
                 observation->at(i) = descr[i][k];
             }
             mhhmm->filter(*observation);
+            //std::cout<<mhhmm->results.likeliest<<std::endl;
         }
+        strcpy(out, (mhhmm->results.likeliest+"0").c_str());
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur run : " << Exp.what() << ".\n";
     }
     delete observation;
-    return mhhmm->results.likeliest[0];
+    return mhhmm->models.at(mhhmm->results.likeliest).results.log_likelihood;
 }
 
 

@@ -17,7 +17,7 @@ extern "C" int fillDataset(void* descptr, int sample_num, void* sample_sizes, vo
 
 extern "C" int trainXMM(void* dataset, void* model);
 
-extern "C" int runXMM(void* descptr, int sample_size, int columnum, void* model, bool reset);
+extern "C" float runXMM(void* descptr, int sample_size, int columnum, void* model, bool reset, void* outptr);
 
 extern "C" int save_model_JSON(char* pathptr, void* model);
 
