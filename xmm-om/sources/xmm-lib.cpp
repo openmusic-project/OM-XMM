@@ -104,7 +104,6 @@ float runXMM(void* descptr, int sample_size, int columnnum, void* model, bool re
     char* out = static_cast<char*>(outptr);
     try{
         if(reset){
-            std::cout<<"juste pour etre sur";
             mhhmm->reset();
         }
         for(int k=0; k<sample_size;k++){
