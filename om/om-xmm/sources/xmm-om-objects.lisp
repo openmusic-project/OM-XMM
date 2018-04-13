@@ -6,13 +6,13 @@
 ;;;;;         XMM OBJECT       ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)
+
 (defclass xmmobj (om::om-cleanup-mixin)
   ((labls :accessor labls :initform nil :type :list)
-   (dataset :accessor dataset :initform nil :initarg :dataset :type :list) ;;;;;;list like : ( ((descr-matrix1) , (label1)) , ((descr-matrix2) , (label2)), ...)
-   (column-names :accessor column-names :initform nil :initarg :column-names :type :list)
+   (dataset :accessor dataset :initform nil :initarg :dataset :type :list) ; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)      
+   (column-names :accessor column-names :initform nil :initarg :column-names :type :list) ;list of attributes
    (data-ptr :accessor data-ptr :initform nil) ; PTR on c++ Trainingset object 
-   (model-ptr :accessor model-ptr :initform nil )
+   (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
    (errors :accessor errors :initform nil :type :list)
    (name :accessor name :initform (gensym "xmmobj"))
    
@@ -60,13 +60,16 @@
                    (pos (position real (labls self) :test #'equal)))
                ;(print (format nil "pred: ~A " pred))
                ;(print (format nil " actual: ~A " real))
-               (if (not pos) (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
+               (if (not pos) (progn (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
+                               (decf num-samples))
                  (if (string= pred real) 
-                     (setf accuracy (1+ accuracy)) 
+                     (incf accuracy) 
                    (setf (nth pos (errors self)) (1+ (nth pos (errors self))))))))
                
     (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
 ))
+
+
 
 ;;run : output a predicted label for unlabelled data
 ;;data is a matrix of descriptors for 1 sample 
@@ -81,25 +84,28 @@
         (i 0)
         (result (make-string 20)))
     (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
-      (progn
-        ;;Loop for each descriptor, and build data in pointer to send to xmm
-        (loop for i from 0 to (1- (length data))  
-              do (setf (fli:dereference descr :type :pointer :index i) 
-                       (fli:allocate-foreign-object :type :float :nelems size :initial-contents (to-float (nth i data)))))
-        (setf likelihood (xmm-run descr size (length (column-names self)) (model-ptr self) reset resultptr))
-        (setf cur (fli:dereference resultptr :type :char :index 0))
-        (loop until (char= cur #\0) do
-              (progn 
-                (setf (char result i) cur)
-                (incf i)
-                (setf cur (fli:dereference resultptr :type :char :index i))))
-        (setf result (subseq result 0 i))
+      (if (not (column-names self)) (om::om-print "Please set column names to enable running" "XMM")
+        (progn
+          ;;Loop for each descriptor, and build data in pointer to send to xmm
+          (loop for i from 0 to (1- (length data))  
+                do (setf (fli:dereference descr :type :pointer :index i) 
+                         (fli:allocate-foreign-object :type :float :nelems size :initial-contents (to-float (nth i data)))))
+          (setf likelihood (xmm-run descr size (length (column-names self)) (model-ptr self) reset resultptr))
+          ;fetch result from pointer
+          (setf cur (fli:dereference resultptr :type :char :index 0))
+          (loop until (char= cur #\0) do
+                (progn 
+                  (setf (char result i) cur)
+                  (incf i)
+                  (setf cur (fli:dereference resultptr :type :char :index i))))
+          (setf result (subseq result 0 i))
         ;free pointer
-        (loop for i from 0 to (1- (length data))
-               do (fli:free-foreign-object (fli:dereference descr :type :pointer :index i)))
-        (fli:free-foreign-object descr)
-        (fli:free-foreign-object resultptr)
-         result)))
+          (loop for i from 0 to (1- (length data))
+                do (fli:free-foreign-object (fli:dereference descr :type :pointer :index i)))
+          (fli:free-foreign-object descr)
+          (fli:free-foreign-object resultptr)
+          ;(om::om-print (format nil "~a with ~f likelihood" result likelihood) "XMM")
+          result))))
 )
 
 
@@ -193,6 +199,7 @@
               (if temp
                   (setf (labls self) (append (labls self) (list (concatenate 'string temp)))))
               (setf i (1+ i))
+              (fli:free-foreign-object ptr)
               ))
       (fli:free-foreign-object lablptr)
       (fli:free-foreign-object path-ptr)

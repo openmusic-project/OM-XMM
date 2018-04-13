@@ -13,11 +13,13 @@ extern "C" void* initDataset(int numcolumns);
 
 extern "C" void* initXMM();
 
+extern "C" int add_Phrase(void* descptr, int sample_size, void* labelptr, void* dataset);
+
 extern "C" int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, void* dataset);
 
 extern "C" int trainXMM(void* dataset, void* model);
 
-extern "C" float runXMM(void* descptr, int sample_size, int columnum, void* model, bool reset, void* outptr);
+extern "C" float runXMM(void* descptr, int sample_size, int columnum, void* model, int reset, void* outptr);
 
 extern "C" int save_model_JSON(char* pathptr, void* model);
 

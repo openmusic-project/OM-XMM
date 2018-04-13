@@ -24,13 +24,15 @@ std::string toString(char c){
 
 
 void* initXMM(){
-    static xmm::HierarchicalHMM *mhhmm = new xmm::HierarchicalHMM(false);
+    xmm::HierarchicalHMM *mhhmm = new xmm::HierarchicalHMM(false);
+  //  mhhmm->configuration.relative_regularization.set(0.01);
+  //  mhhmm->configuration.absolute_regularization.set(0.05);
     return mhhmm;
 }
 
 
 void* initDataset(int numcolumns){
-    static xmm::TrainingSet* mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
+    xmm::TrainingSet* mdataset = new xmm::TrainingSet(xmm::MemoryMode::OwnMemory, xmm::Multimodality::Unimodal);
     try{
         mdataset->clear();
         mdataset->dimension=numcolumns;
@@ -42,6 +44,31 @@ void* initDataset(int numcolumns){
         std::cerr << "\nErreur initDataset : " << Exp.what() << ".\n";
     }
     return mdataset;
+}
+
+int add_Phrase(void* descptr, int sample_size, void* labelptr, void* dataset){
+    const float** descr = static_cast<const float**>(descptr);
+    xmm::TrainingSet* mdataset = static_cast<xmm::TrainingSet*>(dataset);
+    const char* label = static_cast<const char*>(labelptr);
+    std::vector<float> *observation = new std::vector<float>(mdataset->dimension.get());
+    try{
+        int index = mdataset->size();
+        mdataset->addPhrase(index ,label);
+        mdataset->getPhrase(index)->column_names.resize(mdataset->dimension.get());
+        mdataset->getPhrase(index)->column_names = mdataset->column_names.get();
+        mdataset->getPhrase(index)->dimension = mdataset->dimension.get();
+        
+        for(int it =0; it < sample_size; it++){
+            //Add each sound descriptor to the phrase
+            for(int i =0; i<mdataset->dimension.get(); i++){
+                observation->at(i) = descr[i][it];
+            }
+            mdataset->getPhrase(index)->record(*observation);
+        }
+    }catch(const std::exception &Exp){
+        std::cerr<<"\n Erreur addPhrase : " <<Exp.what()<<std::endl;
+    }
+    return 'Y';
 }
 
 
@@ -94,7 +121,7 @@ int trainXMM(void* dataset, void* model){
 
 
 
-float runXMM(void* descptr, int sample_size, int columnnum, void* model, bool reset, void* outptr){
+float runXMM(void* descptr, int sample_size, int columnnum, void* model, int reset, void* outptr){
     if(!model){
         std::cout<<"Model Pointer is null !";
     }
@@ -103,7 +130,7 @@ float runXMM(void* descptr, int sample_size, int columnnum, void* model, bool re
     std::vector<float> *observation = new std::vector<float>(columnnum);
     char* out = static_cast<char*>(outptr);
     try{
-        if(reset){
+        if((reset!=0) || (mhhmm->results.instant_likelihoods.size()==0)){
             mhhmm->reset();
         }
         for(int k=0; k<sample_size;k++){
@@ -119,7 +146,7 @@ float runXMM(void* descptr, int sample_size, int columnnum, void* model, bool re
         std::cerr << "\nErreur run : " << Exp.what() << ".\n";
     }
     delete observation;
-    return mhhmm->models.at(mhhmm->results.likeliest).results.log_likelihood;
+    return 0;//mhhmm->results.smoothed_normalized_likelihoods.at(std::distance(mhhmm->models.begin(),mhhmm->models.find(mhhmm->results.likeliest)));
 }
 
 
@@ -137,9 +164,8 @@ int save_model_JSON(char* pathptr, void* model){
 }
 
 int importJson(char* pathptr, void* modelptr, void* lablptr){
-    const char* path = static_cast<const char*>(pathptr);
+    char* path = static_cast<char*>(pathptr);
     xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(modelptr);
-    //char** labls=(char**)malloc((mhhmm->models.size()+1)*__SIZEOF_POINTER__);
     char** labls=static_cast<char**>(lablptr);
     try{
         std::ifstream file(path);
@@ -154,7 +180,10 @@ int importJson(char* pathptr, void* modelptr, void* lablptr){
         //Load model from json file
         if (reader.parse(str, json)) {
             mhhmm->xmm::HierarchicalHMM::fromJson(json);
-        }else{throw std::runtime_error("unable to parse json value");}
+        }else{
+            std::cout<<"unable to parse json value";
+            return 0;
+        }
         
         //Prepare labels list for OM
         int j, i =0;
