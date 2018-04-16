@@ -23,10 +23,10 @@ std::string toString(char c){
 }
 
 
-void* initXMM(){
+void* initXMM(float relat, float abs){
     xmm::HierarchicalHMM *mhhmm = new xmm::HierarchicalHMM(false);
-  //  mhhmm->configuration.relative_regularization.set(0.01);
-  //  mhhmm->configuration.absolute_regularization.set(0.05);
+    mhhmm->configuration.relative_regularization.set(relat);
+    mhhmm->configuration.absolute_regularization.set(abs);
     return mhhmm;
 }
 

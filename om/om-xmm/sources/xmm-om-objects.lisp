@@ -33,14 +33,15 @@
 
 (defmethod om::om-init-instance ((self xmmobj) &optional args)
   (call-next-method)
-  (if (and (column-names self) (dataset self))
+  (if (dataset self)
       (progn 
+        (if (not (column-names self)) (setf (column-names self) (make-list (length (caar (dataset self))) :initial-element 1)))
         (om::om-print "init and train......" "XMM")
         (setf (data-ptr self) (xmm-initdata (length (column-names self))))
         (fill_data self)
         (xmm-train (data-ptr self) (model-ptr self))
         (om::om-print ".... done training !" "XMM"))
-    (om::om-print "missing some argument to learn.." "XMM"))
+    (om::om-print "missing some data to learn.." "XMM"))
   self)
 
 
@@ -67,6 +68,7 @@
                    (setf (nth pos (errors self)) (1+ (nth pos (errors self))))))))
                
     (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
+    (/ accuracy num-samples)
 ))
 
 
