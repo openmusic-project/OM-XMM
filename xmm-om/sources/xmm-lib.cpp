@@ -23,10 +23,11 @@ std::string toString(char c){
 }
 
 
-void* initXMM(float relat, float abs){
+void* initXMM(float relat, float abs, int statenum){
     xmm::HierarchicalHMM *mhhmm = new xmm::HierarchicalHMM(false);
     mhhmm->configuration.relative_regularization.set(relat);
     mhhmm->configuration.absolute_regularization.set(abs);
+    mhhmm->configuration.states.set(statenum);
     return mhhmm;
 }
 
@@ -103,6 +104,35 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
     }
     delete observation;
     return int('Y');
+}
+
+int getclassAvrg(void* dataset, void* labl, void* out){
+    const char* label = static_cast<const char*>(labl);
+    xmm::TrainingSet *mdataset = static_cast<xmm::TrainingSet*>(dataset)->getPhrasesOfClass(label);
+    
+    //Get min size of all phrase of the class
+    int minsize = mdataset->begin()->second->size();
+    for(auto phrase = mdataset->begin(); phrase!=mdataset->end(); phrase++){
+        if(phrase->second->size()<minsize){
+            minsize= phrase->second->size();
+        }
+    }
+    
+    float temp=0;
+    float deltasize=0;
+    float** means = static_cast<float**>(out);
+    for(int i=0; i<mdataset->dimension.get(); i++){
+        means[i]=(float*)malloc(minsize*sizeof(float));
+        for(int j=0; j<minsize; j++){
+            temp=0;
+            for(auto phrase = mdataset->begin(); phrase!=mdataset->end(); phrase++){
+                deltasize=phrase->second->size()-minsize;
+                temp += phrase->second->getValue(j+round(deltasize/2),i);
+            }
+            means[i][j]=temp/minsize;
+        }
+    }
+    return minsize;
 }
 
 

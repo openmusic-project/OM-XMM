@@ -15,7 +15,8 @@
    (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
    (errors :accessor errors :initform nil :type :list)
    (name :accessor name :initform (gensym "xmmobj"))
-   
+   (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization  :type list)
+   (states :accessor states :initform '10 :initarg :states :type :int)
    ))
 
 
@@ -28,7 +29,7 @@
 
 (defmethod initialize-instance ((self xmmobj) &rest initargs)
   (call-next-method)
-  (setf (model-ptr self) (xmm-initmodel))
+  (setf (model-ptr self) (xmm-initmodel (first (regularization self)) (second (regularization self)) (states self)))
   self)
 
 (defmethod om::om-init-instance ((self xmmobj) &optional args)
@@ -208,6 +209,30 @@
 size)))
 
 
+(defmethod get-class-avrg((self xmmobj) label)
+  (let* ((dimsize (length (column-names self)))
+         (result (fli:allocate-foreign-object :type :pointer :nelems dimsize))
+         (labelptr (fli:allocate-foreign-object :type :char :nelems (length label) :initial-contents (coerce label 'list))) 
+         (size  (xmm-classavrg (data-ptr self) labelptr result))
+         (ret (make-list dimsize))
+         (ptr))
+    (loop for dim from 0 to (1- dimsize) do
+          (progn 
+            (setf (nth dim ret)  (make-list size))
+            (setf ptr (fli:dereference result :type :pointer :index dim))
+            (loop for id from 0 to (1- size) do
+                  (setf (nth id (nth dim ret)) (fli:dereference ptr :type :float :index id))
+                  )
+            (fli:free-foreign-object ptr)
+            )
+          )
+    (fli:free-foreign-object labelptr)
+    (fli:free-foreign-object  result)
+    ret)
+)
+
+
+
 (defmethod get-labels((self xmmobj))
   (labls self)
 )
@@ -241,7 +266,68 @@ size)))
      ;(om::om-draw-string (+ x 10) (+ y 20) (concatenate 'string "Dataset of " (length (dataset self)) " samples") :wrap (om::box-w box)))))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; GENETIC ALGO FOR HYPER-PARAMETER OPTIMIZATION
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(defun testaccu (item1 item2)
+  (if  item1
+      (if (> (car (second item1)) (car (second item2)))
+          item1
+        item2)
+   item2)
+)
+
+
+(defun find4best (results)
+  (let ((ret (make-list 4))
+        (mlist results))
+    (loop for i from 0 to 3 do 
+          (let ((max nil))
+            (loop for item in mlist do 
+                  (setf max (testaccu max item))
+            )
+            (setf mlist (remove max mlist))
+            (setf (nth i ret) max)
+          ))
+ret
+))
+
+(defun reproduce (results) 
+  (let* ((ret results)
+        (parents (car (om:mat-trans ret))))
+   
+    (loop for parent in parents do 
+          (setf ret 
+                (append ret 
+                        ;Create new child whith random variation on number of states and regularization
+                        (list (list  (car parent) (+ (1- (random 3)) (second parent)) 
+                                     (list (+ (/ (1- (random 3)) 200) (car (third parent))) (+ (/ (1- (random 3)) 1000) (cadr (third parent))))))
+                        )
+                ))
+    ret)
+)
 
 
 
+(defun gene-algo (fun firstparams) 
+  (let* ((params firstparams)
+         (condition T)) 
+    (loop while condition do
+          (progn (setf params (reproduce
+                        ;Get 4 best results (( "descr" 10 (0.05 0.01)) (0.3457 0.7575)) 
+                               (print (find4best
+                                ;;collect results
+                                (loop for param in params collect 
+                                      (if (= (length param) 3) 
+                                          (funcall fun (print param))
+                                        (print param))
+                                )))
+                       ))
+            
+            (if (< 0.9 (car (second (car params)))) (setf condition nil))
+                       
+               )))
+  ) 
 

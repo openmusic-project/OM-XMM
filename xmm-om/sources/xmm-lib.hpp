@@ -11,7 +11,7 @@
 
 extern "C" void* initDataset(int numcolumns);
 
-extern "C" void* initXMM(float relat, float abs);
+extern "C" void* initXMM(float relat, float abs, int statenum);
 
 extern "C" int add_Phrase(void* descptr, int sample_size, void* labelptr, void* dataset);
 
@@ -26,6 +26,9 @@ extern "C" int save_model_JSON(char* pathptr, void* model);
 extern "C" void free_model(void* model, void* dataset);
 
 extern "C" int importJson(char* pathptr, void* modelptr, void* lablptr);
+
+extern "C" int getclassAvrg(void* dataset, void* labl, void* out);
+
 
 #endif /* xmm_lib_h */
 
