@@ -66,7 +66,10 @@
                                (decf num-samples))
                  (if (string= pred real) 
                      (incf accuracy) 
-                   (setf (nth pos (errors self)) (1+ (nth pos (errors self))))))))
+                   (progn (incf (nth pos (errors self)))
+                     ;(om::om-print (format nil "Predicted ~a instead of ~a" pred real) "XMM")
+                     )  
+                   ))))
                
     (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
     (/ accuracy num-samples)
@@ -210,25 +213,27 @@ size)))
 
 
 (defmethod get-class-avrg((self xmmobj) label)
-  (let* ((dimsize (length (column-names self)))
-         (result (fli:allocate-foreign-object :type :pointer :nelems dimsize))
-         (labelptr (fli:allocate-foreign-object :type :char :nelems (length label) :initial-contents (coerce label 'list))) 
-         (size  (xmm-classavrg (data-ptr self) labelptr result))
-         (ret (make-list dimsize))
-         (ptr))
-    (loop for dim from 0 to (1- dimsize) do
-          (progn 
-            (setf (nth dim ret)  (make-list size))
-            (setf ptr (fli:dereference result :type :pointer :index dim))
-            (loop for id from 0 to (1- size) do
-                  (setf (nth id (nth dim ret)) (fli:dereference ptr :type :float :index id))
-                  )
-            (fli:free-foreign-object ptr)
-            )
-          )
-    (fli:free-foreign-object labelptr)
-    (fli:free-foreign-object  result)
-    ret)
+  (if (dataset self)
+      (let* ((dimsize (length (column-names self)))
+             (result (fli:allocate-foreign-object :type :pointer :nelems dimsize))
+             (labelptr (fli:allocate-foreign-object :type :char :nelems (length label) :initial-contents (coerce label 'list))) 
+             (size  (xmm-classavrg (data-ptr self) labelptr result))
+             (ret (make-list dimsize))
+             (ptr))
+        (loop for dim from 0 to (1- dimsize) do
+              (progn 
+                (setf (nth dim ret)  (make-list size))
+                (setf ptr (fli:dereference result :type :pointer :index dim))
+                (loop for id from 0 to (1- size) do
+                      (setf (nth id (nth dim ret)) (fli:dereference ptr :type :float :index id))
+                      )
+                (fli:free-foreign-object ptr)
+                )
+              )
+        (fli:free-foreign-object labelptr)
+        (fli:free-foreign-object  result)
+        ret)
+    (print "A dataset is needed to get a class avrg"))
 )
 
 
@@ -269,7 +274,8 @@ size)))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; GENETIC ALGO FOR HYPER-PARAMETER OPTIMIZATION
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;; PARAM struct : ("descriptor"   (5 8 7 4 6 8)        15            (0.1 0.05))
+;;             descr extracted   descr lines to keep   states_num      regularization
 
 (defun testaccu (item1 item2)
   (if  item1
@@ -297,19 +303,20 @@ ret
 (defun reproduce (results) 
   (let* ((ret results)
         (parents (car (om:mat-trans ret))))
-   
     (loop for parent in parents do 
           (setf ret 
                 (append ret 
-                        ;Create new child whith random variation on number of states and regularization
-                        (list (list  (car parent) (+ (1- (random 3)) (second parent)) 
-                                     (list (+ (/ (1- (random 3)) 200) (car (third parent))) (+ (/ (1- (random 3)) 1000) (cadr (third parent))))))
-                        )
-                ))
+                        ;Create new child with random variation on descr kept
+                        (list (list  (car parent) (append (second parent) (if (not (find (setf a (random 9)) (second parent))) (list a) (list)))
+                                     ;variation on number of states
+                                     (+ (- 4 (random 9)) (third parent)) 
+                                     ;variation on regularization
+                                     ;(fourth parent)
+                                     (list (+ (/ (- 5 (random 11)) 100) (car (fourth parent))) (+ (/ (- 5 (random 11)) 1000) (cadr (fourth parent))))
+                                     ))
+                        )))
     ret)
 )
-
-
 
 (defun gene-algo (fun firstparams) 
   (let* ((params firstparams)
@@ -320,14 +327,15 @@ ret
                                (print (find4best
                                 ;;collect results
                                 (loop for param in params collect 
-                                      (if (= (length param) 3) 
+                                      (if (= (length param) 4) 
                                           (funcall fun (print param))
                                         (print param))
-                                )))
-                       ))
-            
+                                      )))))
             (if (< 0.9 (car (second (car params)))) (setf condition nil))
-                       
-               )))
-  ) 
+            )))
+)
+
+
+
+
 

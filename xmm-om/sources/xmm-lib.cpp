@@ -28,6 +28,7 @@ void* initXMM(float relat, float abs, int statenum){
     mhhmm->configuration.relative_regularization.set(relat);
     mhhmm->configuration.absolute_regularization.set(abs);
     mhhmm->configuration.states.set(statenum);
+    mhhmm->configuration.multithreading = xmm::MultithreadingMode::Sequential;
     return mhhmm;
 }
 
@@ -117,7 +118,6 @@ int getclassAvrg(void* dataset, void* labl, void* out){
             minsize= phrase->second->size();
         }
     }
-    
     float temp=0;
     float deltasize=0;
     float** means = static_cast<float**>(out);
@@ -141,6 +141,12 @@ int trainXMM(void* dataset, void* model){
     try{
         xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
         xmm::TrainingSet *mdataset = static_cast<xmm::TrainingSet*>(dataset);
+        
+        //print info
+        std::cout<<"Training with "<<mdataset->dimension.get()<<" columns"<<std::endl
+        <<mhhmm->configuration.states.get()<<" states"<<std::endl
+        <<"regularization "<<mhhmm->configuration.relative_regularization.get()<<" "<<mhhmm->configuration.absolute_regularization.get()<<std::endl;
+       
         mhhmm->train(mdataset);
     }catch ( const std::exception & Exp )
     {
