@@ -16,45 +16,27 @@
 ;
 ;============================================================================
 
-
-;;;===================================================
-;;;
-;;; Author: Paul Best
-;;;
-;;;===================================================
+;;;=====================================
+;;; OM-XMM lib loader for OM6
+;;;=====================================
+;;; Author J. Bresson
+;;;=====================================
 
 (in-package :om)
 
-(defpackage :xmm 
-  (:use :common-lisp :cl-user))
+(om::set-lib-release 1.0 (find-library "om-xmm"))
 
+(compile&load (merge-pathnames "sources/xmm-init" *load-pathname*))
+(compile&load (merge-pathnames "sources/xmm-bindings" *load-pathname*))
+(compile&load (merge-pathnames "sources/xmm-om-objects" *load-pathname*))
 
-(defun load-xmm-lib ()
-  (let ((libpath (merge-pathnames 
-                  "lib/mac/libxmm-om.dylib" 
-                  (om::mypathname (om::find-library "om-xmm")))))
-    (om-fi::om-load-foreign-library
-           "LIBXMM"
-           `((:macosx ,libpath)
-             (t (:default "libxmm-om"))))
-    ))
+(om::fill-library 
+ '((nil nil (xmm::xmmobj) (xmm::run xmm::get-errors xmm::test) nil)))
 
-;; load now
-(load-xmm-lib)
-
-;; load at OM startup
-;; #+macosx(om-fi::add-foreign-loader 'load-iae-lib)
-
-(push :xmm *features*)
-
-
-#|
-
-
-|#
-
-
-
-
-
-
+(print "
+ ==============================
+ OM-XMM
+ ==============================
+ A bridge between OM and the XMM library
+ ==============================
+")

@@ -1,3 +1,22 @@
+;============================================================================
+; OM-XMM
+; A bridge between o7 and the XMM library.
+;
+; XMM is a C++ library that implements Gaussian Mixture Models and Hidden Markov Models for recognition and regression. 
+; The library implements an interactive machine learning workflow with fast training and continuous, real-time inference. 
+; See http://ircam-rnd.github.io/xmm/
+;============================================================================
+;
+;   This program is free software. For information on usage 
+;   and redistribution, see the "LICENSE" file in this distribution.
+;
+;   This program is distributed in the hope that it will be useful,
+;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+;
+;============================================================================
+
+
 ;; Lisp code for XMM / OM objects
 
 (in-package :xmm)
@@ -7,16 +26,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defclass xmmobj (om::om-cleanup-mixin)
-  ((labls :accessor labls :initform nil :type :list)
-   (dataset :accessor dataset :initform nil :initarg :dataset :type :list) ; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)      
-   (column-names :accessor column-names :initform nil :initarg :column-names :type :list) ;list of attributes
+(om::defclass! xmmobj (om::om-cleanup-mixin)
+  ((labls :accessor labls :initform nil :type list)
+   (dataset :accessor dataset :initform nil :initarg :dataset :type list) ; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)      
+   (column-names :accessor column-names :initform nil :initarg :column-names :type list) ;list of attributes
    (data-ptr :accessor data-ptr :initform nil) ; PTR on c++ Trainingset object 
    (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
-   (errors :accessor errors :initform nil :type :list)
+   (errors :accessor errors :initform nil :type list)
    (name :accessor name :initform (gensym "xmmobj"))
-   (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization  :type list)
-   (states :accessor states :initform '10 :initarg :states :type :int)
+   (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization :type list)
+   (states :accessor states :initform 10 :initarg :states :type integer)
    ))
 
 
@@ -32,8 +51,7 @@
   (setf (model-ptr self) (xmm-initmodel (first (regularization self)) (second (regularization self)) (states self)))
   self)
 
-(defmethod om::om-init-instance ((self xmmobj) &optional args)
-  (call-next-method)
+(defmethod train-model ((self xmmobj))
   (if (dataset self)
       (progn 
         (if (not (column-names self)) (setf (column-names self) (make-list (length (caar (dataset self))) :initial-element 1)))
@@ -42,8 +60,19 @@
         (fill_data self)
         (xmm-train (data-ptr self) (model-ptr self))
         (om::om-print ".... done training !" "XMM"))
-    (om::om-print "missing some data to learn.." "XMM"))
+    (om::om-print "missing some data to learn.." "XMM")))
+
+#+o7
+(defmethod om::om-init-instance ((self xmmobj) &optional args)
+  (call-next-method)
+  (train-model self)
   self)
+
+#-o7 ;;; = OM6
+(defmethod om::make-one-instance ((class xmmobj) &rest slots-vals)
+  (let ((rep (call-next-method)))
+    (train-model rep)
+    rep))
 
 
 
@@ -261,6 +290,7 @@ size)))
   '(:hidden :text :mini-view))
 
 
+#|
 (defmethod om::draw-mini-view ((self xmmobj) (box t) x y w h &optional time)
     (om::om-with-font 
      (om::om-def-font :font1 :size 10)
@@ -269,7 +299,7 @@ size)))
     ;(om::om-with-font 
      ;(om::om-def-font :font1 :size 10)
      ;(om::om-draw-string (+ x 10) (+ y 20) (concatenate 'string "Dataset of " (length (dataset self)) " samples") :wrap (om::box-w box)))))
-
+|#
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; GENETIC ALGO FOR HYPER-PARAMETER OPTIMIZATION
