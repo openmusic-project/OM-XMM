@@ -1,12 +1,12 @@
 # om-xmm
 
-A bridge between o7 and the XMM library.
+A bridge between OM and the XMM library.
 
 XMM is a C++ library that implements Gaussian Mixture Models and Hidden Markov Models for recognition and regression. The XMM library was developed for movement interaction in creative applications and implements an interactive machine learning workflow with fast training and continuous, real-time inference. See http://ircam-rnd.github.io/xmm/
 
 XMM-OM is a C++ library that manages data preparation, training, and prediction using XMM
 
-OM-XMM is a lisp library for open music that manages the XMM-OM C++ Library
+OM-XMM is a lisp library for OpenMusic (OM 6.13 / o7) that manages the XMM-OM C++ Library
 
 ### Authors
 
