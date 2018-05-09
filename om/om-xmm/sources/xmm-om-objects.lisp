@@ -54,6 +54,7 @@
 ;;descriptor matrix is a list of descriptor vectors
 (defmethod test((self xmmobj) data)
   (let ((accuracy 0)
+        (count 0)
         (num-samples (length data)))
     (setf (errors self) (make-list (length (labls self)) :initial-element 0))
     (loop for sample in data
@@ -64,12 +65,14 @@
                ;(print (format nil " actual: ~A " real))
                (if (not pos) (progn (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
                                (decf num-samples))
+   				 (if (string= "notsure" pred)  (decf num-samples)
                  (if (string= pred real) 
                      (incf accuracy) 
                    (progn (incf (nth pos (errors self)))
-                     ;(om::om-print (format nil "Predicted ~a instead of ~a" pred real) "XMM")
+                     (om::om-print (format nil "Predicted ~a instead of ~a on number ~d " pred real count) "XMM")
                      )  
-                   ))))
+                   )))
+               (incf count)))
                
     (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
     (/ accuracy num-samples)
@@ -97,6 +100,7 @@
                 do (setf (fli:dereference descr :type :pointer :index i) 
                          (fli:allocate-foreign-object :type :float :nelems size :initial-contents (to-float (nth i data)))))
           (setf likelihood (xmm-run descr size (length (column-names self)) (model-ptr self) reset resultptr))
+          
           ;fetch result from pointer
           (setf cur (fli:dereference resultptr :type :char :index 0))
           (loop until (char= cur #\0) do
@@ -110,6 +114,7 @@
                 do (fli:free-foreign-object (fli:dereference descr :type :pointer :index i)))
           (fli:free-foreign-object descr)
           (fli:free-foreign-object resultptr)
+          (if (< likelihood 0.6) (setf result "notsure"))
           ;(om::om-print (format nil "~a with ~f likelihood" result likelihood) "XMM")
           result))))
 )
@@ -202,6 +207,7 @@
                       (setf id (1+ id))
                       (setf cur (fli::dereference ptr :type :char :index id))
                       ))
+              (print temp)
               (if temp
                   (setf (labls self) (append (labls self) (list (concatenate 'string temp)))))
               (setf i (1+ i))
