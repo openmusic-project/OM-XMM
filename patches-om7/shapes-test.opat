@@ -1,0 +1,4848 @@
+
+(:patch
+ (:om-version 2.1E-5)
+ (:name "shapes-test")
+ (:doc "")
+ (:info
+  (:created "2018/04/16 10:05:57")
+  (:modified "2018/05/04 16:18:49"))
+ (:window (:size (1068 673)) (:position (815 311)))
+ (:grid nil)
+ (:lock nil)
+ (:boxes
+  (:box
+   (:reference bpc)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 29)
+   (:y 18)
+   (:w 121)
+   (:h 101)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 10) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "X-POINTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "Y-POINTS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "X-POINTS") (:reactive nil))
+    (:output (:name "Y-POINTS") (:reactive nil)))
+   (:window (:size (585 400)) (:position (84 161)))
+   (:edition-params (:draw-style :draw-all))
+   (:value
+    (:object
+     (:class bpc)
+     (:slots
+      ((:times
+        (:list
+         0
+         123
+         153
+         184
+         200
+         217
+         232
+         256
+         280
+         304
+         336
+         368
+         392
+         416
+         440
+         464
+         480
+         504
+         520
+         547
+         570
+         585
+         601
+         617
+         635
+         649
+         665
+         681
+         703
+         722
+         744
+         760
+         784
+         800
+         819
+         833
+         849
+         865
+         886
+         889
+         896
+         912
+         933
+         954
+         968
+         984
+         1004
+         1028
+         1050
+         1072
+         1099
+         1122
+         1151
+         1172
+         1184
+         1201
+         1222
+         1232
+         1256
+         1276
+         1302
+         1323
+         1336
+         1352
+         1376
+         1402
+         1432
+         1456
+         1480
+         1504
+         1528
+         1544
+         1570
+         1593
+         1620
+         1642
+         1697))
+       (:onset 0)
+       (:duration 1697)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:action nil)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:decimals 2)
+       (:x-points
+        (:list
+         0.01
+         -0.06
+         -0.12
+         -0.18
+         -0.24
+         -0.3
+         -0.36
+         -0.42
+         -0.48
+         -0.52
+         -0.58
+         -0.62
+         -0.66
+         -0.69
+         -0.72
+         -0.74
+         -0.75
+         -0.76
+         -0.77
+         -0.78
+         -0.78
+         -0.78
+         -0.77
+         -0.76
+         -0.75
+         -0.73
+         -0.71
+         -0.68
+         -0.66
+         -0.62
+         -0.58
+         -0.54
+         -0.49
+         -0.44
+         -0.38
+         -0.34
+         -0.29
+         -0.21
+         -0.13
+         -0.07
+         -0.03
+         0.07
+         0.13
+         0.23
+         0.29
+         0.36
+         0.43
+         0.47
+         0.52
+         0.59
+         0.64
+         0.68
+         0.71
+         0.72
+         0.74
+         0.75
+         0.75
+         0.75
+         0.75
+         0.73
+         0.7
+         0.68
+         0.66
+         0.64
+         0.61
+         0.59
+         0.56
+         0.52
+         0.48
+         0.43
+         0.39
+         0.34
+         0.24
+         0.12
+         0.02
+         -0.04
+         -0.11))
+       (:y-points
+        (:list
+         1.58
+         1.58
+         1.58
+         1.58
+         1.58
+         1.58
+         1.58
+         1.53
+         1.5
+         1.43
+         1.38
+         1.32
+         1.22
+         1.14
+         1.04
+         0.96
+         0.88
+         0.79
+         0.71
+         0.59
+         0.48
+         0.37
+         0.27
+         0.17
+         0.09
+         0.01
+         -0.07
+         -0.15
+         -0.23
+         -0.34
+         -0.42
+         -0.49
+         -0.57
+         -0.6
+         -0.66
+         -0.68
+         -0.71
+         -0.73
+         -0.74
+         -0.76
+         -0.78
+         -0.78
+         -0.78
+         -0.78
+         -0.76
+         -0.71
+         -0.69
+         -0.65
+         -0.57
+         -0.47
+         -0.39
+         -0.28
+         -0.16
+         -0.02
+         0.08
+         0.17
+         0.27
+         0.38
+         0.5
+         0.59
+         0.75
+         0.9
+         0.98
+         1.08
+         1.19
+         1.27
+         1.37
+         1.43
+         1.5
+         1.54
+         1.58
+         1.59
+         1.61
+         1.61
+         1.61
+         1.61
+         1.59))))
+     (:add-slots
+      ((:times
+        (:list
+         0
+         123
+         153
+         184
+         200
+         217
+         232
+         256
+         280
+         304
+         336
+         368
+         392
+         416
+         440
+         464
+         480
+         504
+         520
+         547
+         570
+         585
+         601
+         617
+         635
+         649
+         665
+         681
+         703
+         722
+         744
+         760
+         784
+         800
+         819
+         833
+         849
+         865
+         886
+         889
+         896
+         912
+         933
+         954
+         968
+         984
+         1004
+         1028
+         1050
+         1072
+         1099
+         1122
+         1151
+         1172
+         1184
+         1201
+         1222
+         1232
+         1256
+         1276
+         1302
+         1323
+         1336
+         1352
+         1376
+         1402
+         1432
+         1456
+         1480
+         1504
+         1528
+         1544
+         1570
+         1593
+         1620
+         1642
+         1697))
+       (:decimals 2)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:name "BPC")
+       (:action nil)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))))))
+   (:id 0))
+  (:box
+   (:reference
+    (:textfun
+     (:om-version 2.1E-5)
+     (:name "format(x y vx vy)")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size (500 500)) (:position (1133 392)))
+     (:text
+      (:list
+       ";;; Edit a valid LAMBDA EXPRESSION"
+       ";;; e.g. (lambda (arg1 arg2 ...) ( ... ))"
+       "(lambda (listx listy) "
+       "  (loop for i from 1 to (1- (length listx)) collect"
+       "        (list (nth i listx) "
+       "              (nth i listy) "
+       "              (- (nth i listx) (nth (1- i) listx))"
+       "              (- (nth i listy) (nth (1- i) listy))))"
+       ")"))))
+   (:type :textfun)
+   (:group-id nil)
+   (:name "format(x y vx vy)")
+   (:x 25)
+   (:y 136)
+   (:w 127)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LISTX")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LISTY")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 1))
+  (:box
+   (:reference mat-trans)
+   (:type :function)
+   (:group-id nil)
+   (:name "mat-trans")
+   (:x 39)
+   (:y 165)
+   (:w 88)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "MATRIX")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 2))
+  (:box
+   (:reference list)
+   (:type :function)
+   (:group-id nil)
+   (:name "list")
+   (:x 73)
+   (:y 199)
+   (:w 53)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "x")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 3))
+  (:box
+   (:reference bpc)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 159)
+   (:y 15)
+   (:w 136)
+   (:h 94)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 10) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "X-POINTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "Y-POINTS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "X-POINTS") (:reactive nil))
+    (:output (:name "Y-POINTS") (:reactive nil)))
+   (:window (:size (585 400)) (:position (147 230)))
+   (:edition-params (:draw-style :draw-all))
+   (:value
+    (:object
+     (:class bpc)
+     (:slots
+      ((:times
+        (:list
+         0
+         119
+         137
+         155
+         173
+         191
+         232
+         255
+         271
+         287
+         311
+         327
+         345
+         359
+         375
+         391
+         413
+         425
+         449
+         480
+         504
+         528
+         552
+         575
+         599
+         623
+         647
+         663
+         687
+         703
+         725
+         746
+         760
+         776
+         792
+         813
+         826
+         843
+         860
+         883
+         910
+         931
+         943
+         959
+         983
+         1001
+         1028
+         1050
+         1063
+         1087
+         1111
+         1128
+         1149
+         1159
+         1175
+         1196
+         1217
+         1247
+         1267
+         1280
+         1297
+         1316
+         1347
+         1375
+         1401
+         1480))
+       (:onset 0)
+       (:duration 1480)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:action nil)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:decimals 2)
+       (:x-points
+        (:list
+         -0.01
+         -0.11
+         -0.15
+         -0.19
+         -0.22
+         -0.27
+         -0.31
+         -0.34
+         -0.37
+         -0.4
+         -0.43
+         -0.45
+         -0.46
+         -0.5
+         -0.53
+         -0.55
+         -0.57
+         -0.58
+         -0.58
+         -0.58
+         -0.57
+         -0.55
+         -0.54
+         -0.52
+         -0.48
+         -0.44
+         -0.39
+         -0.35
+         -0.29
+         -0.25
+         -0.19
+         -0.08
+         -0.01
+         0.07
+         0.11
+         0.17
+         0.22
+         0.28
+         0.34
+         0.38
+         0.41
+         0.43
+         0.45
+         0.48
+         0.48
+         0.49
+         0.49
+         0.49
+         0.48
+         0.48
+         0.47
+         0.45
+         0.44
+         0.41
+         0.38
+         0.34
+         0.31
+         0.28
+         0.24
+         0.21
+         0.17
+         0.11
+         0.06
+         0.02
+         -0.01
+         -0.04))
+       (:y-points
+        (:list
+         0.79
+         0.77
+         0.72
+         0.69
+         0.65
+         0.63
+         0.59
+         0.52
+         0.47
+         0.41
+         0.33
+         0.26
+         0.2
+         0.11
+         0.02
+         -0.05
+         -0.12
+         -0.2
+         -0.27
+         -0.35
+         -0.43
+         -0.49
+         -0.55
+         -0.6
+         -0.66
+         -0.74
+         -0.79
+         -0.81
+         -0.84
+         -0.86
+         -0.87
+         -0.88
+         -0.89
+         -0.89
+         -0.89
+         -0.88
+         -0.84
+         -0.81
+         -0.78
+         -0.73
+         -0.65
+         -0.53
+         -0.46
+         -0.37
+         -0.29
+         -0.2
+         -0.11
+         0.02
+         0.09
+         0.17
+         0.24
+         0.3
+         0.38
+         0.45
+         0.54
+         0.61
+         0.69
+         0.75
+         0.8
+         0.85
+         0.91
+         0.94
+         0.95
+         0.94
+         0.92
+         0.87))))
+     (:add-slots
+      ((:times
+        (:list
+         0
+         119
+         137
+         155
+         173
+         191
+         232
+         255
+         271
+         287
+         311
+         327
+         345
+         359
+         375
+         391
+         413
+         425
+         449
+         480
+         504
+         528
+         552
+         575
+         599
+         623
+         647
+         663
+         687
+         703
+         725
+         746
+         760
+         776
+         792
+         813
+         826
+         843
+         860
+         883
+         910
+         931
+         943
+         959
+         983
+         1001
+         1028
+         1050
+         1063
+         1087
+         1111
+         1128
+         1149
+         1159
+         1175
+         1196
+         1217
+         1247
+         1267
+         1280
+         1297
+         1316
+         1347
+         1375
+         1401
+         1480))
+       (:decimals 2)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:name "BPC")
+       (:action nil)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))))))
+   (:id 4))
+  (:box
+   (:reference
+    (:textfun
+     (:om-version 2.1E-5)
+     (:name "format(x y vx vy)")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size nil) (:position nil))
+     (:text
+      (:list
+       ";;; Edit a valid LAMBDA EXPRESSION"
+       ";;; e.g. (lambda (arg1 arg2 ...) ( ... ))"
+       "(lambda (listx listy) "
+       "  (loop for i from 1 to (1- (length listx)) collect"
+       "        (list (nth i listx) "
+       "              (nth i listy) "
+       "              (- (nth i listx) (nth (1- i) listx))"
+       "              (- (nth i listy) (nth (1- i) listy))))"
+       ")"))))
+   (:type :textfun)
+   (:group-id nil)
+   (:name "format(x y vx vy)")
+   (:x 166)
+   (:y 122)
+   (:w 127)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LISTX")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LISTY")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 5))
+  (:box
+   (:reference mat-trans)
+   (:type :function)
+   (:group-id nil)
+   (:name "mat-trans")
+   (:x 186)
+   (:y 152)
+   (:w 88)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "MATRIX")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 6))
+  (:box
+   (:reference list)
+   (:type :function)
+   (:group-id nil)
+   (:name "list")
+   (:x 217)
+   (:y 197)
+   (:w 53)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "x")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 7))
+  (:box
+   (:reference bpc)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 343)
+   (:y 11)
+   (:w 128)
+   (:h 113)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 10) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "X-POINTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "Y-POINTS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "X-POINTS") (:reactive nil))
+    (:output (:name "Y-POINTS") (:reactive nil)))
+   (:window (:size (585 400)) (:position (168 253)))
+   (:edition-params (:draw-style :draw-all))
+   (:value
+    (:object
+     (:class bpc)
+     (:slots
+      ((:times
+        (:list
+         0
+         114
+         120
+         128
+         136
+         143
+         155
+         160
+         172
+         176
+         188
+         192
+         210
+         223
+         239
+         260
+         272
+         290
+         312
+         424
+         448
+         464
+         476
+         491
+         496
+         509
+         512
+         529
+         541
+         544
+         558
+         560
+         575
+         575
+         597
+         664
+         816
+         833
+         850
+         857
+         878
+         878
+         881
+         899
+         905
+         913
+         928
+         949
+         960
+         977
+         993
+         1015
+         1024
+         1056))
+       (:onset 0)
+       (:duration 1056)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:action nil)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:decimals 2)
+       (:x-points
+        (:list
+         -0.01
+         -0.13
+         -0.16
+         -0.19
+         -0.21
+         -0.24
+         -0.27
+         -0.3
+         -0.32
+         -0.33
+         -0.37
+         -0.39
+         -0.42
+         -0.44
+         -0.47
+         -0.49
+         -0.52
+         -0.56
+         -0.6
+         -0.55
+         -0.49
+         -0.41
+         -0.36
+         -0.24
+         -0.15
+         -0.05
+         0.06
+         0.31
+         0.45
+         0.56
+         0.67
+         0.76
+         0.88
+         0.82
+         0.93
+         0.97
+         0.96
+         0.91
+         0.84
+         0.8
+         0.67
+         0.73
+         0.62
+         0.52
+         0.46
+         0.42
+         0.37
+         0.28
+         0.24
+         0.19
+         0.16
+         0.11
+         0.06
+         0.02))
+       (:y-points
+        (:list
+         0.99
+         0.54
+         0.4
+         0.31
+         0.17
+         0.08
+         -0.03
+         -0.1
+         -0.18
+         -0.25
+         -0.32
+         -0.38
+         -0.49
+         -0.57
+         -0.67
+         -0.75
+         -0.86
+         -0.94
+         -1.08
+         -1.08
+         -1.06
+         -1.05
+         -1.05
+         -1.05
+         -1.05
+         -1.05
+         -1.05
+         -1.02
+         -1.02
+         -1.02
+         -1.02
+         -1.02
+         -1.02
+         -1.02
+         -1.04
+         -1.05
+         -0.98
+         -0.89
+         -0.7
+         -0.6
+         -0.4
+         -0.51
+         -0.32
+         -0.1
+         0.01
+         0.09
+         0.19
+         0.36
+         0.47
+         0.58
+         0.67
+         0.77
+         0.86
+         0.92))))
+     (:add-slots
+      ((:times
+        (:list
+         0
+         114
+         120
+         128
+         136
+         143
+         155
+         160
+         172
+         176
+         188
+         192
+         210
+         223
+         239
+         260
+         272
+         290
+         312
+         424
+         448
+         464
+         476
+         491
+         496
+         509
+         512
+         529
+         541
+         544
+         558
+         560
+         575
+         575
+         597
+         664
+         816
+         833
+         850
+         857
+         878
+         878
+         881
+         899
+         905
+         913
+         928
+         949
+         960
+         977
+         993
+         1015
+         1024
+         1056))
+       (:decimals 2)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:name "BPC")
+       (:action nil)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))))))
+   (:id 8))
+  (:box
+   (:reference
+    (:textfun
+     (:om-version 2.1E-5)
+     (:name "format(x y vx vy)")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size nil) (:position nil))
+     (:text
+      (:list
+       ";;; Edit a valid LAMBDA EXPRESSION"
+       ";;; e.g. (lambda (arg1 arg2 ...) ( ... ))"
+       "(lambda (listx listy) "
+       "  (loop for i from 1 to (1- (length listx)) collect"
+       "        (list (nth i listx) "
+       "              (nth i listy) "
+       "              (- (nth i listx) (nth (1- i) listx))"
+       "              (- (nth i listy) (nth (1- i) listy))))"
+       ")"))))
+   (:type :textfun)
+   (:group-id nil)
+   (:name "format(x y vx vy)")
+   (:x 351)
+   (:y 141)
+   (:w 127)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LISTX")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LISTY")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 9))
+  (:box
+   (:reference mat-trans)
+   (:type :function)
+   (:group-id nil)
+   (:name "mat-trans")
+   (:x 371)
+   (:y 171)
+   (:w 88)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "MATRIX")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 10))
+  (:box
+   (:reference list)
+   (:type :function)
+   (:group-id nil)
+   (:name "list")
+   (:x 402)
+   (:y 216)
+   (:w 53)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "x")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 11))
+  (:box
+   (:reference bpc)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 505)
+   (:y 8)
+   (:w 128)
+   (:h 113)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 10) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "X-POINTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "Y-POINTS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "X-POINTS") (:reactive nil))
+    (:output (:name "Y-POINTS") (:reactive nil)))
+   (:window (:size (585 400)) (:position (189 276)))
+   (:edition-params (:draw-style :draw-all))
+   (:value
+    (:object
+     (:class bpc)
+     (:slots
+      ((:times
+        (:list
+         0
+         114
+         119
+         127
+         136
+         143
+         156
+         159
+         173
+         175
+         191
+         319
+         335
+         345
+         357
+         359
+         374
+         375
+         390
+         391
+         412
+         424
+         442
+         458
+         631
+         639
+         664
+         665
+         671
+         679
+         687
+         695
+         709
+         711
+         731
+         735
+         743
+         755
+         759
+         776
+         798
+         822))
+       (:onset 0)
+       (:duration 822)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:action nil)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:decimals 2)
+       (:x-points
+        (:list
+         0.06
+         -0.26
+         -0.36
+         -0.42
+         -0.51
+         -0.57
+         -0.63
+         -0.69
+         -0.72
+         -0.76
+         -0.78
+         -0.72
+         -0.64
+         -0.51
+         -0.36
+         -0.17
+         0.05
+         0.24
+         0.46
+         0.69
+         1.1
+         1.35
+         1.51
+         1.56
+         1.52
+         1.47
+         1.41
+         1.27
+         1.17
+         1.07
+         0.98
+         0.87
+         0.79
+         0.72
+         0.57
+         0.51
+         0.45
+         0.37
+         0.32
+         0.22
+         0.16
+         0.13))
+       (:y-points
+        (:list
+         1.06
+         0.38
+         0.19
+         0.09
+         -0.1
+         -0.25
+         -0.36
+         -0.5
+         -0.6
+         -0.65
+         -0.71
+         -0.71
+         -0.69
+         -0.66
+         -0.63
+         -0.63
+         -0.61
+         -0.58
+         -0.56
+         -0.53
+         -0.53
+         -0.51
+         -0.51
+         -0.5
+         -0.42
+         -0.37
+         -0.33
+         -0.2
+         -0.13
+         -0.05
+         0.04
+         0.14
+         0.21
+         0.3
+         0.51
+         0.6
+         0.68
+         0.8
+         0.86
+         1.0
+         1.06
+         1.13))))
+     (:add-slots
+      ((:times
+        (:list
+         0
+         114
+         119
+         127
+         136
+         143
+         156
+         159
+         173
+         175
+         191
+         319
+         335
+         345
+         357
+         359
+         374
+         375
+         390
+         391
+         412
+         424
+         442
+         458
+         631
+         639
+         664
+         665
+         671
+         679
+         687
+         695
+         709
+         711
+         731
+         735
+         743
+         755
+         759
+         776
+         798
+         822))
+       (:decimals 2)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:name "BPC")
+       (:action nil)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))))))
+   (:id 12))
+  (:box
+   (:reference
+    (:textfun
+     (:om-version 2.1E-5)
+     (:name "format(x y vx vy)")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size nil) (:position nil))
+     (:text
+      (:list
+       ";;; Edit a valid LAMBDA EXPRESSION"
+       ";;; e.g. (lambda (arg1 arg2 ...) ( ... ))"
+       "(lambda (listx listy) "
+       "  (loop for i from 1 to (1- (length listx)) collect"
+       "        (list (nth i listx) "
+       "              (nth i listy) "
+       "              (- (nth i listx) (nth (1- i) listx))"
+       "              (- (nth i listy) (nth (1- i) listy))))"
+       ")"))))
+   (:type :textfun)
+   (:group-id nil)
+   (:name "format(x y vx vy)")
+   (:x 513)
+   (:y 138)
+   (:w 127)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LISTX")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LISTY")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 13))
+  (:box
+   (:reference mat-trans)
+   (:type :function)
+   (:group-id nil)
+   (:name "mat-trans")
+   (:x 533)
+   (:y 168)
+   (:w 88)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "MATRIX")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 14))
+  (:box
+   (:reference list)
+   (:type :function)
+   (:group-id nil)
+   (:name "list")
+   (:x 564)
+   (:y 213)
+   (:w 53)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "x")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 15))
+  (:box
+   (:reference bpc)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 669)
+   (:y 10)
+   (:w 128)
+   (:h 113)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 10) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "X-POINTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "Y-POINTS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "X-POINTS") (:reactive nil))
+    (:output (:name "Y-POINTS") (:reactive nil)))
+   (:window (:size (585 400)) (:position (210 299)))
+   (:edition-params (:draw-style :draw-all))
+   (:value
+    (:object
+     (:class bpc)
+     (:slots
+      ((:times
+        (:list
+         0
+         119
+         136
+         160
+         184
+         208
+         232
+         264
+         289
+         313
+         329
+         345
+         360
+         360
+         373
+         376
+         388
+         392
+         405
+         408
+         425
+         439
+         455
+         472
+         493
+         505
+         523
+         540
+         561
+         576
+         600
+         624
+         648
+         663
+         680
+         707
+         729
+         744
+         760
+         774
+         794
+         809
+         832
+         856
+         880
+         896
+         913
+         928
+         944
+         968
+         992
+         1016
+         1042
+         1066
+         1093
+         1115
+         1143
+         1164
+         1176
+         1199
+         1224
+         1244
+         1266
+         1305
+         1361))
+       (:onset 0)
+       (:duration 1361)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:action nil)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:decimals 2)
+       (:x-points
+        (:list
+         0.13
+         -0.1
+         -0.17
+         -0.24
+         -0.3
+         -0.35
+         -0.39
+         -0.42
+         -0.42
+         -0.39
+         -0.36
+         -0.27
+         -0.15
+         -0.23
+         -0.06
+         0.0
+         0.08
+         0.14
+         0.21
+         0.28
+         0.38
+         0.41
+         0.56
+         0.61
+         0.65
+         0.67
+         0.68
+         0.69
+         0.69
+         0.68
+         0.62
+         0.58
+         0.51
+         0.46
+         0.4
+         0.33
+         0.23
+         0.13
+         0.04
+         -0.01
+         -0.14
+         -0.22
+         -0.25
+         -0.26
+         -0.27
+         -0.25
+         -0.23
+         -0.19
+         -0.15
+         -0.1
+         -0.05
+         0.02
+         0.06
+         0.13
+         0.18
+         0.22
+         0.25
+         0.27
+         0.27
+         0.27
+         0.27
+         0.25
+         0.22
+         0.19
+         0.15))
+       (:y-points
+        (:list
+         1.25
+         1.2
+         1.17
+         1.12
+         1.06
+         0.98
+         0.91
+         0.82
+         0.74
+         0.63
+         0.56
+         0.43
+         0.3
+         0.37
+         0.21
+         0.16
+         0.09
+         0.02
+         -0.05
+         -0.11
+         -0.22
+         -0.29
+         -0.45
+         -0.52
+         -0.6
+         -0.67
+         -0.74
+         -0.82
+         -0.9
+         -0.99
+         -1.11
+         -1.18
+         -1.25
+         -1.28
+         -1.31
+         -1.33
+         -1.31
+         -1.28
+         -1.23
+         -1.18
+         -1.06
+         -0.98
+         -0.9
+         -0.83
+         -0.71
+         -0.61
+         -0.51
+         -0.41
+         -0.3
+         -0.22
+         -0.13
+         -0.07
+         0.03
+         0.14
+         0.24
+         0.33
+         0.41
+         0.53
+         0.63
+         0.75
+         0.85
+         0.93
+         1.03
+         1.1
+         1.17))))
+     (:add-slots
+      ((:times
+        (:list
+         0
+         119
+         136
+         160
+         184
+         208
+         232
+         264
+         289
+         313
+         329
+         345
+         360
+         360
+         373
+         376
+         388
+         392
+         405
+         408
+         425
+         439
+         455
+         472
+         493
+         505
+         523
+         540
+         561
+         576
+         600
+         624
+         648
+         663
+         680
+         707
+         729
+         744
+         760
+         774
+         794
+         809
+         832
+         856
+         880
+         896
+         913
+         928
+         944
+         968
+         992
+         1016
+         1042
+         1066
+         1093
+         1115
+         1143
+         1164
+         1176
+         1199
+         1224
+         1244
+         1266
+         1305
+         1361))
+       (:decimals 2)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:name "BPC")
+       (:action nil)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))))))
+   (:id 16))
+  (:box
+   (:reference
+    (:textfun
+     (:om-version 2.1E-5)
+     (:name "format(x y vx vy)")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size nil) (:position nil))
+     (:text
+      (:list
+       ";;; Edit a valid LAMBDA EXPRESSION"
+       ";;; e.g. (lambda (arg1 arg2 ...) ( ... ))"
+       "(lambda (listx listy) "
+       "  (loop for i from 1 to (1- (length listx)) collect"
+       "        (list (nth i listx) "
+       "              (nth i listy) "
+       "              (- (nth i listx) (nth (1- i) listx))"
+       "              (- (nth i listy) (nth (1- i) listy))))"
+       ")"))))
+   (:type :textfun)
+   (:group-id nil)
+   (:name "format(x y vx vy)")
+   (:x 677)
+   (:y 140)
+   (:w 127)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LISTX")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LISTY")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 17))
+  (:box
+   (:reference mat-trans)
+   (:type :function)
+   (:group-id nil)
+   (:name "mat-trans")
+   (:x 697)
+   (:y 170)
+   (:w 88)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "MATRIX")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 18))
+  (:box
+   (:reference list)
+   (:type :function)
+   (:group-id nil)
+   (:name "list")
+   (:x 728)
+   (:y 215)
+   (:w 53)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "x")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 19))
+  (:box
+   (:reference bpc)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 825)
+   (:y 13)
+   (:w 128)
+   (:h 113)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 10) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "X-POINTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "Y-POINTS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "X-POINTS") (:reactive nil))
+    (:output (:name "Y-POINTS") (:reactive nil)))
+   (:window (:size (585 400)) (:position (231 322)))
+   (:edition-params (:draw-style :draw-all))
+   (:value
+    (:object
+     (:class bpc)
+     (:slots
+      ((:times
+        (:list
+         0
+         120
+         143
+         167
+         191
+         207
+         223
+         239
+         263
+         279
+         300
+         312
+         328
+         346
+         367
+         367
+         379
+         383
+         396
+         399
+         418
+         431
+         447
+         463
+         484
+         495
+         520
+         535
+         552
+         575
+         599
+         623
+         647
+         672
+         695
+         711
+         727
+         753
+         768
+         783
+         799
+         819
+         831
+         847
+         873
+         890
+         917
+         938
+         951
+         967
+         988
+         991
+         1016
+         1038
+         1047
+         1067
+         1088
+         1117
+         1139
+         1152
+         1168
+         1188
+         1199
+         1218
+         1240
+         1267
+         1289
+         1303
+         1327
+         1351
+         1375
+         1399
+         1423
+         1447
+         1474
+         1504
+         1525
+         1528
+         1553
+         1583
+         1623))
+       (:onset 0)
+       (:duration 1623)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:action nil)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:decimals 2)
+       (:x-points
+        (:list
+         0.2
+         -0.4
+         -0.49
+         -0.55
+         -0.59
+         -0.63
+         -0.66
+         -0.68
+         -0.68
+         -0.65
+         -0.59
+         -0.52
+         -0.37
+         -0.24
+         0.0
+         -0.07
+         0.07
+         0.14
+         0.19
+         0.26
+         0.37
+         0.45
+         0.53
+         0.58
+         0.63
+         0.68
+         0.72
+         0.73
+         0.74
+         0.75
+         0.74
+         0.7
+         0.63
+         0.56
+         0.48
+         0.41
+         0.34
+         0.19
+         0.12
+         0.03
+         -0.06
+         -0.1
+         -0.16
+         -0.19
+         -0.22
+         -0.22
+         -0.2
+         -0.14
+         -0.08
+         -0.03
+         0.04
+         0.09
+         0.22
+         0.29
+         0.36
+         0.42
+         0.49
+         0.55
+         0.6
+         0.62
+         0.63
+         0.64
+         0.64
+         0.63
+         0.6
+         0.56
+         0.51
+         0.47
+         0.42
+         0.36
+         0.28
+         0.2
+         0.13
+         0.04
+         -0.06
+         -0.12
+         -0.2
+         -0.26
+         -0.32
+         -0.38
+         -0.44))
+       (:y-points
+        (:list
+         1.09
+         1.15
+         1.13
+         1.1
+         1.05
+         0.98
+         0.91
+         0.82
+         0.71
+         0.63
+         0.53
+         0.43
+         0.29
+         0.18
+         -0.02
+         0.03
+         -0.09
+         -0.14
+         -0.2
+         -0.27
+         -0.36
+         -0.45
+         -0.53
+         -0.6
+         -0.67
+         -0.76
+         -0.87
+         -0.94
+         -1.01
+         -1.09
+         -1.19
+         -1.27
+         -1.37
+         -1.43
+         -1.48
+         -1.5
+         -1.5
+         -1.47
+         -1.41
+         -1.36
+         -1.29
+         -1.22
+         -1.13
+         -1.06
+         -0.95
+         -0.85
+         -0.71
+         -0.57
+         -0.5
+         -0.43
+         -0.35
+         -0.29
+         -0.17
+         -0.1
+         -0.04
+         0.01
+         0.08
+         0.21
+         0.31
+         0.38
+         0.45
+         0.53
+         0.63
+         0.7
+         0.8
+         0.91
+         1.01
+         1.08
+         1.16
+         1.22
+         1.26
+         1.27
+         1.29
+         1.29
+         1.27
+         1.26
+         1.24
+         1.23
+         1.22
+         1.2
+         1.17))))
+     (:add-slots
+      ((:times
+        (:list
+         0
+         120
+         143
+         167
+         191
+         207
+         223
+         239
+         263
+         279
+         300
+         312
+         328
+         346
+         367
+         367
+         379
+         383
+         396
+         399
+         418
+         431
+         447
+         463
+         484
+         495
+         520
+         535
+         552
+         575
+         599
+         623
+         647
+         672
+         695
+         711
+         727
+         753
+         768
+         783
+         799
+         819
+         831
+         847
+         873
+         890
+         917
+         938
+         951
+         967
+         988
+         991
+         1016
+         1038
+         1047
+         1067
+         1088
+         1117
+         1139
+         1152
+         1168
+         1188
+         1199
+         1218
+         1240
+         1267
+         1289
+         1303
+         1327
+         1351
+         1375
+         1399
+         1423
+         1447
+         1474
+         1504
+         1525
+         1528
+         1553
+         1583
+         1623))
+       (:decimals 2)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:name "BPC")
+       (:action nil)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))))))
+   (:id 20))
+  (:box
+   (:reference
+    (:textfun
+     (:om-version 2.1E-5)
+     (:name "format(x y vx vy)")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size nil) (:position nil))
+     (:text
+      (:list
+       ";;; Edit a valid LAMBDA EXPRESSION"
+       ";;; e.g. (lambda (arg1 arg2 ...) ( ... ))"
+       "(lambda (listx listy) "
+       "  (loop for i from 1 to (1- (length listx)) collect"
+       "        (list (nth i listx) "
+       "              (nth i listy) "
+       "              (- (nth i listx) (nth (1- i) listx))"
+       "              (- (nth i listy) (nth (1- i) listy))))"
+       ")"))))
+   (:type :textfun)
+   (:group-id nil)
+   (:name "format(x y vx vy)")
+   (:x 833)
+   (:y 143)
+   (:w 127)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LISTX")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LISTY")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 21))
+  (:box
+   (:reference mat-trans)
+   (:type :function)
+   (:group-id nil)
+   (:name "mat-trans")
+   (:x 853)
+   (:y 173)
+   (:w 88)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "MATRIX")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 22))
+  (:box
+   (:reference list)
+   (:type :function)
+   (:group-id nil)
+   (:name "list")
+   (:x 884)
+   (:y 218)
+   (:w 53)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "x")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 23))
+  (:box
+   (:reference bpc)
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 708)
+   (:y 310)
+   (:w 128)
+   (:h 113)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Verdana") (:size 10) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:show-markers t)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "X-POINTS")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "Y-POINTS")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "X-POINTS") (:reactive nil))
+    (:output (:name "Y-POINTS") (:reactive nil)))
+   (:window (:size (585 400)) (:position (1527 396)))
+   (:edition-params (:draw-style :draw-all))
+   (:value
+    (:object
+     (:class bpc)
+     (:slots
+      ((:times
+        (:list
+         0
+         119
+         143
+         175
+         199
+         223
+         239
+         255
+         271
+         279
+         296
+         308
+         325
+         347
+         359
+         375
+         397
+         408
+         431
+         455
+         480
+         512
+         536
+         552
+         568
+         592
+         616
+         631
+         649
+         663
+         679
+         695
+         715
+         729
+         745
+         768
+         784
+         799
+         815
+         833
+         847
+         863
+         882
+         896
+         912
+         928
+         952
+         975
+         997
+         1018
+         1046
+         1067
+         1079
+         1095
+         1113
+         1135
+         1167
+         1207))
+       (:onset 0)
+       (:duration 1207)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))
+       (:action nil)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:decimals 2)
+       (:x-points
+        (:list
+         0.06
+         -0.15
+         -0.18
+         -0.19
+         -0.19
+         -0.19
+         -0.17
+         -0.15
+         -0.1
+         -0.07
+         -0.02
+         0.02
+         0.08
+         0.17
+         0.22
+         0.29
+         0.33
+         0.37
+         0.4
+         0.42
+         0.43
+         0.43
+         0.4
+         0.39
+         0.37
+         0.32
+         0.27
+         0.22
+         0.16
+         0.11
+         0.06
+         0.0
+         -0.04
+         -0.08
+         -0.1
+         -0.11
+         -0.11
+         -0.11
+         -0.09
+         -0.07
+         -0.05
+         -0.01
+         0.02
+         0.07
+         0.11
+         0.14
+         0.17
+         0.18
+         0.19
+         0.19
+         0.2
+         0.2
+         0.19
+         0.18
+         0.16
+         0.13
+         0.09
+         0.06))
+       (:y-points
+        (:list
+         1.19
+         1.07
+         1.01
+         0.94
+         0.85
+         0.77
+         0.69
+         0.61
+         0.51
+         0.46
+         0.36
+         0.3
+         0.21
+         0.07
+         0.0
+         -0.12
+         -0.2
+         -0.28
+         -0.36
+         -0.44
+         -0.52
+         -0.62
+         -0.7
+         -0.77
+         -0.83
+         -0.91
+         -0.96
+         -0.96
+         -0.96
+         -0.92
+         -0.86
+         -0.79
+         -0.73
+         -0.65
+         -0.56
+         -0.46
+         -0.39
+         -0.28
+         -0.17
+         -0.1
+         -0.02
+         0.05
+         0.11
+         0.18
+         0.25
+         0.3
+         0.36
+         0.44
+         0.53
+         0.61
+         0.68
+         0.77
+         0.84
+         0.93
+         0.99
+         1.06
+         1.11
+         1.12))))
+     (:add-slots
+      ((:times
+        (:list
+         0
+         119
+         143
+         175
+         199
+         223
+         239
+         255
+         271
+         279
+         296
+         308
+         325
+         347
+         359
+         375
+         397
+         408
+         431
+         455
+         480
+         512
+         536
+         552
+         568
+         592
+         616
+         631
+         649
+         663
+         679
+         695
+         715
+         729
+         745
+         768
+         784
+         799
+         815
+         833
+         847
+         863
+         882
+         896
+         912
+         928
+         952
+         975
+         997
+         1018
+         1046
+         1067
+         1079
+         1095
+         1113
+         1135
+         1167
+         1207))
+       (:decimals 2)
+       (:color (:color 0.3 0.3 0.3 1.0))
+       (:name "BPC")
+       (:action nil)
+       (:interpol (:number-or-nil (:number 50) (:t-or-nil nil)))))))
+   (:id 24))
+  (:box
+   (:reference
+    (:textfun
+     (:om-version 2.1E-5)
+     (:name "format(x y vx vy)")
+     (:doc "")
+     (:info (:created nil) (:modified nil))
+     (:window (:size nil) (:position nil))
+     (:text
+      (:list
+       ";;; Edit a valid LAMBDA EXPRESSION"
+       ";;; e.g. (lambda (arg1 arg2 ...) ( ... ))"
+       "(lambda (listx listy) "
+       "  (loop for i from 1 to (1- (length listx)) collect"
+       "        (list (nth i listx) "
+       "              (nth i listy) "
+       "              (- (nth i listx) (nth (1- i) listx))"
+       "              (- (nth i listy) (nth (1- i) listy))))"
+       ")"))))
+   (:type :textfun)
+   (:group-id nil)
+   (:name "format(x y vx vy)")
+   (:x 716)
+   (:y 440)
+   (:w 127)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align :center)
+   (:display :hidden)
+   (:group-id nil)
+   (:lock nil)
+   (:lambda nil)
+   (:pre-delay 0)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LISTX")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "LISTY")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 25))
+  (:box
+   (:reference mat-trans)
+   (:type :function)
+   (:group-id nil)
+   (:name "mat-trans")
+   (:x 736)
+   (:y 470)
+   (:w 88)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "MATRIX")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 26))
+  (:box
+   (:reference simple-base-string)
+   (:type :value)
+   (:group-id nil)
+   (:name "value box")
+   (:x 135)
+   (:y 162)
+   (:w 53)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value "circle")
+   (:id 27))
+  (:box
+   (:reference simple-base-string)
+   (:type :value)
+   (:group-id nil)
+   (:name "value box")
+   (:x 459)
+   (:y 179)
+   (:w 65)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value "triangle")
+   (:id 28))
+  (:box
+   (:reference simple-base-string)
+   (:type :value)
+   (:group-id nil)
+   (:name "value box")
+   (:x 786)
+   (:y 176)
+   (:w 61)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:inputs)
+   (:outputs (:output (:name "value") (:reactive nil)))
+   (:value "eight")
+   (:id 29))
+  (:box
+   (:reference list)
+   (:type :function)
+   (:group-id nil)
+   (:name "list")
+   (:x 196)
+   (:y 305)
+   (:w 239)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input (:type :optional) (:name "x") (:value nil) (:reactive nil))
+    (:input
+     (:type :optional)
+     (:name "x")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 30))
+  (:box
+   (:reference (:symbol "XMMOBJ" "XMM"))
+   (:type :object)
+   (:group-id nil)
+   (:name nil)
+   (:x 223)
+   (:y 383)
+   (:w 214)
+   (:h 82)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font (:font (:face "Calibri") (:size 12) (:style :italic)))
+   (:name nil)
+   (:display :mini-view)
+   (:showname nil)
+   (:group-id nil)
+   (:lock :locked)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "DATASET")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "COLUMN-NAMES")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "REGULARIZATION")
+     (:value (:list 0.05 0.01))
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "STATES")
+     (:value 10)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "SELF") (:reactive nil))
+    (:output (:name "DATASET") (:reactive nil))
+    (:output (:name "COLUMN-NAMES") (:reactive nil))
+    (:output (:name "REGULARIZATION") (:reactive nil))
+    (:output (:name "STATES") (:reactive nil)))
+   (:window (:size nil) (:position nil))
+   (:edition-params)
+   (:value
+    (:object
+     (:class (:symbol "XMMOBJ" "XMM"))
+     (:slots
+      ((:dataset
+        (:list
+         (:list
+          (:list
+           (:list
+            -0.06
+            -0.12
+            -0.18
+            -0.24
+            -0.3
+            -0.36
+            -0.42
+            -0.48
+            -0.52
+            -0.58
+            -0.62
+            -0.66
+            -0.69
+            -0.72
+            -0.74
+            -0.75
+            -0.76
+            -0.77
+            -0.78
+            -0.78
+            -0.78
+            -0.77
+            -0.76
+            -0.75
+            -0.73
+            -0.71
+            -0.68
+            -0.66
+            -0.62
+            -0.58
+            -0.54
+            -0.49
+            -0.44
+            -0.38
+            -0.34
+            -0.29
+            -0.21
+            -0.13
+            -0.07
+            -0.03
+            0.07
+            0.13
+            0.23
+            0.29
+            0.36
+            0.43
+            0.47
+            0.52
+            0.59
+            0.64
+            0.68
+            0.71
+            0.72
+            0.74
+            0.75
+            0.75
+            0.75
+            0.75
+            0.73
+            0.7
+            0.68
+            0.66
+            0.64
+            0.61
+            0.59
+            0.56
+            0.52
+            0.48
+            0.43
+            0.39
+            0.34
+            0.24
+            0.12
+            0.02
+            -0.04
+            -0.11)
+           (:list
+            1.58
+            1.58
+            1.58
+            1.58
+            1.58
+            1.58
+            1.53
+            1.5
+            1.43
+            1.38
+            1.32
+            1.22
+            1.14
+            1.04
+            0.96
+            0.88
+            0.79
+            0.71
+            0.59
+            0.48
+            0.37
+            0.27
+            0.17
+            0.09
+            0.01
+            -0.07
+            -0.15
+            -0.23
+            -0.34
+            -0.42
+            -0.49
+            -0.57
+            -0.6
+            -0.66
+            -0.68
+            -0.71
+            -0.73
+            -0.74
+            -0.76
+            -0.78
+            -0.78
+            -0.78
+            -0.78
+            -0.76
+            -0.71
+            -0.69
+            -0.65
+            -0.57
+            -0.47
+            -0.39
+            -0.28
+            -0.16
+            -0.02
+            0.08
+            0.17
+            0.27
+            0.38
+            0.5
+            0.59
+            0.75
+            0.9
+            0.98
+            1.08
+            1.19
+            1.27
+            1.37
+            1.43
+            1.5
+            1.54
+            1.58
+            1.59
+            1.61
+            1.61
+            1.61
+            1.61
+            1.59)
+           (:list
+            -0.07
+            -0.06
+            -0.06000001
+            -0.059999988
+            -0.060000018
+            -0.060000003
+            -0.059999973
+            -0.060000003
+            -0.03999999
+            -0.060000003
+            -0.04000002
+            -0.04000002
+            -0.029999972
+            -0.030000031
+            -0.01999998
+            -0.00999999
+            -0.00999999
+            -0.00999999
+            -0.00999999
+            0.0
+            0.0
+            0.00999999
+            0.00999999
+            0.00999999
+            0.01999998
+            0.02000004
+            0.029999972
+            0.01999998
+            0.04000002
+            0.04000002
+            0.03999996
+            0.050000012
+            0.050000012
+            0.060000003
+            0.03999999
+            0.050000012
+            0.08
+            0.08
+            0.059999995
+            0.04
+            0.1
+            0.059999995
+            0.10000001
+            0.059999988
+            0.07000002
+            0.06999999
+            0.03999999
+            0.049999982
+            0.06999999
+            0.050000012
+            0.04000002
+            0.029999972
+            0.01000005
+            0.01999998
+            0.00999999
+            0.0
+            0.0
+            0.0
+            -0.01999998
+            -0.030000031
+            -0.01999998
+            -0.01999998
+            -0.02000004
+            -0.029999972
+            -0.02000004
+            -0.029999972
+            -0.04000002
+            -0.03999999
+            -0.049999982
+            -0.04000002
+            -0.049999982
+            -0.10000001
+            -0.12
+            -0.099999994
+            -0.06
+            -0.07)
+           (:list
+            0.0
+            0.0
+            0.0
+            0.0
+            0.0
+            0.0
+            -0.05000007
+            -0.029999972
+            -0.07000005
+            -0.049999953
+            -0.059999943
+            -0.100000024
+            -0.08000004
+            -0.100000024
+            -0.07999998
+            -0.07999998
+            -0.089999974
+            -0.08000004
+            -0.120000005
+            -0.109999985
+            -0.109999985
+            -0.099999994
+            -0.10000001
+            -0.08
+            -0.080000006
+            -0.08
+            -0.080000006
+            -0.08
+            -0.11
+            -0.07999998
+            -0.07000002
+            -0.07999998
+            -0.030000031
+            -0.060000003
+            -0.01999998
+            -0.029999972
+            -0.02000004
+            -0.00999999
+            -0.01999998
+            -0.01999998
+            0.0
+            0.0
+            0.0
+            0.01999998
+            0.050000012
+            0.01999998
+            0.04000002
+            0.07999998
+            0.099999994
+            0.08000001
+            0.109999985
+            0.120000005
+            0.14
+            0.099999994
+            0.09
+            0.10000001
+            0.109999985
+            0.120000005
+            0.089999974
+            0.16000003
+            0.14999998
+            0.08000004
+            0.100000024
+            0.110000015
+            0.07999992
+            0.100000024
+            0.059999943
+            0.07000005
+            0.03999996
+            0.04000008
+            0.00999999
+            0.01999998
+            0.0
+            0.0
+            0.0
+            -0.01999998))
+          "circle")
+         (:list
+          (:list
+           (:list
+            -0.4
+            -0.49
+            -0.55
+            -0.59
+            -0.63
+            -0.66
+            -0.68
+            -0.68
+            -0.65
+            -0.59
+            -0.52
+            -0.37
+            -0.24
+            0.0
+            -0.07
+            0.07
+            0.14
+            0.19
+            0.26
+            0.37
+            0.45
+            0.53
+            0.58
+            0.63
+            0.68
+            0.72
+            0.73
+            0.74
+            0.75
+            0.74
+            0.7
+            0.63
+            0.56
+            0.48
+            0.41
+            0.34
+            0.19
+            0.12
+            0.03
+            -0.06
+            -0.1
+            -0.16
+            -0.19
+            -0.22
+            -0.22
+            -0.2
+            -0.14
+            -0.08
+            -0.03
+            0.04
+            0.09
+            0.22
+            0.29
+            0.36
+            0.42
+            0.49
+            0.55
+            0.6
+            0.62
+            0.63
+            0.64
+            0.64
+            0.63
+            0.6
+            0.56
+            0.51
+            0.47
+            0.42
+            0.36
+            0.28
+            0.2
+            0.13
+            0.04
+            -0.06
+            -0.12
+            -0.2
+            -0.26
+            -0.32
+            -0.38
+            -0.44)
+           (:list
+            1.15
+            1.13
+            1.1
+            1.05
+            0.98
+            0.91
+            0.82
+            0.71
+            0.63
+            0.53
+            0.43
+            0.29
+            0.18
+            -0.02
+            0.03
+            -0.09
+            -0.14
+            -0.2
+            -0.27
+            -0.36
+            -0.45
+            -0.53
+            -0.6
+            -0.67
+            -0.76
+            -0.87
+            -0.94
+            -1.01
+            -1.09
+            -1.19
+            -1.27
+            -1.37
+            -1.43
+            -1.48
+            -1.5
+            -1.5
+            -1.47
+            -1.41
+            -1.36
+            -1.29
+            -1.22
+            -1.13
+            -1.06
+            -0.95
+            -0.85
+            -0.71
+            -0.57
+            -0.5
+            -0.43
+            -0.35
+            -0.29
+            -0.17
+            -0.1
+            -0.04
+            0.01
+            0.08
+            0.21
+            0.31
+            0.38
+            0.45
+            0.53
+            0.63
+            0.7
+            0.8
+            0.91
+            1.01
+            1.08
+            1.16
+            1.22
+            1.26
+            1.27
+            1.29
+            1.29
+            1.27
+            1.26
+            1.24
+            1.23
+            1.22
+            1.2
+            1.17)
+           (:list
+            -0.6
+            -0.09
+            -0.060000003
+            -0.03999996
+            -0.04000002
+            -0.030000031
+            -0.01999998
+            0.0
+            0.030000031
+            0.060000003
+            0.06999999
+            0.14999998
+            0.13000001
+            0.24
+            -0.07
+            0.14
+            0.07
+            0.049999997
+            0.06999999
+            0.110000015
+            0.07999998
+            0.07999998
+            0.050000012
+            0.050000012
+            0.050000012
+            0.04000002
+            0.00999999
+            0.00999999
+            0.00999999
+            -0.00999999
+            -0.04000002
+            -0.06999999
+            -0.06999999
+            -0.08000001
+            -0.06999999
+            -0.06999999
+            -0.15
+            -0.07
+            -0.089999996
+            -0.089999996
+            -0.040000003
+            -0.059999995
+            -0.030000002
+            -0.030000002
+            0.0
+            0.019999996
+            0.060000003
+            0.060000003
+            0.049999997
+            0.07
+            0.050000005
+            0.13
+            0.06999999
+            0.07000002
+            0.059999973
+            0.07000002
+            0.060000003
+            0.050000012
+            0.01999998
+            0.00999999
+            0.00999999
+            0.0
+            -0.00999999
+            -0.029999972
+            -0.04000002
+            -0.050000012
+            -0.03999999
+            -0.050000012
+            -0.059999973
+            -0.08000001
+            -0.08
+            -0.07000001
+            -0.089999996
+            -0.099999994
+            -0.06
+            -0.080000006
+            -0.059999988
+            -0.060000003
+            -0.060000003
+            -0.060000003)
+           (:list
+            0.059999943
+            -0.01999998
+            -0.029999972
+            -0.05000007
+            -0.06999993
+            -0.06999999
+            -0.09000003
+            -0.110000015
+            -0.07999998
+            -0.100000024
+            -0.099999964
+            -0.14000002
+            -0.109999985
+            -0.2
+            0.049999997
+            -0.120000005
+            -0.049999997
+            -0.060000003
+            -0.07000001
+            -0.09
+            -0.089999974
+            -0.07999998
+            -0.07000005
+            -0.06999999
+            -0.089999974
+            -0.110000015
+            -0.06999999
+            -0.06999999
+            -0.08000004
+            -0.100000024
+            -0.07999992
+            -0.100000024
+            -0.059999943
+            -0.05000007
+            -0.01999998
+            0.0
+            0.029999972
+            0.060000062
+            0.049999953
+            0.07000005
+            0.06999993
+            0.09000003
+            0.07000005
+            0.109999955
+            0.099999964
+            0.14000005
+            0.13999999
+            0.06999999
+            0.06999999
+            0.08000001
+            0.060000003
+            0.11999999
+            0.07
+            0.060000003
+            0.049999997
+            0.07
+            0.13
+            0.10000001
+            0.06999999
+            0.06999999
+            0.07999998
+            0.100000024
+            0.06999999
+            0.100000024
+            0.110000015
+            0.099999964
+            0.07000005
+            0.07999992
+            0.060000062
+            0.03999996
+            0.00999999
+            0.01999998
+            0.0
+            -0.01999998
+            -0.00999999
+            -0.01999998
+            -0.00999999
+            -0.00999999
+            -0.01999998
+            -0.03000009))
+          "eight")
+         (:list
+          (:list
+           (:list
+            -0.13
+            -0.16
+            -0.19
+            -0.21
+            -0.24
+            -0.27
+            -0.3
+            -0.32
+            -0.33
+            -0.37
+            -0.39
+            -0.42
+            -0.44
+            -0.47
+            -0.49
+            -0.52
+            -0.56
+            -0.6
+            -0.55
+            -0.49
+            -0.41
+            -0.36
+            -0.24
+            -0.15
+            -0.05
+            0.06
+            0.31
+            0.45
+            0.56
+            0.67
+            0.76
+            0.88
+            0.82
+            0.93
+            0.97
+            0.96
+            0.91
+            0.84
+            0.8
+            0.67
+            0.73
+            0.62
+            0.52
+            0.46
+            0.42
+            0.37
+            0.28
+            0.24
+            0.19
+            0.16
+            0.11
+            0.06
+            0.02)
+           (:list
+            0.54
+            0.4
+            0.31
+            0.17
+            0.08
+            -0.03
+            -0.1
+            -0.18
+            -0.25
+            -0.32
+            -0.38
+            -0.49
+            -0.57
+            -0.67
+            -0.75
+            -0.86
+            -0.94
+            -1.08
+            -1.08
+            -1.06
+            -1.05
+            -1.05
+            -1.05
+            -1.05
+            -1.05
+            -1.05
+            -1.02
+            -1.02
+            -1.02
+            -1.02
+            -1.02
+            -1.02
+            -1.02
+            -1.04
+            -1.05
+            -0.98
+            -0.89
+            -0.7
+            -0.6
+            -0.4
+            -0.51
+            -0.32
+            -0.1
+            0.01
+            0.09
+            0.19
+            0.36
+            0.47
+            0.58
+            0.67
+            0.77
+            0.86
+            0.92)
+           (:list
+            -0.12
+            -0.030000002
+            -0.030000002
+            -0.019999996
+            -0.030000002
+            -0.030000017
+            -0.030000002
+            -0.01999998
+            -0.01000002
+            -0.03999999
+            -0.01999998
+            -0.030000002
+            -0.02000001
+            -0.030000002
+            -0.02000001
+            -0.029999972
+            -0.04000002
+            -0.04000002
+            0.050000012
+            0.060000003
+            0.08000001
+            0.049999982
+            0.12000002
+            0.08999999
+            0.10000001
+            0.11
+            0.25
+            0.13999999
+            0.110000015
+            0.110000015
+            0.089999974
+            0.120000005
+            -0.060000003
+            0.110000015
+            0.04000002
+            -0.01000005
+            -0.049999953
+            -0.07000005
+            -0.03999996
+            -0.13
+            0.060000003
+            -0.110000015
+            -0.100000024
+            -0.059999973
+            -0.04000002
+            -0.049999982
+            -0.09
+            -0.040000007
+            -0.049999997
+            -0.030000002
+            -0.049999997
+            -0.05
+            -0.04)
+           (:list
+            -0.45
+            -0.14000002
+            -0.09
+            -0.14
+            -0.09
+            -0.11
+            -0.07
+            -0.080000006
+            -0.06999999
+            -0.06999999
+            -0.060000003
+            -0.110000015
+            -0.07999998
+            -0.100000024
+            -0.07999998
+            -0.110000015
+            -0.07999998
+            -0.14000005
+            0.0
+            0.0200001
+            0.00999999
+            0.0
+            0.0
+            0.0
+            0.0
+            0.0
+            0.029999972
+            0.0
+            0.0
+            0.0
+            0.0
+            0.0
+            0.0
+            -0.01999998
+            -0.00999999
+            0.06999993
+            0.09000003
+            0.19
+            0.099999964
+            0.20000002
+            -0.109999985
+            0.19
+            0.22
+            0.11
+            0.080000006
+            0.099999994
+            0.17000002
+            0.109999985
+            0.109999985
+            0.09000003
+            0.099999964
+            0.09000003
+            0.060000003))
+          "triangle")
+         (:list
+          (:list
+           (:list
+            -0.11
+            -0.15
+            -0.19
+            -0.22
+            -0.27
+            -0.31
+            -0.34
+            -0.37
+            -0.4
+            -0.43
+            -0.45
+            -0.46
+            -0.5
+            -0.53
+            -0.55
+            -0.57
+            -0.58
+            -0.58
+            -0.58
+            -0.57
+            -0.55
+            -0.54
+            -0.52
+            -0.48
+            -0.44
+            -0.39
+            -0.35
+            -0.29
+            -0.25
+            -0.19
+            -0.08
+            -0.01
+            0.07
+            0.11
+            0.17
+            0.22
+            0.28
+            0.34
+            0.38
+            0.41
+            0.43
+            0.45
+            0.48
+            0.48
+            0.49
+            0.49
+            0.49
+            0.48
+            0.48
+            0.47
+            0.45
+            0.44
+            0.41
+            0.38
+            0.34
+            0.31
+            0.28
+            0.24
+            0.21
+            0.17
+            0.11
+            0.06
+            0.02
+            -0.01
+            -0.04)
+           (:list
+            0.77
+            0.72
+            0.69
+            0.65
+            0.63
+            0.59
+            0.52
+            0.47
+            0.41
+            0.33
+            0.26
+            0.2
+            0.11
+            0.02
+            -0.05
+            -0.12
+            -0.2
+            -0.27
+            -0.35
+            -0.43
+            -0.49
+            -0.55
+            -0.6
+            -0.66
+            -0.74
+            -0.79
+            -0.81
+            -0.84
+            -0.86
+            -0.87
+            -0.88
+            -0.89
+            -0.89
+            -0.89
+            -0.88
+            -0.84
+            -0.81
+            -0.78
+            -0.73
+            -0.65
+            -0.53
+            -0.46
+            -0.37
+            -0.29
+            -0.2
+            -0.11
+            0.02
+            0.09
+            0.17
+            0.24
+            0.3
+            0.38
+            0.45
+            0.54
+            0.61
+            0.69
+            0.75
+            0.8
+            0.85
+            0.91
+            0.94
+            0.95
+            0.94
+            0.92
+            0.87)
+           (:list
+            -0.1
+            -0.040000007
+            -0.03999999
+            -0.030000002
+            -0.050000012
+            -0.03999999
+            -0.030000002
+            -0.030000002
+            -0.030000002
+            -0.030000002
+            -0.01999998
+            -0.01000002
+            -0.03999999
+            -0.029999972
+            -0.02000004
+            -0.01999998
+            -0.00999999
+            0.0
+            0.0
+            0.00999999
+            0.01999998
+            0.00999999
+            0.02000004
+            0.03999999
+            0.03999999
+            0.050000012
+            0.03999999
+            0.060000003
+            0.03999999
+            0.060000003
+            0.11
+            0.07
+            0.08
+            0.04
+            0.060000003
+            0.049999997
+            0.060000003
+            0.060000003
+            0.03999999
+            0.030000002
+            0.02000001
+            0.01999998
+            0.030000002
+            0.0
+            0.01000002
+            0.0
+            0.0
+            -0.01000002
+            0.0
+            -0.00999999
+            -0.02000001
+            -0.00999999
+            -0.030000002
+            -0.030000002
+            -0.03999999
+            -0.030000002
+            -0.030000002
+            -0.040000007
+            -0.030000002
+            -0.03999999
+            -0.060000003
+            -0.05
+            -0.04
+            -0.03
+            -0.03)
+           (:list
+            -0.02000004
+            -0.049999953
+            -0.030000031
+            -0.04000002
+            -0.01999998
+            -0.04000002
+            -0.06999999
+            -0.049999982
+            -0.060000003
+            -0.07999998
+            -0.07000002
+            -0.059999988
+            -0.09
+            -0.09
+            -0.07
+            -0.06999999
+            -0.080000006
+            -0.07000001
+            -0.07999998
+            -0.08000001
+            -0.060000003
+            -0.060000003
+            -0.050000012
+            -0.060000003
+            -0.07999998
+            -0.050000012
+            -0.01999998
+            -0.029999972
+            -0.02000004
+            -0.00999999
+            -0.00999999
+            -0.00999999
+            0.0
+            0.0
+            0.00999999
+            0.04000002
+            0.029999972
+            0.030000031
+            0.049999953
+            0.08000004
+            0.120000005
+            0.06999996
+            0.09
+            0.08000001
+            0.08999999
+            0.09
+            0.13
+            0.07000001
+            0.08
+            0.06999999
+            0.060000018
+            0.07999998
+            0.06999999
+            0.09000003
+            0.06999999
+            0.07999998
+            0.060000003
+            0.050000012
+            0.050000012
+            0.060000003
+            0.029999972
+            0.00999999
+            -0.00999999
+            -0.01999998
+            -0.050000012))
+          "circle")
+         (:list
+          (:list
+           (:list
+            -0.26
+            -0.36
+            -0.42
+            -0.51
+            -0.57
+            -0.63
+            -0.69
+            -0.72
+            -0.76
+            -0.78
+            -0.72
+            -0.64
+            -0.51
+            -0.36
+            -0.17
+            0.05
+            0.24
+            0.46
+            0.69
+            1.1
+            1.35
+            1.51
+            1.56
+            1.52
+            1.47
+            1.41
+            1.27
+            1.17
+            1.07
+            0.98
+            0.87
+            0.79
+            0.72
+            0.57
+            0.51
+            0.45
+            0.37
+            0.32
+            0.22
+            0.16
+            0.13)
+           (:list
+            0.38
+            0.19
+            0.09
+            -0.1
+            -0.25
+            -0.36
+            -0.5
+            -0.6
+            -0.65
+            -0.71
+            -0.71
+            -0.69
+            -0.66
+            -0.63
+            -0.63
+            -0.61
+            -0.58
+            -0.56
+            -0.53
+            -0.53
+            -0.51
+            -0.51
+            -0.5
+            -0.42
+            -0.37
+            -0.33
+            -0.2
+            -0.13
+            -0.05
+            0.04
+            0.14
+            0.21
+            0.3
+            0.51
+            0.6
+            0.68
+            0.8
+            0.86
+            1.0
+            1.06
+            1.13)
+           (:list
+            -0.32
+            -0.100000024
+            -0.059999973
+            -0.09
+            -0.060000003
+            -0.060000003
+            -0.060000003
+            -0.030000031
+            -0.03999996
+            -0.01999998
+            0.059999943
+            0.08000004
+            0.13
+            0.14999998
+            0.19000001
+            0.22
+            0.19
+            0.22000002
+            0.22999999
+            0.41000003
+            0.25
+            0.15999997
+            0.049999953
+            -0.03999996
+            -0.049999953
+            -0.060000062
+            -0.13999999
+            -0.100000024
+            -0.099999905
+            -0.09000003
+            -0.110000015
+            -0.07999998
+            -0.06999999
+            -0.15000004
+            -0.060000003
+            -0.060000003
+            -0.07999998
+            -0.050000012
+            -0.099999994
+            -0.060000003
+            -0.030000002)
+           (:list
+            -0.67999995
+            -0.19
+            -0.099999994
+            -0.19
+            -0.15
+            -0.110000015
+            -0.13999999
+            -0.100000024
+            -0.049999953
+            -0.060000003
+            0.0
+            0.01999998
+            0.029999972
+            0.030000031
+            0.0
+            0.01999998
+            0.030000031
+            0.01999998
+            0.030000031
+            0.0
+            0.01999998
+            0.0
+            0.00999999
+            0.08000001
+            0.049999982
+            0.03999999
+            0.13000001
+            0.07000001
+            0.08
+            0.09
+            0.1
+            0.06999999
+            0.09000002
+            0.20999998
+            0.09000003
+            0.07999998
+            0.120000005
+            0.060000003
+            0.13999999
+            0.059999943
+            0.07000005))
+          "triangle")
+         (:list
+          (:list
+           (:list
+            -0.1
+            -0.17
+            -0.24
+            -0.3
+            -0.35
+            -0.39
+            -0.42
+            -0.42
+            -0.39
+            -0.36
+            -0.27
+            -0.15
+            -0.23
+            -0.06
+            0.0
+            0.08
+            0.14
+            0.21
+            0.28
+            0.38
+            0.41
+            0.56
+            0.61
+            0.65
+            0.67
+            0.68
+            0.69
+            0.69
+            0.68
+            0.62
+            0.58
+            0.51
+            0.46
+            0.4
+            0.33
+            0.23
+            0.13
+            0.04
+            -0.01
+            -0.14
+            -0.22
+            -0.25
+            -0.26
+            -0.27
+            -0.25
+            -0.23
+            -0.19
+            -0.15
+            -0.1
+            -0.05
+            0.02
+            0.06
+            0.13
+            0.18
+            0.22
+            0.25
+            0.27
+            0.27
+            0.27
+            0.27
+            0.25
+            0.22
+            0.19
+            0.15)
+           (:list
+            1.2
+            1.17
+            1.12
+            1.06
+            0.98
+            0.91
+            0.82
+            0.74
+            0.63
+            0.56
+            0.43
+            0.3
+            0.37
+            0.21
+            0.16
+            0.09
+            0.02
+            -0.05
+            -0.11
+            -0.22
+            -0.29
+            -0.45
+            -0.52
+            -0.6
+            -0.67
+            -0.74
+            -0.82
+            -0.9
+            -0.99
+            -1.11
+            -1.18
+            -1.25
+            -1.28
+            -1.31
+            -1.33
+            -1.31
+            -1.28
+            -1.23
+            -1.18
+            -1.06
+            -0.98
+            -0.9
+            -0.83
+            -0.71
+            -0.61
+            -0.51
+            -0.41
+            -0.3
+            -0.22
+            -0.13
+            -0.07
+            0.03
+            0.14
+            0.24
+            0.33
+            0.41
+            0.53
+            0.63
+            0.75
+            0.85
+            0.93
+            1.03
+            1.1
+            1.17)
+           (:list
+            -0.22999999
+            -0.07
+            -0.06999999
+            -0.060000018
+            -0.049999982
+            -0.03999999
+            -0.030000002
+            0.0
+            0.030000002
+            0.029999972
+            0.09
+            0.120000005
+            -0.08
+            0.17
+            0.06
+            0.08
+            0.060000003
+            0.06999999
+            0.07000001
+            0.099999994
+            0.030000002
+            0.15
+            0.050000012
+            0.03999996
+            0.02000004
+            0.00999999
+            0.00999999
+            0.0
+            -0.00999999
+            -0.060000003
+            -0.04000002
+            -0.06999999
+            -0.049999982
+            -0.060000003
+            -0.06999999
+            -0.10000001
+            -0.10000001
+            -0.089999996
+            -0.049999997
+            -0.13
+            -0.08
+            -0.030000002
+            -0.00999999
+            -0.01000002
+            0.02000001
+            0.019999996
+            0.040000007
+            0.03999999
+            0.050000005
+            0.05
+            0.07
+            0.04
+            0.06999999
+            0.050000012
+            0.03999999
+            0.030000002
+            0.02000001
+            0.0
+            0.0
+            0.0
+            -0.02000001
+            -0.030000002
+            -0.030000002
+            -0.03999999)
+           (:list
+            -0.049999953
+            -0.03000009
+            -0.049999953
+            -0.060000062
+            -0.07999992
+            -0.06999999
+            -0.09000003
+            -0.07999998
+            -0.110000015
+            -0.06999999
+            -0.13
+            -0.13
+            0.06999999
+            -0.16000001
+            -0.049999997
+            -0.06999999
+            -0.07000001
+            -0.07
+            -0.06
+            -0.11
+            -0.06999999
+            -0.16
+            -0.06999999
+            -0.08000004
+            -0.06999999
+            -0.06999999
+            -0.07999998
+            -0.07999998
+            -0.09000003
+            -0.120000005
+            -0.06999993
+            -0.07000005
+            -0.029999972
+            -0.029999972
+            -0.0200001
+            0.0200001
+            0.029999972
+            0.049999953
+            0.05000007
+            0.120000005
+            0.07999992
+            0.08000004
+            0.06999999
+            0.120000005
+            0.099999964
+            0.100000024
+            0.099999994
+            0.109999985
+            0.08000001
+            0.09
+            0.059999995
+            0.1
+            0.11
+            0.099999994
+            0.09000002
+            0.07999998
+            0.119999975
+            0.100000024
+            0.120000005
+            0.100000024
+            0.07999998
+            0.099999964
+            0.07000005
+            0.06999993))
+          "eight")))
+       (:column-names (:list 1 1 1 1))
+       (:regularization (:list 0.05 0.01))
+       (:states 10)))))
+   (:id 31))
+  (:box
+   (:reference (:symbol "TEST" "XMM"))
+   (:type :function)
+   (:group-id nil)
+   (:name "test")
+   (:x 223)
+   (:y 512)
+   (:w 57)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "DATA")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 32))
+  (:box
+   (:reference (:symbol "RUN" "XMM"))
+   (:type :function)
+   (:group-id nil)
+   (:name "run")
+   (:x 741)
+   (:y 562)
+   (:w 55)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "SELF")
+     (:value nil)
+     (:reactive nil))
+    (:input
+     (:type :standard)
+     (:name "DATA")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 33)))
+ (:connections
+  (:connection
+   (:from (:box 0 :out 1))
+   (:to (:box 1 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 0 :out 2))
+   (:to (:box 1 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 1 :out 0))
+   (:to (:box 2 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 2 :out 0))
+   (:to (:box 3 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 3 :out 0))
+   (:to (:box 30 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 4 :out 1))
+   (:to (:box 5 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 4 :out 2))
+   (:to (:box 5 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 5 :out 0))
+   (:to (:box 6 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 6 :out 0))
+   (:to (:box 7 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 7 :out 0))
+   (:to (:box 30 :in 3))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 8 :out 1))
+   (:to (:box 9 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 8 :out 2))
+   (:to (:box 9 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 9 :out 0))
+   (:to (:box 10 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 10 :out 0))
+   (:to (:box 11 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 11 :out 0))
+   (:to (:box 30 :in 2))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 12 :out 1))
+   (:to (:box 13 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 12 :out 2))
+   (:to (:box 13 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 13 :out 0))
+   (:to (:box 14 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 14 :out 0))
+   (:to (:box 15 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 15 :out 0))
+   (:to (:box 30 :in 4))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 16 :out 1))
+   (:to (:box 17 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 16 :out 2))
+   (:to (:box 17 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 17 :out 0))
+   (:to (:box 18 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 18 :out 0))
+   (:to (:box 19 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 19 :out 0))
+   (:to (:box 30 :in 5))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 20 :out 1))
+   (:to (:box 21 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 20 :out 2))
+   (:to (:box 21 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 21 :out 0))
+   (:to (:box 22 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 22 :out 0))
+   (:to (:box 23 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 23 :out 0))
+   (:to (:box 30 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 24 :out 1))
+   (:to (:box 25 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 24 :out 2))
+   (:to (:box 25 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 25 :out 0))
+   (:to (:box 26 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 26 :out 0))
+   (:to (:box 33 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 27 :out 0))
+   (:to (:box 3 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 27 :out 0))
+   (:to (:box 7 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 28 :out 0))
+   (:to (:box 11 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 28 :out 0))
+   (:to (:box 15 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 29 :out 0))
+   (:to (:box 19 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 29 :out 0))
+   (:to (:box 23 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 30 :out 0))
+   (:to (:box 31 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 31 :out 0))
+   (:to (:box 32 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 31 :out 0))
+   (:to (:box 33 :in 0))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 31 :out 1))
+   (:to (:box 32 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))))
