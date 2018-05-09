@@ -12,7 +12,9 @@
   (:pathname (:directory (:relative "sources")) (:name "xmm-bindings"))
   (:pathname (:directory (:relative "sources")) (:name "xmm-om-objects"))
   )
- (:symbols)
+ (:symbols 
+  (:classes "xmm::xmmobj")
+  (:functions "xmm::run" "xmm::test" "xmm::get-errors"))
  (:author "P. Best (2018)")
  )
 

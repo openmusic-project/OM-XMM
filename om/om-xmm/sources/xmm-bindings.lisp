@@ -1,3 +1,22 @@
+;============================================================================
+; OM-XMM
+; A bridge between o7 and the XMM library.
+;
+; XMM is a C++ library that implements Gaussian Mixture Models and Hidden Markov Models for recognition and regression. 
+; The library implements an interactive machine learning workflow with fast training and continuous, real-time inference. 
+; See http://ircam-rnd.github.io/xmm/
+;============================================================================
+;
+;   This program is free software. For information on usage 
+;   and redistribution, see the "LICENSE" file in this distribution.
+;
+;   This program is distributed in the hope that it will be useful,
+;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+;
+;============================================================================
+
+
 (in-package :xmm)
 
 (cffi::defcfun ("initDataset" xmm-initData) :pointer (numcolumns :int))
