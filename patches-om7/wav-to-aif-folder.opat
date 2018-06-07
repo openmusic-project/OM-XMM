@@ -1,12 +1,12 @@
 
 (:patch
  (:om-version 2.1E-5)
- (:name "cut-sound")
+ (:name "wav-to-aif-folder")
  (:doc "")
  (:info
   (:created "2018/03/20 18:00:09")
-  (:modified "2018/03/29 18:11:50"))
- (:window (:size (860 866)) (:position (501 276)))
+  (:modified "2018/05/09 12:26:52"))
+ (:window (:size (860 866)) (:position (501 269)))
  (:grid nil)
  (:lock nil)
  (:boxes
@@ -2634,33 +2634,6 @@
    (:outputs (:output (:name "out") (:reactive nil)))
    (:id 9))
   (:box
-   (:reference list-elements)
-   (:type :function)
-   (:group-id nil)
-   (:name "list-elements")
-   (:x 110)
-   (:y 343)
-   (:w 103)
-   (:h 28)
-   (:color nil)
-   (:border nil)
-   (:roundness nil)
-   (:text-font nil)
-   (:align nil)
-   (:lock nil)
-   (:lambda nil)
-   (:inputs
-    (:input
-     (:type :standard)
-     (:name "LIST")
-     (:value nil)
-     (:reactive nil)))
-   (:outputs
-    (:output (:name "out") (:reactive nil))
-    (:output (:name "out1") (:reactive nil))
-    (:output (:name "out2") (:reactive nil)))
-   (:id 10))
-  (:box
    (:reference mapcar)
    (:type :function)
    (:group-id nil)
@@ -2693,7 +2666,7 @@
      (:value nil)
      (:reactive nil)))
    (:outputs (:output (:name "out") (:reactive nil)))
-   (:id 11))
+   (:id 10))
   (:box
    (:reference collection)
    (:type :object)
@@ -7046,7 +7019,7 @@
             (:n-samples 293067)
             (:gain 1.0)
             (:access-from-file nil))))))))))
-   (:id 12))
+   (:id 11))
   (:box
    (:reference save-sound)
    (:type :function)
@@ -7075,7 +7048,7 @@
      (:value nil)
      (:reactive nil)))
    (:outputs (:output (:name "out") (:reactive nil)))
-   (:id 13))
+   (:id 12))
   (:box
    (:reference simple-base-string)
    (:type :value)
@@ -7094,7 +7067,7 @@
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
    (:value "/Users/best/SRC/Project Alireza/cello-cut/")
-   (:id 14))
+   (:id 13))
   (:box
    (:reference mapcar)
    (:type :function)
@@ -7128,7 +7101,7 @@
      (:value nil)
      (:reactive nil)))
    (:outputs (:output (:name "out") (:reactive nil)))
-   (:id 15))
+   (:id 14))
   (:box
    (:reference concatenate)
    (:type :function)
@@ -7167,7 +7140,7 @@
      (:value nil)
      (:reactive nil)))
    (:outputs (:output (:name "out") (:reactive nil)))
-   (:id 16))
+   (:id 15))
   (:box
    (:reference simple-base-string)
    (:type :value)
@@ -7186,7 +7159,7 @@
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
    (:value ".aif")
-   (:id 17))
+   (:id 16))
   (:box
    (:reference symbol)
    (:type :value)
@@ -7205,7 +7178,7 @@
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
    (:value string)
-   (:id 18))
+   (:id 17))
   (:box
    (:reference mapcar)
    (:type :function)
@@ -7234,6 +7207,33 @@
      (:value nil)
      (:reactive nil)))
    (:outputs (:output (:name "out") (:reactive nil)))
+   (:id 18))
+  (:box
+   (:reference split)
+   (:type :function)
+   (:group-id nil)
+   (:name "split")
+   (:x 126)
+   (:y 360)
+   (:w 59)
+   (:h 28)
+   (:color nil)
+   (:border nil)
+   (:roundness nil)
+   (:text-font nil)
+   (:align nil)
+   (:lock nil)
+   (:lambda nil)
+   (:inputs
+    (:input
+     (:type :standard)
+     (:name "LIST")
+     (:value nil)
+     (:reactive nil)))
+   (:outputs
+    (:output (:name "out") (:reactive nil))
+    (:output (:name "out1") (:reactive nil))
+    (:output (:name "out2") (:reactive nil)))
    (:id 19)))
  (:connections
   (:connection
@@ -7262,7 +7262,7 @@
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 5 :out 0))
-   (:to (:box 10 :in 0))
+   (:to (:box 19 :in 0))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 6 :out 0))
@@ -7278,49 +7278,49 @@
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 9 :out 0))
-   (:to (:box 11 :in 0))
+   (:to (:box 10 :in 0))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 10 :out 0))
    (:to (:box 11 :in 1))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
-   (:from (:box 10 :out 1))
-   (:to (:box 11 :in 2))
+   (:from (:box 11 :out 1))
+   (:to (:box 14 :in 1))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
-   (:from (:box 10 :out 2))
-   (:to (:box 19 :in 1))
-   (:attributes (:color nil :style nil :modif nil)))
-  (:connection
-   (:from (:box 11 :out 0))
-   (:to (:box 12 :in 1))
-   (:attributes (:color nil :style nil :modif nil)))
-  (:connection
-   (:from (:box 12 :out 1))
-   (:to (:box 15 :in 1))
+   (:from (:box 12 :out 0))
+   (:to (:box 14 :in 0))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 13 :out 0))
-   (:to (:box 15 :in 0))
+   (:to (:box 15 :in 1))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
-   (:from (:box 14 :out 0))
-   (:to (:box 16 :in 1))
+   (:from (:box 15 :out 0))
+   (:to (:box 18 :in 0))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 16 :out 0))
-   (:to (:box 19 :in 0))
+   (:to (:box 15 :in 3))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 17 :out 0))
-   (:to (:box 16 :in 3))
+   (:to (:box 15 :in 0))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 18 :out 0))
-   (:to (:box 16 :in 0))
+   (:to (:box 14 :in 2))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 19 :out 0))
-   (:to (:box 15 :in 2))
+   (:to (:box 10 :in 1))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 19 :out 1))
+   (:to (:box 10 :in 2))
+   (:attributes (:color nil :style nil :modif nil)))
+  (:connection
+   (:from (:box 19 :out 2))
+   (:to (:box 18 :in 1))
    (:attributes (:color nil :style nil :modif nil)))))

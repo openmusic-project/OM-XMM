@@ -48,11 +48,6 @@
 (push :xmm *features*)
 
 
-#|
-
-
-|#
-
 
 
 
