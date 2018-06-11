@@ -36,6 +36,7 @@
    (name :accessor name :initform (gensym "xmmobj"))
    (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization :type list)
    (states :accessor states :initform 10 :initarg :states :type integer)
+   (table-result :accessor table-result)
    ))
 
 
@@ -51,6 +52,14 @@
   (setf (model-ptr self) (xmm-initmodel (first (regularization self)) (second (regularization self)) (states self)))
   self)
 
+
+#+o7
+(defmethod om::om-init-instance ((self xmmobj) &optional args)
+  (call-next-method)
+  (train-model self)
+  self)
+
+
 (defmethod train-model ((self xmmobj))
   (if (dataset self)
       (progn 
@@ -61,18 +70,6 @@
         (xmm-train (data-ptr self) (model-ptr self))
         (om::om-print ".... done training !" "XMM"))
     (om::om-print "missing some data to learn.." "XMM")))
-
-#+o7
-(defmethod om::om-init-instance ((self xmmobj) &optional args)
-  (call-next-method)
-  (train-model self)
-  self)
-
-#-o7 ;;; = OM6
-(defmethod om::make-one-instance ((class xmmobj) &rest slots-vals)
-  (let ((rep (call-next-method)))
-    (train-model rep)
-    rep))
 
 
 
@@ -86,6 +83,7 @@
         (count 0)
         (num-samples (length data)))
     (setf (errors self) (make-list (length (labls self)) :initial-element 0))
+     (setf (table-result self) (make-list (length (labls self)) :initial-element (make-list (length (labls self)) :initial-element 0)))
     (loop for sample in data
           do (let* ((pred (run self (car sample)))
                    (real (cadr sample))
@@ -94,15 +92,24 @@
                ;(print (format nil " actual: ~A " real))
                (if (not pos) (progn (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
                                (decf num-samples))
-   				 (if (string= "notsure" pred)  (decf num-samples)
-                 (if (string= pred real) 
-                     (incf accuracy) 
-                   (progn (incf (nth pos (errors self)))
-                     (om::om-print (format nil "Predicted ~a instead of ~a on number ~d " pred real count) "XMM")
-                     )  
-                   )))
+                 (progn
+                   (if (string= "notsure" pred)  (decf num-samples)
+                     (if (string= pred real) 
+                         (incf accuracy) 
+                       (progn (incf (nth pos (errors self)))
+                     ;(om::om-print (format nil "Predicted ~a instead of ~a on number ~d " pred real count) "XMM")
+                         )))  
+                   ;MAJ TABLE-RESULT
+                   (setf (nth pos (table-result self)) 
+                         (substnth (1+ (nth (position pred (labls self) :test #'equal) (nth pos (table-result self))))
+                                   (position pred (labls self) :test #'equal)
+                                   (nth pos (table-result self))))
+                   ))
                (incf count)))
-               
+    ;normalize table-result
+    ;(loop for line in (table-result self) do 
+     ;     (loop for item in line do 
+      ;          (setf item (/ item (apply '+ line)))))
     (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
     (/ accuracy num-samples)
 ))
@@ -143,7 +150,7 @@
                 do (fli:free-foreign-object (fli:dereference descr :type :pointer :index i)))
           (fli:free-foreign-object descr)
           (fli:free-foreign-object resultptr)
-          (if (< likelihood 0.6) (setf result "notsure"))
+          ;(if (< likelihood 0.6) (setf result "notsure"))
           ;(om::om-print (format nil "~a with ~f likelihood" result likelihood) "XMM")
           result))))
 )
@@ -159,7 +166,13 @@
         (char str i)
 ))
 
-
+(defun substnth ( a n l )
+    (if l
+        (if (zerop n)
+            (cons a (cdr l))
+            (cons (car l) (substnth a (1- n) (cdr l)))
+        ))
+)
 
 
 ;;Builds the xmm trainingset object with the attibute (dataset) and stores it in data-ptr
@@ -285,6 +298,10 @@ size)))
   (column-names self)
 )
 
+(defmethod get-table-result((self xmmobj))
+  (table-result self)
+)
+
 (defmethod get-errors((self xmmobj))
   (loop for i from 0 to (1- (length (labls self)))
        do (print (format nil "~A ~d" (nth i (labls self)) (nth i (errors self))))
@@ -295,17 +312,14 @@ size)))
 (defmethod om::display-modes-for-object ((self xmmobj))
   '(:hidden :text :mini-view))
 
-
-#|
 (defmethod om::draw-mini-view ((self xmmobj) (box t) x y w h &optional time)
     (om::om-with-font 
      (om::om-def-font :font1 :size 10)
-     (om::om-draw-string (+ x 10) (+ y 20) (concatenate 'string "Labels : " (format nil "~{~A~^,~}" (labls self))) :wrap (om::box-w box))))
+     (om::om-draw-string (+ x 10) (+ y 20) (concatenate 'string "Labels : " (format nil "~{~A~^,~}" (labls self))) :wrap (om::box-w box))
+     (om::om-draw-string (+ x 10) (+ y 40) (concatenate 'string "Dataset of " (format nil "~d samples" (length (dataset self)))) :wrap (om::box-w box))
+))
 
-    ;(om::om-with-font 
-     ;(om::om-def-font :font1 :size 10)
-     ;(om::om-draw-string (+ x 10) (+ y 20) (concatenate 'string "Dataset of " (length (dataset self)) " samples") :wrap (om::box-w box)))))
-|#
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; GENETIC ALGO FOR HYPER-PARAMETER OPTIMIZATION
@@ -328,7 +342,7 @@ size)))
     (loop for i from 0 to 3 do 
           (let ((max nil))
             (loop for item in mlist do 
-                  (setf max (testaccu max item))
+                  (if (not (find item ret)) (setf max (testaccu max item)))
             )
             (setf mlist (remove max mlist))
             (setf (nth i ret) max)
@@ -336,14 +350,16 @@ size)))
 ret
 ))
 
-(defun reproduce (results) 
+(defun reproduce (results descnum) 
   (let* ((ret results)
         (parents (car (om:mat-trans ret))))
     (loop for parent in parents do 
           (setf ret 
                 (append ret 
                         ;Create new child with random variation on descr kept
-                        (list (list  (car parent) (append (second parent) (if (not (find (setf a (random 9)) (second parent))) (list a) (list)))
+                        (list (list  (car parent) (if (not (find (setf a (random descnum)) (second parent))) 
+                                                      (append (second parent) (list a)) 
+                                                    (if (> (length (second parent)) 1) (remove a (second parent)) (second parent)))
                                      ;variation on number of states
                                      (+ (- 4 (random 9)) (third parent)) 
                                      ;variation on regularization
@@ -351,10 +367,24 @@ ret
                                      (list (+ (/ (- 5 (random 11)) 100) (car (fourth parent))) (+ (/ (- 5 (random 11)) 1000) (cadr (fourth parent))))
                                      ))
                         )))
+    (loop for parent in parents do 
+          (setf ret 
+                (append ret 
+                        ;Create new child with random variation on descr kept
+                        (list (list  (car parent) (if (not (find (setf a (random descnum)) (second parent))) 
+                                                      (append (second parent) (list a)) 
+                                                    (if (> (length (second parent)) 1) (remove a (second parent)) (second parent)))
+                                     ;variation on number of states
+                                     (+ (- 4 (random 9)) (third parent));(third (nth (random 4) parents))) 
+                                     ;variation on regularization
+                                     (fourth parent)
+                                     ;(list (+ (/ (- 5 (random 11)) 100) (car (fourth (nth (random 4) parents)))) (+ (/ (- 5 (random 11)) 1000) (cadr (fourth (nth (random 4) parents)))))
+                                     ))
+                        )))
     ret)
 )
 
-(defun gene-algo (fun firstparams) 
+(defun gene-algo (fun firstparams descnum) 
   (let* ((params firstparams)
          (condition T)) 
     (loop while condition do
@@ -365,12 +395,29 @@ ret
                                 (loop for param in params collect 
                                       (if (= (length param) 4) 
                                           (funcall fun (print param))
-                                        (print param))
-                                      )))))
+                                        ;(funcall fun (car (print param)))
+                                        (print param)
+                                        )
+                                      ))) descnum))
             (if (< 0.9 (car (second (car params)))) (setf condition nil))
             )))
 )
 
+;; mean-deviation
+(defun mean-deviation(lst)
+  (/ (apply '+ lst) (list-length lst)))
+ 
+(defun calc-item(x lst)
+  (/ (expt (- x (mean-deviation lst)) 2) (list-length lst)))
+ 
+;; standard deviation function 
+(defun standard-deviation(lst)
+  (sqrt (apply '+ 
+    (loop for x in lst for y = (calc-item x lst) 
+collect y))))
+
+(defun mean(lst)
+  (/ (reduce'+ lst) (length lst)))
 
 
 
