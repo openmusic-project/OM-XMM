@@ -107,9 +107,10 @@
                    ))
                (incf count)))
     ;normalize table-result
-    ;(loop for line in (table-result self) do 
-     ;     (loop for item in line do 
-      ;          (setf item (/ item (apply '+ line)))))
+    (setf (table-result self) 
+    (loop for line in (table-result self) collect 
+          (append (loop for item in line collect 
+                (float (/ item (reduce '+ line)))) (list (reduce '+ line)))))
     (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
     (/ accuracy num-samples)
 ))
@@ -299,8 +300,22 @@ size)))
 )
 
 (defmethod get-table-result((self xmmobj))
-  (table-result self)
+(let ((table (copy-list (table-result self)))
+      (labls (labls self)))
+  (make-instance 'om::2D-array
+   :data 
+   (append (loop for i from 0 to (1- (length table)) collect
+        (append (list (nth i labls)) 
+                (subseq (loop for j in (nth i table) collect
+                              (if (= 0 j) " " (format nil "~2$" j)))
+                        0 (1- (length table)))))
+         (list (append (list " ") labls (list " "))))
+   :field-names 
+   (append (loop for item in (car (subseq (om:mat-trans table) (length table))) collect (write-to-string item)) (list " "))
 )
+)
+)
+
 
 (defmethod get-errors((self xmmobj))
   (loop for i from 0 to (1- (length (labls self)))
