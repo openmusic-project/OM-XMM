@@ -80,8 +80,8 @@
 ;;descriptor matrix is a list of descriptor vectors
 (defmethod test((self xmmobj) data)
   (let ((accuracy 0)
-        (count 0)
-        (num-samples (length data)))
+        (num-samples (length data))
+        (count 0))
     (setf (errors self) (make-list (length (labls self)) :initial-element 0))
      (setf (table-result self) (make-list (length (labls self)) :initial-element (make-list (length (labls self)) :initial-element 0)))
     (loop for sample in data
@@ -92,6 +92,8 @@
                ;(print (format nil " actual: ~A " real))
                (if (not pos) (progn (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
                                (decf num-samples))
+                 (if (string= pred (make-string 20 :initial-element #\0)) (decf num-samples)  
+
                  (progn
                    (if (string= "notsure" pred)  (decf num-samples)
                      (if (string= pred real) 
@@ -101,16 +103,12 @@
                          )))  
                    ;MAJ TABLE-RESULT
                    (setf (nth pos (table-result self)) 
-                         (substnth (1+ (nth (position pred (labls self) :test #'equal) (nth pos (table-result self))))
+                         (substnth (1+ (nth (position  pred (labls self) :test #'equal) (nth pos (table-result self))))
                                    (position pred (labls self) :test #'equal)
                                    (nth pos (table-result self))))
-                   ))
-               (incf count)))
-    ;normalize table-result
-    (setf (table-result self) 
-    (loop for line in (table-result self) collect 
-          (append (loop for item in line collect 
-                (float (/ item (reduce '+ line)))) (list (reduce '+ line)))))
+                   )))
+               ))
+    
     (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
     (/ accuracy num-samples)
 ))
@@ -128,9 +126,10 @@
         (likelihood 0)
         (cur)
         (i 0)
-        (result (make-string 20)))
+        (result (make-string 20 :initial-element #\0)))
     (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
       (if (not (column-names self)) (om::om-print "Please set column names to enable running" "XMM")
+        (if (not (= (length data) (length (column-names self)))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
         (progn
           ;;Loop for each descriptor, and build data in pointer to send to xmm
           (loop for i from 0 to (1- (length data))  
@@ -153,7 +152,8 @@
           (fli:free-foreign-object resultptr)
           ;(if (< likelihood 0.6) (setf result "notsure"))
           ;(om::om-print (format nil "~a with ~f likelihood" result likelihood) "XMM")
-          result))))
+          ))))
+    result)
 )
 
 
@@ -300,18 +300,26 @@ size)))
 )
 
 (defmethod get-table-result((self xmmobj))
-(let ((table (copy-list (table-result self)))
-      (labls (labls self)))
+
+(let* ((table (copy-list (table-result self)))
+      (labls (labls self))
+      (fieldnames (append (loop for line in table collect (write-to-string (reduce '+ line))) (list " "))))
+
+  ;NORMALIZE
+  (setf table
+        (loop for line in (table-result self) collect 
+              (loop for item in line collect 
+                        (float (/ item (reduce '+ line)))))) 
+  ;BUILD 2D-ARRAY
   (make-instance 'om::2D-array
    :data 
    (append (loop for i from 0 to (1- (length table)) collect
-        (append (list (nth i labls)) 
-                (subseq (loop for j in (nth i table) collect
-                              (if (= 0 j) " " (format nil "~2$" j)))
-                        0 (1- (length table)))))
+                 (append (list (nth i labls)) 
+                         (loop for j in (nth i table) collect
+                               (if (= 0 j) " " (format nil "~2$" j))) 
+                         (list " ")))
          (list (append (list " ") labls (list " "))))
-   :field-names 
-   (append (loop for item in (car (subseq (om:mat-trans table) (length table))) collect (write-to-string item)) (list " "))
+   :field-names fieldnames
 )
 )
 )
@@ -366,8 +374,9 @@ ret
 ))
 
 (defun reproduce (results descnum) 
-  (let* ((ret results)
-        (parents (car (om:mat-trans ret))))
+  (let* ((ret)
+        (parents (car (om:mat-trans results))))
+    (loop for i from 0 to 5 do
     (loop for parent in parents do 
           (setf ret 
                 (append ret 
@@ -381,21 +390,7 @@ ret
                                      ;(fourth parent)
                                      (list (+ (/ (- 5 (random 11)) 100) (car (fourth parent))) (+ (/ (- 5 (random 11)) 1000) (cadr (fourth parent))))
                                      ))
-                        )))
-    (loop for parent in parents do 
-          (setf ret 
-                (append ret 
-                        ;Create new child with random variation on descr kept
-                        (list (list  (car parent) (if (not (find (setf a (random descnum)) (second parent))) 
-                                                      (append (second parent) (list a)) 
-                                                    (if (> (length (second parent)) 1) (remove a (second parent)) (second parent)))
-                                     ;variation on number of states
-                                     (+ (- 4 (random 9)) (third parent));(third (nth (random 4) parents))) 
-                                     ;variation on regularization
-                                     (fourth parent)
-                                     ;(list (+ (/ (- 5 (random 11)) 100) (car (fourth (nth (random 4) parents)))) (+ (/ (- 5 (random 11)) 1000) (cadr (fourth (nth (random 4) parents)))))
-                                     ))
-                        )))
+                        )))  )
     ret)
 )
 
