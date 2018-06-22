@@ -36,7 +36,7 @@
    (name :accessor name :initform (gensym "xmmobj"))
    (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization :type list)
    (states :accessor states :initform 10 :initarg :states :type integer)
-   (table-result :accessor table-result)
+   (table-result :accessor table-result :initform '())
    ))
 
 
@@ -300,7 +300,7 @@ size)))
 )
 
 (defmethod get-table-result((self xmmobj))
-
+(if (null (table-result self)) (print "Please call the test function first")
 (let* ((table (copy-list (table-result self)))
       (labls (labls self))
       (fieldnames (append (loop for line in table collect (write-to-string (reduce '+ line))) (list " "))))
@@ -321,7 +321,7 @@ size)))
          (list (append (list " ") labls (list " "))))
    :field-names fieldnames
 )
-)
+))
 )
 
 
@@ -375,20 +375,24 @@ ret
 
 (defun reproduce (results descnum) 
   (let* ((ret)
+         (vardesc)
+         (varreg1)
+         (varreg2)
         (parents (car (om:mat-trans results))))
     (loop for i from 0 to 5 do
     (loop for parent in parents do 
           (setf ret 
                 (append ret 
                         ;Create new child with random variation on descr kept
-                        (list (list  (car parent) (if (not (find (setf a (random descnum)) (second parent))) 
-                                                      (append (second parent) (list a)) 
-                                                    (if (> (length (second parent)) 1) (remove a (second parent)) (second parent)))
+                        (list (list  (car parent) (if (not (find (setf vardesc (random descnum)) (second parent))) 
+                                                      (append (second parent) (list vardesc)) 
+                                                    (if (> (length (second parent)) 1) (remove vardesc (second parent)) (second parent)))
                                      ;variation on number of states
                                      (+ (- 4 (random 9)) (third parent)) 
                                      ;variation on regularization
                                      ;(fourth parent)
-                                     (list (+ (/ (- 5 (random 11)) 100) (car (fourth parent))) (+ (/ (- 5 (random 11)) 1000) (cadr (fourth parent))))
+                                     (list (if (< 0 (setf varreg1 (+ (/ (- 2 (random 5)) 100) (car (fourth parent))))) varreg1 (car (fourth parent)))  
+                                           (if (< 0 (setf varreg2 (+ (/ (- 2 (random 5)) 100) (cadr (fourth parent))))) varreg2 (cadr (fourth parent))) ) 
                                      ))
                         )))  )
     ret)
@@ -409,7 +413,7 @@ ret
                                         (print param)
                                         )
                                       ))) descnum))
-            (if (< 0.9 (car (second (car params)))) (setf condition nil))
+            ;(if (< 0.9 (car (second (car params)))) (setf condition nil))
             )))
 )
 
