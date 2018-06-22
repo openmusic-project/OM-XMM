@@ -78,7 +78,7 @@
 ;;data is a list of samples
 ;;each sample is a list of 2 (desc-matrix , label) 
 ;;descriptor matrix is a list of descriptor vectors
-(defmethod test((self xmmobj) data)
+(om::defmethod! test ((self xmmobj) data)
   (let ((accuracy 0)
         (num-samples (length data))
         (count 0))
@@ -119,7 +119,7 @@
 ;;data is a matrix of descriptors for 1 sample 
 ;;descriptor matrix is a list of descriptor vectors
 ;;reset : if nil : the model's passed results will be kept, influencing the next results. else, model's results will be reset
-(defmethod run((self xmmobj) data &optional (reset 1))
+(om::defmethod! run ((self xmmobj) data &optional (reset 1))
   (let ((descr (fli:allocate-foreign-object :type :pointer :nelems (length data)))
         (size (length (car data)))
         (resultptr (fli:allocate-foreign-object :type :char :nelems 20))
@@ -325,7 +325,7 @@ size)))
 )
 
 
-(defmethod get-errors((self xmmobj))
+(om::defmethod! get-errors((self xmmobj))
   (loop for i from 0 to (1- (length (labls self)))
        do (print (format nil "~A ~d" (nth i (labls self)) (nth i (errors self))))
 ))
