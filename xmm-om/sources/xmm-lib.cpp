@@ -22,6 +22,12 @@ std::string toString(char c){
     return target;
 }
 
+class omTrainingListener{
+public:
+    void onEvent(xmm::TrainingEvent const& e) {
+        std::cout<<e.label<<std::endl;
+    }
+};
 
 void* initXMM(float relat, float abs, int statenum){
     xmm::HierarchicalHMM *mhhmm = new xmm::HierarchicalHMM(false);
@@ -99,6 +105,7 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
                 mdataset->getPhrase(j)->record(*observation);
             }
         }
+        //mdataset->normalize();
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur fillDataset : " << Exp.what() << ".\n";
@@ -148,6 +155,9 @@ int trainXMM(void* dataset, void* model){
         <<"regularization "<<mhhmm->configuration.relative_regularization.get()<<" "<<mhhmm->configuration.absolute_regularization.get()<<std::endl;
        
         mhhmm->train(mdataset);
+        omTrainingListener* list = new omTrainingListener();
+        mhhmm->training_events.addListener(list, &omTrainingListener::onEvent);
+        
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur train : " << Exp.what() << ".\n";
@@ -177,33 +187,36 @@ float runXMM(void* descptr, int sample_size, int columnnum, void* model, int res
             mhhmm->filter(*observation);
             //std::cout<<mhhmm->results.likeliest<<std::endl;
         }
-        //Get three likeliest labels
-        double max2 =-1, max3 = -1;
-        std::string label1, label2, label3;
-        int i=0;
-        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
-            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max1){
-                max1=mhhmm->results.smoothed_normalized_likelihoods[i];
-                label1=it->first;
-            }
-        }
-        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
-            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max2 && it->first != label1){
-                max2=mhhmm->results.smoothed_normalized_likelihoods[i];
-                label2=it->first;
-            }
-        }
-        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
-            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max3 && it->first != label1 && it->first != label2){
-                max3=mhhmm->results.smoothed_normalized_likelihoods[i];
-                label3=it->first;
-            }
-        }
-        for(auto likel : mhhmm->results.smoothed_normalized_likelihoods){
-            std::cout<<likel<<" ";
-        }
+   //     std::cout<<mhhmm->models.at(mhhmm->results.likeliest).results.progress<<std::endl;
         
-        std::cout<<std::endl<<"1. "<<label1<<" "<<max1<<std::endl<<"2. "<<label2<<" "<<max2<<std::endl<<"3. "<<label3<<" "<<max3<<std::endl;
+//        //Get three likeliest labels
+//        double max2 =-1, max3 = -1;
+//        std::string label1, label2, label3;
+//        int i=0;
+//        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
+//            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max1){
+//                max1=mhhmm->results.smoothed_normalized_likelihoods[i];
+//                label1=it->first;
+//            }
+//        }
+//        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
+//            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max2 && it->first != label1){
+//                max2=mhhmm->results.smoothed_normalized_likelihoods[i];
+//                label2=it->first;
+//            }
+//        }
+//        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
+//            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max3 && it->first != label1 && it->first != label2){
+//                max3=mhhmm->results.smoothed_normalized_likelihoods[i];
+//                label3=it->first;
+//            }
+//        }
+//        for(auto likel : mhhmm->results.smoothed_normalized_likelihoods){
+//            std::cout<<likel<<" ";
+//        }
+        
+//        std::cout<<std::endl<<"1. "<<label1<<" "<<max1<<std::endl<<"2. "<<label2<<" "<<max2<<std::endl<<"3. "<<label3<<" "<<max3<<std::endl;
+       // std::cout<<mhhmm->results.likeliest;
         strcpy(out, (mhhmm->results.likeliest+"0").c_str());
     }catch ( const std::exception & Exp )
     {
@@ -287,8 +300,6 @@ void free_model(void* model, void* dataset){
         std::cerr << "\nErreur free : " << Exp.what() << ".\n";
     }
 }
-           
-           
-           
-           
+
+
 

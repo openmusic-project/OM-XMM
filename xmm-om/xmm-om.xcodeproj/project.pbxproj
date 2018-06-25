@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		400220A420641180004295F7 /* include-xmm.h in Headers */ = {isa = PBXBuildFile; fileRef = 400220A320641180004295F7 /* include-xmm.h */; };
 		401F3F3320691E2F00AFD583 /* libxmm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4037CFEA206503AA001D69FF /* libxmm.a */; };
+		40F7591320C18F94004AB66F /* xmm-lib.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 40FE495C2064064C00D30DC3 /* xmm-lib.hpp */; };
 		40FE495D2064064C00D30DC3 /* xmm-lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40FE495B2064064C00D30DC3 /* xmm-lib.cpp */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				400220A420641180004295F7 /* include-xmm.h in Headers */,
+				40F7591320C18F94004AB66F /* xmm-lib.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

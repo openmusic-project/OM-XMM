@@ -29,6 +29,8 @@
 (om::defclass! xmmobj (om::om-cleanup-mixin)
   ((labls :accessor labls :initform nil :type list)
    (dataset :accessor dataset :initform nil :initarg :dataset :type list) ; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)      
+   (means :accessor mean)
+   (stddevs :accessor stddev)
    (column-names :accessor column-names :initform nil :initarg :column-names :type list) ;list of attributes
    (data-ptr :accessor data-ptr :initform nil) ; PTR on c++ Trainingset object 
    (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
@@ -183,7 +185,16 @@
         (descrs (fli:allocate-foreign-object :type :pointer :nelems (length data)))
         (sizes (fli:allocate-foreign-object :type :int :nelems (length data))))       
     (if (null data) (return-from fill_data "empty data"))
-    ;;store data in pointers to pass to xmm library
+    
+    ;Compute mean and stddev
+    ;(compute-norms data)
+    ;Normalize the data 
+    ;(setf data (normalize data (length data)))
+   
+
+
+
+ ;;store data in pointers to pass to xmm library
     ;;Loop for each sample
     (loop for j from 0 to (1- (length data))
           do (let ((size (length (car (car (nth j data))))))
@@ -417,21 +428,27 @@ ret
             )))
 )
 
-;; mean-deviation
-(defun mean-deviation(lst)
-  (/ (apply '+ lst) (list-length lst)))
- 
-(defun calc-item(x lst)
-  (/ (expt (- x (mean-deviation lst)) 2) (list-length lst)))
- 
-;; standard deviation function 
-(defun standard-deviation(lst)
-  (sqrt (apply '+ 
-    (loop for x in lst for y = (calc-item x lst) 
-collect y))))
+
+;;;FOR NORMALISATION;;;
+
+
+(defun compute-norms(data)
+  (let ((numdesc (length (car data))))
+    (setf ((means self) (make-list numdesc)))
+    (setf ((stddevs self) (make-list numdesc)))
+    (loop for i from 0 to (1- numdesc) do
+          (setf (nth i (means self)) (mean (append (nth i (om::mat-trans data)))))
+          (setf (nth i (stddevs self)) (stdev (append (nth i (om::mat-trans data)))))))
+)
+
+(defun stdev (x)
+  (sqrt (/ (apply '+ (expt (- x (/ (apply '+ x)
+                                   (length x)))
+                           2))
+           (length x))))
 
 (defun mean(lst)
-  (/ (reduce'+ lst) (length lst)))
+  (/ (apply '+ lst) (length lst)))
 
 
 
