@@ -11,7 +11,7 @@
 ;   and redistribution, see the "LICENSE" file in this distribution.
 ;
 ;   This program is distributed in the hope that it will be useful,
-;   but WITHOUT ANY WARRANTY; without even the implied warranty of
+;   but WITHOUT ANY WARRANTY; without even the implied warranty of   
 ;   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
 ;
 ;============================================================================
@@ -29,8 +29,8 @@
 (om::defclass! xmmobj (om::om-cleanup-mixin)
   ((labls :accessor labls :initform nil :type list)
    (dataset :accessor dataset :initform nil :initarg :dataset :type list) ; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)      
-   (means :accessor mean)
-   (stddevs :accessor stddev)
+   (means :accessor means)
+   (stddevs :accessor stddevs)
    (column-names :accessor column-names :initform nil :initarg :column-names :type list) ;list of attributes
    (data-ptr :accessor data-ptr :initform nil) ; PTR on c++ Trainingset object 
    (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
@@ -133,6 +133,8 @@
       (if (not (column-names self)) (om::om-print "Please set column names to enable running" "XMM")
         (if (not (= (length data) (length (column-names self)))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
         (progn
+
+         ; (setf data (print (car (normalize self (list (print data))))))
           ;;Loop for each descriptor, and build data in pointer to send to xmm
           (loop for i from 0 to (1- (length data))  
                 do (setf (fli:dereference descr :type :pointer :index i) 
@@ -186,11 +188,13 @@
         (sizes (fli:allocate-foreign-object :type :int :nelems (length data))))       
     (if (null data) (return-from fill_data "empty data"))
     
+   ; (om::om-print "Normalizing..." "XMM")
     ;Compute mean and stddev
-    ;(compute-norms data)
+  ;  (compute-norms self (car (om::mat-trans data)))
+
     ;Normalize the data 
-    ;(setf data (normalize data (length data)))
-   
+  ;  (setf data (om::mat-trans (list (normalize self (car (om::mat-trans data))) (cadr (om::mat-trans data)))))
+   ; (om::om-print "...done" "XMM")
 
 
 
@@ -320,7 +324,7 @@ size)))
   (setf table
         (loop for line in (table-result self) collect 
               (loop for item in line collect 
-                        (float (/ item (reduce '+ line)))))) 
+                        (float (if (not (= 0 (reduce '+ line))) (/ item (reduce '+ line)) 0 )) ))) 
   ;BUILD 2D-ARRAY
   (make-instance 'om::2D-array
    :data 
@@ -431,24 +435,45 @@ ret
 
 ;;;FOR NORMALISATION;;;
 
+(defmethod normalize ((self xmmobj) data)
+  (let ((descnum (length (car data))))
 
-(defun compute-norms(data)
+  (loop for sample in data collect
+        (loop for idesc from 0 to (1- descnum) collect
+              (loop for n in (nth idesc sample) collect
+                    (normfun n (nth idesc (means self)) (nth idesc (stddevs self)))
+              )
+        )
+  )
+  )
+)
+
+
+
+(defmethod compute-norms ((self xmmobj) data)
   (let ((numdesc (length (car data))))
-    (setf ((means self) (make-list numdesc)))
-    (setf ((stddevs self) (make-list numdesc)))
+    (setf (means self) (make-list numdesc))
+    (setf (stddevs self) (make-list numdesc))
     (loop for i from 0 to (1- numdesc) do
-          (setf (nth i (means self)) (mean (append (nth i (om::mat-trans data)))))
-          (setf (nth i (stddevs self)) (stdev (append (nth i (om::mat-trans data)))))))
+        (progn
+          (setf (nth i (means self)) (mean (apply #'append (nth i (om::mat-trans data)))))
+          (setf (nth i (stddevs self)) (stdev (apply #'append (nth i (om::mat-trans data)))))
+          ))
+)
+)
+
+(defun normfun (x mean std)
+  (/ (- x mean) std)
 )
 
 (defun stdev (x)
-  (sqrt (/ (apply '+ (expt (- x (/ (apply '+ x)
-                                   (length x)))
-                           2))
-           (length x))))
+  (let ((m (mean x)))
+  (sqrt (/ (reduce '+ (mapcar (lambda (a) (expt (- a m) 2)) x))
+           (length x)))
+))
 
 (defun mean(lst)
-  (/ (apply '+ lst) (length lst)))
+  (/ (reduce '+ lst) (length lst)))
 
 
 
