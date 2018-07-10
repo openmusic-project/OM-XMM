@@ -367,7 +367,7 @@ size)))
 
 (defun testaccu (item1 item2)
   (if  item1
-      (if (> (car (second item1)) (car (second item2)))
+      (if (> (mean (second item1)) (mean (second item2)))
           item1
         item2)
    item2)

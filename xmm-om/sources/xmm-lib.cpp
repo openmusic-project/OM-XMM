@@ -105,7 +105,6 @@ int fillDataset(void* descptr, int sample_num, void* sample_sizes, void* labls, 
                 mdataset->getPhrase(j)->record(*observation);
             }
         }
-        //mdataset->normalize();
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur fillDataset : " << Exp.what() << ".\n";
@@ -149,6 +148,11 @@ int trainXMM(void* dataset, void* model){
         xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
         xmm::TrainingSet *mdataset = static_cast<xmm::TrainingSet*>(dataset);
         
+        for(auto model= mhhmm->models.begin(); model !=mhhmm->models.end(); model++){
+            std::cout<<"hey";
+            std::cout<<model->second.states.size()<<std::endl;
+            std::cout<<model->second.states[0].parameters.gaussians.get()<<std::endl;
+        }
         //print info
         std::cout<<"Training with "<<mdataset->dimension.get()<<" columns"<<std::endl
         <<mhhmm->configuration.states.get()<<" states"<<std::endl
@@ -185,6 +189,7 @@ float runXMM(void* descptr, int sample_size, int columnnum, void* model, int res
                 observation->at(i) = descr[i][k];
             }
             mhhmm->filter(*observation);
+            
             //std::cout<<mhhmm->results.likeliest<<std::endl;
         }
    //     std::cout<<mhhmm->models.at(mhhmm->results.likeliest).results.progress<<std::endl;
