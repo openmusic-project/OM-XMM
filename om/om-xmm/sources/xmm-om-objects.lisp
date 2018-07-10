@@ -314,7 +314,7 @@ size)))
   (column-names self)
 )
 
-(defmethod get-table-result((self xmmobj))
+(defmethod get-confusion-matrix((self xmmobj))
 (if (null (table-result self)) (print "Please call the test function first")
 (let* ((table (copy-list (table-result self)))
       (labls (labls self))
