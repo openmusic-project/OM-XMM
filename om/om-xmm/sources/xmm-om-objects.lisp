@@ -31,14 +31,15 @@
    (dataset :accessor dataset :initform nil :initarg :dataset :type list) ; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)      
    (means :accessor means)
    (stddevs :accessor stddevs)
-   (column-names :accessor column-names :initform nil :initarg :column-names :type list) ;list of attributes
    (data-ptr :accessor data-ptr :initform nil) ; PTR on c++ Trainingset object 
    (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
-   (errors :accessor errors :initform nil :type list)
+   (errors :accessor errors :initform nil :type list) ;Number of errors per ground truth label (computed with the test function)
    (name :accessor name :initform (gensym "xmmobj"))
-   (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization :type list)
-   (states :accessor states :initform 10 :initarg :states :type integer)
-   (table-result :accessor table-result :initform '())
+   (states :accessor states :initform 10 :initarg :states :type integer)   ; Number of hidden states for the HHMM
+   (gaussians :accessor gaussians :initform 1 :initarg :gaussians :type integer) ; Number of gaussians per state (gaussian mixture models)
+   (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization :type list) ;Relative and absolute regularization values for EM algorithm
+   (table-result :accessor table-result :initform '()) ;Number of errors for confusion matrix (computed with the test function)
+   (dim :accessor dim :initform 0)
    ))
 
 
@@ -51,7 +52,7 @@
 
 (defmethod initialize-instance ((self xmmobj) &rest initargs)
   (call-next-method)
-  (setf (model-ptr self) (xmm-initmodel (first (regularization self)) (second (regularization self)) (states self)))
+  (setf (model-ptr self) (xmm-initmodel (first (regularization self)) (second (regularization self)) (states self) (gaussians self)))
   self)
 
 
@@ -65,9 +66,8 @@
 (defmethod train-model ((self xmmobj))
   (if (dataset self)
       (progn 
-        (if (not (column-names self)) (setf (column-names self) (make-list (length (caar (dataset self))) :initial-element 1)))
         (om::om-print "init and train......" "XMM")
-        (setf (data-ptr self) (xmm-initdata (length (column-names self))))
+        (setf (data-ptr self) (xmm-initdata (setf (dim self) (length (caar (dataset self))))))
         (fill_data self)
         (xmm-train (data-ptr self) (model-ptr self))
         (om::om-print ".... done training !" "XMM"))
@@ -130,16 +130,17 @@
         (i 0)
         (result (make-string 20 :initial-element #\0)))
     (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
-      (if (not (column-names self)) (om::om-print "Please set column names to enable running" "XMM")
-        (if (not (= (length data) (length (column-names self)))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
+        (if (not (= (length data) (dim self))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
         (progn
-
+          
+          ;NORMALIZATION
          ; (setf data (print (car (normalize self (list (print data))))))
+
           ;;Loop for each descriptor, and build data in pointer to send to xmm
           (loop for i from 0 to (1- (length data))  
                 do (setf (fli:dereference descr :type :pointer :index i) 
                          (fli:allocate-foreign-object :type :float :nelems size :initial-contents (to-float (nth i data)))))
-          (setf likelihood (xmm-run descr size (length (column-names self)) (model-ptr self) reset resultptr))
+          (setf likelihood (xmm-run descr size (dim self) (model-ptr self) reset resultptr))
           
           ;fetch result from pointer
           (setf cur (fli:dereference resultptr :type :char :index 0))
@@ -156,7 +157,7 @@
           (fli:free-foreign-object resultptr)
           ;(if (< likelihood 0.6) (setf result "notsure"))
           ;(om::om-print (format nil "~a with ~f likelihood" result likelihood) "XMM")
-          ))))
+          )))
     result)
 )
 
@@ -278,13 +279,12 @@ size)))
 
 (defmethod get-class-avrg((self xmmobj) label)
   (if (dataset self)
-      (let* ((dimsize (length (column-names self)))
-             (result (fli:allocate-foreign-object :type :pointer :nelems dimsize))
+      (let* ((result (fli:allocate-foreign-object :type :pointer :nelems (dim self)))
              (labelptr (fli:allocate-foreign-object :type :char :nelems (length label) :initial-contents (coerce label 'list))) 
              (size  (xmm-classavrg (data-ptr self) labelptr result))
-             (ret (make-list dimsize))
+             (ret (make-list (dim self)))
              (ptr))
-        (loop for dim from 0 to (1- dimsize) do
+        (loop for dim from 0 to (1- (dims self)) do
               (progn 
                 (setf (nth dim ret)  (make-list size))
                 (setf ptr (fli:dereference result :type :pointer :index dim))
@@ -310,9 +310,6 @@ size)))
   (model-ptr self)
 )
 
-(defmethod get-columns((self xmmobj))
-  (column-names self)
-)
 
 (defmethod get-confusion-matrix((self xmmobj))
 (if (null (table-result self)) (print "Please call the test function first")
@@ -375,24 +372,28 @@ size)))
 
 
 (defun find4best (results)
-  (let ((ret (make-list 4))
-        (mlist results))
-    (loop for i from 0 to 3 do 
-          (let ((max nil))
-            (loop for item in mlist do 
-                  (if (not (find item ret)) (setf max (testaccu max item)))
-            )
-            (setf mlist (remove max mlist))
-            (setf (nth i ret) max)
-          ))
-ret
-))
+  (if (> (length results) 4) 
+      (let ((ret (make-list 4))
+            (mlist results))
+        (loop for i from 0 to 3 do 
+              (let ((max nil))
+                (loop for item in mlist do 
+                      (if (not (find item ret)) (setf max (testaccu max item)))
+                      )
+                (setf mlist (remove max mlist))
+                (setf (nth i ret) max)
+                ))
+        ret
+        )
+    results)
+)
 
 (defun reproduce (results descnum) 
   (let* ((ret)
          (vardesc)
          (varreg1)
          (varreg2)
+         (newgaus)
         (parents (car (om:mat-trans results))))
     (loop for i from 0 to 5 do
     (loop for parent in parents do 
@@ -403,11 +404,14 @@ ret
                                                       (append (second parent) (list vardesc)) 
                                                     (if (> (length (second parent)) 1) (remove vardesc (second parent)) (second parent)))
                                      ;variation on number of states
-                                     (+ (- 4 (random 9)) (third parent)) 
+                                     (+ (- 4 (random 9)) (third parent))
+                                     ;variation on number of gaussians per states
+                                     (if (> (setf newgaus (+ (- 1 (random 3)) (fourth parent))) 0) newgaus (fourth parent))
+                                     
                                      ;variation on regularization
                                      ;(fourth parent)
-                                     (list (if (< 0 (setf varreg1 (+ (/ (- 2 (random 5)) 100) (car (fourth parent))))) varreg1 (car (fourth parent)))  
-                                           (if (< 0 (setf varreg2 (+ (/ (- 2 (random 5)) 100) (cadr (fourth parent))))) varreg2 (cadr (fourth parent))) ) 
+                                     (list (if (< 0 (setf varreg1 (+ (/ (- 2 (random 5)) 100) (car (fifth parent))))) varreg1 (car (fifth parent)))  
+                                           (if (< 0 (setf varreg2 (+ (/ (- 2 (random 5)) 100) (cadr (fifth parent))))) varreg2 (cadr (fifth parent))) ) 
                                      ))
                         )))  )
     ret)
@@ -417,19 +421,20 @@ ret
   (let* ((params firstparams)
          (condition T)) 
     (loop while condition do
-          (progn (setf params (reproduce
+          ;(progn 
+            (setf params (reproduce
                         ;Get 4 best results (( "descr" 10 (0.05 0.01)) (0.3457 0.7575)) 
                                (print (find4best
                                 ;;collect results
                                 (loop for param in params collect 
-                                      (if (= (length param) 4) 
+                                      (if (not (= (length param) 2)) 
                                           (funcall fun (print param))
                                         ;(funcall fun (car (print param)))
                                         (print param)
                                         )
                                       ))) descnum))
-            ;(if (< 0.9 (car (second (car params)))) (setf condition nil))
-            )))
+            ;(if (< 0.9 (car (second (car params)))) (setf condition nil)))
+    ))
 )
 
 

@@ -11,7 +11,7 @@
 
 extern "C" void* initDataset(int numcolumns);
 
-extern "C" void* initXMM(float relat, float abs, int statenum);
+extern "C" void* initXMM(float relat, float abs, int statenum, int gaussians);
 
 extern "C" int add_Phrase(void* descptr, int sample_size, void* labelptr, void* dataset);
 
