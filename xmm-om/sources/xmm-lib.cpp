@@ -25,7 +25,23 @@ std::string toString(char c){
 class omTrainingListener{
 public:
     void onEvent(xmm::TrainingEvent const& e) {
-        std::cout<<e.label<<std::endl;
+        switch (e.status) {
+            case xmm::TrainingEvent::Status::Run :
+                std::cout<<"Running on "<<e.label<<std::endl;
+                break;
+            case xmm::TrainingEvent::Status::Done :
+                std::cout<<"Done with "<<e.label<<std::endl;
+                break;
+            case xmm::TrainingEvent::Status::Cancel :
+                std::cout<<"Canceled on "<<e.label<<std::endl;
+                break;
+            case xmm::TrainingEvent::Status::Error :
+                std::cout<<"Error on "<<e.label<<std::endl;
+                break;
+            case xmm::TrainingEvent::Status::Alldone :
+                std::cout<<"Training All Done"<<std::endl;
+                break;
+        }
     }
 };
 
@@ -153,10 +169,10 @@ int trainXMM(void* dataset, void* model){
         std::cout<<"Training with "<<mdataset->dimension.get()<<" columns"<<std::endl
         <<mhhmm->configuration.states.get()<<" states"<<std::endl
         <<"regularization "<<mhhmm->configuration.relative_regularization.get()<<" "<<mhhmm->configuration.absolute_regularization.get()<<std::endl;
-       
-        mhhmm->train(mdataset);
         omTrainingListener* list = new omTrainingListener();
         mhhmm->training_events.addListener(list, &omTrainingListener::onEvent);
+
+        mhhmm->train(mdataset);
       
     }catch ( const std::exception & Exp )
     {

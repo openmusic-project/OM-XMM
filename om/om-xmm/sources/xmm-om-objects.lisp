@@ -77,16 +77,16 @@
 
 ;;test : outputs the accuracy for prediction on labelled data
 ;;fills errors list with number of error for each actual label
-;;data is a list of samples
+;;dataset is a list of samples
 ;;each sample is a list of 2 (desc-matrix , label) 
 ;;descriptor matrix is a list of descriptor vectors
-(om::defmethod! test ((self xmmobj) data)
+(om::defmethod! test ((self xmmobj) dataset)
   (let ((accuracy 0)
-        (num-samples (length data))
+        (num-samples (length dataset))
         (count 0))
     (setf (errors self) (make-list (length (labls self)) :initial-element 0))
      (setf (table-result self) (make-list (length (labls self)) :initial-element (make-list (length (labls self)) :initial-element 0)))
-    (loop for sample in data
+    (loop for sample in dataset
           do (let* ((pred (run self (car sample)))
                    (real (cadr sample))
                    (pos (position real (labls self) :test #'equal)))
