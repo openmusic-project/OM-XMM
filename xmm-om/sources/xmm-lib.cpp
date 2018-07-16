@@ -22,12 +22,33 @@ std::string toString(char c){
     return target;
 }
 
+callback Progress_Callback;
+
+
+int xmmRegisterCallback (callback callback)
+{
+    Progress_Callback = callback;
+    return 0;
+}
+
+void xmmCallCallBack (int n)
+{
+    Progress_Callback(n);
+}
+    
 class omTrainingListener{
+    int count =0;
+    int size;
 public:
+    omTrainingListener(int trainngsize){
+        size = trainngsize;
+    }
     void onEvent(xmm::TrainingEvent const& e) {
         switch (e.status) {
             case xmm::TrainingEvent::Status::Run :
                 std::cout<<"Running on "<<e.label<<std::endl;
+                count++;
+                xmmCallCallBack(count*100/size);
                 break;
             case xmm::TrainingEvent::Status::Done :
                 std::cout<<"Done with "<<e.label<<std::endl;
@@ -164,12 +185,13 @@ int trainXMM(void* dataset, void* model){
     try{
         xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
         xmm::TrainingSet *mdataset = static_cast<xmm::TrainingSet*>(dataset);
-       
+        
         //print info
         std::cout<<"Training with "<<mdataset->dimension.get()<<" columns"<<std::endl
         <<mhhmm->configuration.states.get()<<" states"<<std::endl
         <<"regularization "<<mhhmm->configuration.relative_regularization.get()<<" "<<mhhmm->configuration.absolute_regularization.get()<<std::endl;
-        omTrainingListener* list = new omTrainingListener();
+        
+        omTrainingListener* list = new omTrainingListener(int(mdataset->labels().size() * mdataset->size()));
         mhhmm->training_events.addListener(list, &omTrainingListener::onEvent);
 
         mhhmm->train(mdataset);

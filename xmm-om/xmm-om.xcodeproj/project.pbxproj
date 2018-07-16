@@ -17,12 +17,20 @@
 		400220A320641180004295F7 /* include-xmm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "include-xmm.h"; sourceTree = "<group>"; };
 		401F3F3220691D9500AFD583 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../xmm/src; sourceTree = "<group>"; };
 		4037CFEA206503AA001D69FF /* libxmm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libxmm.a; sourceTree = "<group>"; };
-		40FE494E2064061600D30DC3 /* lispworks-startup.lisp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = "lispworks-startup.lisp"; path = "libxmm-om.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		40949B3120FCD1B200F3743D /* liblibxmm-om.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "liblibxmm-om.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		40FE494E2064061600D30DC3 /* libxmm.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = libxmm.a; path = "libxmm-om.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		40FE495B2064064C00D30DC3 /* xmm-lib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "xmm-lib.cpp"; sourceTree = "<group>"; };
 		40FE495C2064064C00D30DC3 /* xmm-lib.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = "xmm-lib.hpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		40949B2E20FCD1B200F3743D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40FE494B2064061600D30DC3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -64,7 +72,8 @@
 		40FE494F2064061600D30DC3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				40FE494E2064061600D30DC3 /* lispworks-startup.lisp */,
+				40FE494E2064061600D30DC3 /* libxmm.a */,
+				40949B3120FCD1B200F3743D /* liblibxmm-om.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,6 +91,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		40949B2F20FCD1B200F3743D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40FE494C2064061600D30DC3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -94,6 +110,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		40949B3020FCD1B200F3743D /* libxmm-om */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40949B3220FCD1B200F3743D /* Build configuration list for PBXNativeTarget "libxmm-om" */;
+			buildPhases = (
+				40949B2D20FCD1B200F3743D /* Sources */,
+				40949B2E20FCD1B200F3743D /* Frameworks */,
+				40949B2F20FCD1B200F3743D /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "libxmm-om";
+			productName = "libxmm-om";
+			productReference = 40949B3120FCD1B200F3743D /* liblibxmm-om.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		40FE494D2064061600D30DC3 /* xmm-om */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40FE49522064061600D30DC3 /* Build configuration list for PBXNativeTarget "xmm-om" */;
@@ -108,7 +141,7 @@
 			);
 			name = "xmm-om";
 			productName = "xmm-om";
-			productReference = 40FE494E2064061600D30DC3 /* lispworks-startup.lisp */;
+			productReference = 40FE494E2064061600D30DC3 /* libxmm.a */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -120,6 +153,10 @@
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = Ircam;
 				TargetAttributes = {
+					40949B3020FCD1B200F3743D = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 					40FE494D2064061600D30DC3 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
@@ -139,11 +176,19 @@
 			projectRoot = "";
 			targets = (
 				40FE494D2064061600D30DC3 /* xmm-om */,
+				40949B3020FCD1B200F3743D /* libxmm-om */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		40949B2D20FCD1B200F3743D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40FE494A2064061600D30DC3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -155,6 +200,30 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		40949B3320FCD1B200F3743D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = build;
+			};
+			name = Debug;
+		};
+		40949B3420FCD1B200F3743D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = build;
+			};
+			name = Release;
+		};
 		40FE49502064061600D30DC3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -270,6 +339,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = .;
 			};
 			name = Debug;
 		};
@@ -285,12 +355,22 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYMROOT = .;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		40949B3220FCD1B200F3743D /* Build configuration list for PBXNativeTarget "libxmm-om" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40949B3320FCD1B200F3743D /* Debug */,
+				40949B3420FCD1B200F3743D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		40FE49492064061600D30DC3 /* Build configuration list for PBXProject "xmm-om" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

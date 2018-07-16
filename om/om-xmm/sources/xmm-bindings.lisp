@@ -29,6 +29,25 @@
 (cffi::defcfun ("free_model" xmm-free) :void (modelptr :pointer) (dataptr :pointer))
 (cffi::defcfun ("getclassAvrg" xmm-classavrg) :int (dataptr :pointer) (label :pointer) (out :pointer))
 
+(cffi::defcfun ("xmmRegisterCallback" xmmRegisterCallback) :void (callback-fun :pointer))
+
+(cffi::defcallback xmm-callback :void ((progress :int))
+  (handler-bind ((error #'(lambda (e) (print (format nil "ERROR IN XMM CALLBACK: ~% ~A" e)))))
+    (xmm-handle-callback progress)))
+
+
+
+;;; the function we call in order to register the callback in the C library
+(defun xmm-register-callback ()
+  (xmmRegisterCallback (cffi::get-callback 'xmm-callback)))
+
+;;; the function we call (in Lisp) when receiving the callback
+(defun xmm-handle-callback (number)
+  (om::om-print (format nil "~d%" number )"XMM"))
+
+(xmm::xmm-register-callback)
+
+
 ;; (listen *terminal-io*)
 ;; (setq test (openxmm))
 ;; (closexmm test)
