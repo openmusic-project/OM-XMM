@@ -47,11 +47,12 @@ public:
         switch (e.status) {
             case xmm::TrainingEvent::Status::Run :
                 std::cout<<"Running on "<<e.label<<std::endl;
-                count++;
-                xmmCallCallBack(count*100/size);
+                
                 break;
             case xmm::TrainingEvent::Status::Done :
                 std::cout<<"Done with "<<e.label<<std::endl;
+                count++;
+                xmmCallCallBack(count*100/size);
                 break;
             case xmm::TrainingEvent::Status::Cancel :
                 std::cout<<"Canceled on "<<e.label<<std::endl;
@@ -191,7 +192,7 @@ int trainXMM(void* dataset, void* model){
         <<mhhmm->configuration.states.get()<<" states"<<std::endl
         <<"regularization "<<mhhmm->configuration.relative_regularization.get()<<" "<<mhhmm->configuration.absolute_regularization.get()<<std::endl;
         
-        omTrainingListener* list = new omTrainingListener(int(mdataset->labels().size() * mdataset->size()));
+        omTrainingListener* list = new omTrainingListener(int(mdataset->labels().size()));
         mhhmm->training_events.addListener(list, &omTrainingListener::onEvent);
 
         mhhmm->train(mdataset);
@@ -319,7 +320,7 @@ int importJson(char* pathptr, void* modelptr, void* lablptr){
     {
         std::cerr << "\nErreur import : " << Exp.what() << ".\n";
     }
-    return int(mhhmm->models.size());
+    return int(mhhmm->shared_parameters->dimension.get());
 }
 
 void free_model(void* model, void* dataset){

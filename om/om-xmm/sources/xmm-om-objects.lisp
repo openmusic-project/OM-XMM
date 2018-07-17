@@ -35,9 +35,9 @@
    (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
    (errors :accessor errors :initform nil :type list) ;Number of errors per ground truth label (computed with the test function)
    (name :accessor name :initform (gensym "xmmobj"))
-   (states :accessor states :initform 10 :initarg :states :type integer)   ; Number of hidden states for the HHMM
-   (gaussians :accessor gaussians :initform 1 :initarg :gaussians :type integer) ; Number of gaussians per state (gaussian mixture models)
-   (regularization :accessor regularization :initform (list 0.05 0.01) :initarg :regularization :type list) ;Relative and absolute regularization values for EM algorithm
+   (states :accessor states :initform 10 :type integer)   ; Number of hidden states for the HHMM
+   (gaussians :accessor gaussians :initform 1 :type integer) ; Number of gaussians per state (gaussian mixture models)
+   (regularization :accessor regularization :initform (list 0.05 0.01) :type list) ;Relative and absolute regularization values for EM algorithm
    (table-result :accessor table-result :initform '()) ;Number of errors for confusion matrix (computed with the test function)
    (dim :accessor dim :initform 0)
    ))
@@ -61,6 +61,9 @@
   (call-next-method)
   (train-model self)
   self)
+
+(defmethod om::additional-class-attributes ((self xmmobj)) 
+  '(xmm::states xmm::gaussians xmm::regularization))
 
 
 (defmethod train-model ((self xmmobj))
@@ -246,13 +249,14 @@
   (when path
     (let* ((path-ptr (fli:allocate-foreign-object :type :char :nelems (length path) :initial-contents (coerce path 'list)))
            (lablptr (fli:allocate-foreign-object :type :pointer :nelems 30))   ;;; /!\ 30 labels maximum
-           (size (xmm-import path-ptr (model-ptr self) lablptr))
+           (dim (xmm-import path-ptr (model-ptr self) lablptr))
            (temp (list))
            (id 1)
            (i 0)
            (ptr)
            (cur #\r))
       (setf (labls self) (list))
+      (setf (dim self) dim)
       ;read list of labels in lablptr
       (loop until (= id 0) do 
             (progn 
@@ -266,15 +270,16 @@
                       (setf id (1+ id))
                       (setf cur (fli::dereference ptr :type :char :index id))
                       ))
-              (print temp)
               (if temp
                   (setf (labls self) (append (labls self) (list (concatenate 'string temp)))))
+              (print temp)
               (setf i (1+ i))
               (fli:free-foreign-object ptr)
               ))
       (fli:free-foreign-object lablptr)
       (fli:free-foreign-object path-ptr)
-size)))
+      "Import done."
+)))
 
 
 (defmethod get-class-avrg((self xmmobj) label)
