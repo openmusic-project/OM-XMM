@@ -22,18 +22,57 @@ std::string toString(char c){
     return target;
 }
 
+callback Progress_Callback;
+
+
+int xmmRegisterCallback (callback callback)
+{
+    Progress_Callback = callback;
+    return 0;
+}
+
+void xmmCallCallBack (int n)
+{
+    Progress_Callback(n);
+}
+    
 class omTrainingListener{
+    int count =0;
+    int size;
 public:
+    omTrainingListener(int trainngsize){
+        size = trainngsize;
+    }
     void onEvent(xmm::TrainingEvent const& e) {
-        std::cout<<e.label<<std::endl;
+        switch (e.status) {
+            case xmm::TrainingEvent::Status::Run :
+                std::cout<<"Running on "<<e.label<<std::endl;
+                
+                break;
+            case xmm::TrainingEvent::Status::Done :
+                std::cout<<"Done with "<<e.label<<std::endl;
+                count++;
+                xmmCallCallBack(count*100/size);
+                break;
+            case xmm::TrainingEvent::Status::Cancel :
+                std::cout<<"Canceled on "<<e.label<<std::endl;
+                break;
+            case xmm::TrainingEvent::Status::Error :
+                std::cout<<"Error on "<<e.label<<std::endl;
+                break;
+            case xmm::TrainingEvent::Status::Alldone :
+                std::cout<<"Training All Done"<<std::endl;
+                break;
+        }
     }
 };
 
-void* initXMM(float relat, float abs, int statenum){
+void* initXMM(float relat, float abs, int statenum, int gaussians){
     xmm::HierarchicalHMM *mhhmm = new xmm::HierarchicalHMM(false);
     mhhmm->configuration.relative_regularization.set(relat);
     mhhmm->configuration.absolute_regularization.set(abs);
     mhhmm->configuration.states.set(statenum);
+    mhhmm->configuration.gaussians.set(gaussians);
     mhhmm->configuration.multithreading = xmm::MultithreadingMode::Sequential;
     return mhhmm;
 }
@@ -148,20 +187,16 @@ int trainXMM(void* dataset, void* model){
         xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(model);
         xmm::TrainingSet *mdataset = static_cast<xmm::TrainingSet*>(dataset);
         
-        for(auto model= mhhmm->models.begin(); model !=mhhmm->models.end(); model++){
-            std::cout<<"hey";
-            std::cout<<model->second.states.size()<<std::endl;
-            std::cout<<model->second.states[0].parameters.gaussians.get()<<std::endl;
-        }
         //print info
         std::cout<<"Training with "<<mdataset->dimension.get()<<" columns"<<std::endl
         <<mhhmm->configuration.states.get()<<" states"<<std::endl
         <<"regularization "<<mhhmm->configuration.relative_regularization.get()<<" "<<mhhmm->configuration.absolute_regularization.get()<<std::endl;
-       
-        mhhmm->train(mdataset);
-        omTrainingListener* list = new omTrainingListener();
-        mhhmm->training_events.addListener(list, &omTrainingListener::onEvent);
         
+        omTrainingListener* list = new omTrainingListener(int(mdataset->labels().size()));
+        mhhmm->training_events.addListener(list, &omTrainingListener::onEvent);
+
+        mhhmm->train(mdataset);
+      
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur train : " << Exp.what() << ".\n";
@@ -285,7 +320,7 @@ int importJson(char* pathptr, void* modelptr, void* lablptr){
     {
         std::cerr << "\nErreur import : " << Exp.what() << ".\n";
     }
-    return int(mhhmm->models.size());
+    return int(mhhmm->shared_parameters->dimension.get());
 }
 
 void free_model(void* model, void* dataset){

@@ -8,10 +8,11 @@
 #ifndef xmm_lib_h
 #define xmm_lib_h
 
+typedef void (*callback)(int);
 
 extern "C" void* initDataset(int numcolumns);
 
-extern "C" void* initXMM(float relat, float abs, int statenum);
+extern "C" void* initXMM(float relat, float abs, int statenum, int gaussians);
 
 extern "C" int add_Phrase(void* descptr, int sample_size, void* labelptr, void* dataset);
 
@@ -28,6 +29,8 @@ extern "C" void free_model(void* model, void* dataset);
 extern "C" int importJson(char* pathptr, void* modelptr, void* lablptr);
 
 extern "C" int getclassAvrg(void* dataset, void* labl, void* out);
+
+extern "C" int xmmRegisterCallback(callback callback);
 
 
 #endif /* xmm_lib_h */

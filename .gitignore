@@ -1,3 +1,10 @@
 *.64xfasl
 *.*~
 .DS_Store
+lib2om
+xmm
+xmm-om/Debug/libxmm-om.dylib
+xmm-om/xmm-om.build/Debug/xmm-om.build/dgph~
+xmm-om/xmm-om.build/Debug/xmm-om.build/dgph
+xmm-om/xmm-om.build/Debug/xmm-om.build/Objects-normal/x86_64/xmm-lib.d
+xmm-om/xmm-om.build/Debug/xmm-om.build/Objects-normal/x86_64/xmm-lib.dia
