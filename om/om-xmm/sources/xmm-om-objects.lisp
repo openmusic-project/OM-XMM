@@ -350,6 +350,7 @@ size)))
 (defmethod om::display-modes-for-object ((self xmmobj))
   '(:hidden :text :mini-view))
 
+#+o7
 (defmethod om::draw-mini-view ((self xmmobj) (box t) x y w h &optional time)
     (om::om-with-font 
      (om::om-def-font :font1 :size 10)
