@@ -255,31 +255,33 @@
            (i 0)
            (ptr)
            (cur #\r))
-      (setf (labls self) (list))
-      (setf (dim self) dim)
+      (if (= dim 0)   (om::om-print "Failed to load file, please try again" "XMM") 
+        (progn
+          (setf (labls self) (list))
+          (setf (dim self) dim)
       ;read list of labels in lablptr
-      (loop until (= id 0) do 
-            (progn 
-              (setf temp (list))
-              (setf id 0)
-              (setf ptr (fli:dereference lablptr :type :pointer :index i))
-              (setf cur (fli:dereference ptr :type :char :index 0))
-              (loop until (char= cur #\0) do
-                    (progn
-                      (setf temp (append temp (list cur)))
-                      (setf id (1+ id))
-                      (setf cur (fli::dereference ptr :type :char :index id))
-                      ))
-              (if temp
-                  (setf (labls self) (append (labls self) (list (concatenate 'string temp)))))
-              (print temp)
-              (setf i (1+ i))
-              (fli:free-foreign-object ptr)
-              ))
-      (fli:free-foreign-object lablptr)
-      (fli:free-foreign-object path-ptr)
-      "Import done."
-)))
+          (loop until (= id 0) do 
+                (progn 
+                  (setf temp (list))
+                  (setf id 0)
+                  (setf ptr (fli:dereference lablptr :type :pointer :index i))
+                  (setf cur (fli:dereference ptr :type :char :index 0))
+                  (loop until (char= cur #\0) do
+                        (progn
+                          (setf temp (append temp (list cur)))
+                          (setf id (1+ id))
+                          (setf cur (fli::dereference ptr :type :char :index id))
+                          ))
+                  (if temp
+                      (setf (labls self) (append (labls self) (list (concatenate 'string temp)))))
+                  (print temp)
+                  (setf i (1+ i))
+                  (fli:free-foreign-object ptr)
+                  ))
+          (fli:free-foreign-object lablptr)
+          (fli:free-foreign-object path-ptr)
+          "Import done."
+)))))
 
 
 (defmethod get-class-avrg((self xmmobj) label)

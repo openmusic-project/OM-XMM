@@ -281,14 +281,14 @@ int save_model_JSON(char* pathptr, void* model){
 }
 
 int importJson(char* pathptr, void* modelptr, void* lablptr){
+    
     char* path = static_cast<char*>(pathptr);
     xmm::HierarchicalHMM *mhhmm = static_cast<xmm::HierarchicalHMM*>(modelptr);
     char** labls=static_cast<char**>(lablptr);
     try{
         std::ifstream file(path);
-        if(!file.good()){
-            throw "file doesn't exist";
-            return 0;
+        if(!file.is_open()){
+            throw std::runtime_error("failed to load file");
         }
         Json::Value json;
         Json::Reader reader;
@@ -299,9 +299,7 @@ int importJson(char* pathptr, void* modelptr, void* lablptr){
             mhhmm->xmm::HierarchicalHMM::fromJson(json);
         }else{
             std::cout<<"unable to parse json value";
-            return 0;
         }
-        
         //Prepare labels list for OM
         int j, i =0;
         for(auto &model : mhhmm->models){
@@ -319,6 +317,7 @@ int importJson(char* pathptr, void* modelptr, void* lablptr){
     }catch(const std::exception & Exp )
     {
         std::cerr << "\nErreur import : " << Exp.what() << ".\n";
+        return 0;
     }
     return int(mhhmm->shared_parameters->dimension.get());
 }
