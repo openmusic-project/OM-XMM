@@ -5,12 +5,13 @@
  (:doc "")
  (:info
   (:created "2018/04/03 17:30:22")
-  (:modified "2018/05/04 14:26:11"))
+  (:modified "2018/07/18 12:27:35"))
  (:window (:size (843 654)) (:position (937 266)))
  (:grid nil)
  (:lock nil)
  (:boxes
   (:box
+   (:library "om-xmm")
    (:reference (:symbol "XMMOBJ" "XMM"))
    (:type :object)
    (:group-id nil)
@@ -18,7 +19,7 @@
    (:x 56)
    (:y 158)
    (:w 281)
-   (:h 44)
+   (:h 64)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -38,51 +39,20 @@
      (:type :standard)
      (:name "DATASET")
      (:value nil)
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "COLUMN-NAMES")
-     (:value nil)
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "REGULARIZATION")
-     (:value (:list 0.05 0.01))
-     (:reactive nil))
-    (:input
-     (:type :standard)
-     (:name "STATES")
-     (:value 10)
      (:reactive nil)))
    (:outputs
     (:output (:name "SELF") (:reactive nil))
-    (:output (:name "DATASET") (:reactive nil))
-    (:output (:name "COLUMN-NAMES") (:reactive nil))
-    (:output (:name "REGULARIZATION") (:reactive nil))
-    (:output (:name "STATES") (:reactive nil)))
+    (:output (:name "DATASET") (:reactive nil)))
    (:window (:size (nil nil)) (:position (nil nil)))
    (:edition-params)
    (:value
     (:object
      (:class (:symbol "XMMOBJ" "XMM"))
-     (:slots
-      ((:dataset nil)
-       (:column-names
-        (:list
-         "desc_1"
-         "desc_2"
-         "desc_3"
-         "desc_4"
-         "desc_5"
-         "desc_6"
-         "desc_7"
-         "desc_8"
-         "desc_9"
-         "desc_10"
-         "desc_11"
-         "desc_12"))
-       (:regularization (:list 0.05 0.01))
-       (:states 10)))))
+     (:slots ((:dataset nil)))
+     (:add-slots
+      ((:states 10)
+       (:gaussians 1)
+       (:regularization (:list 0.05 0.01))))))
    (:id 0))
   (:box
    (:reference (:symbol "IMPORT-JSON" "XMM"))
@@ -92,7 +62,7 @@
    (:x 104)
    (:y 324)
    (:w 97)
-   (:h 28)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -119,9 +89,9 @@
    (:group-id nil)
    (:name "value box")
    (:x 140)
-   (:y 289)
-   (:w 224)
-   (:h 28)
+   (:y 290)
+   (:w 235)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -130,7 +100,7 @@
    (:lock nil)
    (:inputs)
    (:outputs (:output (:name "value") (:reactive nil)))
-   (:value "Users/best/Desktop/zamyadModel.json")
+   (:value "Users/best/Desktop/exporttest.json")
    (:id 2))
   (:box
    (:reference file-chooser)
@@ -139,8 +109,8 @@
    (:name "file-chooser")
    (:x 438)
    (:y 30)
-   (:w 97)
-   (:h 28)
+   (:w 100)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -325,8 +295,8 @@
    (:name "descriptors")
    (:x 241)
    (:y 123)
-   (:w 93)
-   (:h 28)
+   (:w 97)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -566,6 +536,7 @@
        (:value 0)
        (:id 7))
       (:box
+       (:library "om-xmm")
        (:reference (:symbol "RUN" "XMM"))
        (:type :function)
        (:group-id nil)
@@ -757,8 +728,8 @@
    (:name "mapcar")
    (:x 529)
    (:y 322)
-   (:w 75)
-   (:h 28)
+   (:w 78)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -786,8 +757,8 @@
    (:name "sound-dur")
    (:x 602)
    (:y 139)
-   (:w 90)
-   (:h 28)
+   (:w 92)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -857,7 +828,7 @@
    (:x 636)
    (:y 213)
    (:w 44)
-   (:h 28)
+   (:h 30)
    (:color nil)
    (:border nil)
    (:roundness nil)
@@ -3769,10 +3740,6 @@
   (:connection
    (:from (:box 6 :out 0))
    (:to (:box 5 :in 2))
-   (:attributes (:color nil :style nil :modif nil)))
-  (:connection
-   (:from (:box 7 :out 0))
-   (:to (:box 0 :in 2))
    (:attributes (:color nil :style nil :modif nil)))
   (:connection
    (:from (:box 9 :out 0))

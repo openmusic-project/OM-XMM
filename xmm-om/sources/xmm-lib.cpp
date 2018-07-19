@@ -224,21 +224,20 @@ float runXMM(void* descptr, int sample_size, int columnnum, void* model, int res
                 observation->at(i) = descr[i][k];
             }
             mhhmm->filter(*observation);
-            
-            //std::cout<<mhhmm->results.likeliest<<std::endl;
         }
    //     std::cout<<mhhmm->models.at(mhhmm->results.likeliest).results.progress<<std::endl;
         
-//        //Get three likeliest labels
-//        double max2 =-1, max3 = -1;
-//        std::string label1, label2, label3;
-//        int i=0;
-//        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
-//            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max1){
-//                max1=mhhmm->results.smoothed_normalized_likelihoods[i];
-//                label1=it->first;
-//            }
-//        }
+        //Get three likeliest labels
+      //  double max2 =-1, max3 = -1;
+        //std::string label1, label2, label3;
+        int i=0;
+        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
+            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max1){
+                max1=mhhmm->results.smoothed_normalized_likelihoods[i];
+                std::cout<<it->first<<max1<<std::endl;
+              //  label1=it->first;
+            }
+        }
 //        for(auto it = mhhmm->models.begin(); it != mhhmm->models.end(); ++it, ++i){
 //            if(mhhmm->results.smoothed_normalized_likelihoods[i]>max2 && it->first != label1){
 //                max2=mhhmm->results.smoothed_normalized_likelihoods[i];
@@ -251,19 +250,15 @@ float runXMM(void* descptr, int sample_size, int columnnum, void* model, int res
 //                label3=it->first;
 //            }
 //        }
-//        for(auto likel : mhhmm->results.smoothed_normalized_likelihoods){
-//            std::cout<<likel<<" ";
-//        }
-        
 //        std::cout<<std::endl<<"1. "<<label1<<" "<<max1<<std::endl<<"2. "<<label2<<" "<<max2<<std::endl<<"3. "<<label3<<" "<<max3<<std::endl;
-       // std::cout<<mhhmm->results.likeliest;
+        
         strcpy(out, (mhhmm->results.likeliest+"0").c_str());
     }catch ( const std::exception & Exp )
     {
         std::cerr << "\nErreur run : " << Exp.what() << ".\n";
     }
     delete observation;
-    return float(max1);//mhhmm->results.smoothed_normalized_likelihoods.at(std::distance(mhhmm->models.begin(),mhhmm->models.find(mhhmm->results.likeliest)));
+    return float(max1);
 }
 
 

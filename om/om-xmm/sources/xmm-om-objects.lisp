@@ -65,6 +65,9 @@
 (defmethod om::additional-class-attributes ((self xmmobj)) 
   '(xmm::states xmm::gaussians xmm::regularization))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;       TRAIN, RUN, TEST   ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod train-model ((self xmmobj))
   (if (dataset self)
@@ -76,47 +79,6 @@
         (om::om-print ".... done training !" "XMM"))
     (om::om-print "missing some data to learn.." "XMM")))
 
-
-
-;;test : outputs the accuracy for prediction on labelled data
-;;fills errors list with number of error for each actual label
-;;dataset is a list of samples
-;;each sample is a list of 2 (desc-matrix , label) 
-;;descriptor matrix is a list of descriptor vectors
-(om::defmethod! test ((self xmmobj) dataset)
-  (let ((accuracy 0)
-        (num-samples (length dataset))
-        (count 0))
-    (setf (errors self) (make-list (length (labls self)) :initial-element 0))
-     (setf (table-result self) (make-list (length (labls self)) :initial-element (make-list (length (labls self)) :initial-element 0)))
-    (loop for sample in dataset
-          do (let* ((pred (run self (car sample)))
-                   (real (cadr sample))
-                   (pos (position real (labls self) :test #'equal)))
-               ;(print (format nil "pred: ~A " pred))
-               ;(print (format nil " actual: ~A " real))
-               (if (not pos) (progn (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
-                               (decf num-samples))
-                 (if (string= pred (make-string 20 :initial-element #\0)) (decf num-samples)  
-
-                 (progn
-                   (if (string= "notsure" pred)  (decf num-samples)
-                     (if (string= pred real) 
-                         (incf accuracy) 
-                       (progn (incf (nth pos (errors self)))
-                     ;(om::om-print (format nil "Predicted ~a instead of ~a on number ~d " pred real count) "XMM")
-                         )))  
-                   ;MAJ TABLE-RESULT
-                   (setf (nth pos (table-result self)) 
-                         (substnth (1+ (nth (position  pred (labls self) :test #'equal) (nth pos (table-result self))))
-                                   (position pred (labls self) :test #'equal)
-                                   (nth pos (table-result self))))
-                   )))
-               ))
-    
-    (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
-    (/ accuracy num-samples)
-))
 
 
 
@@ -135,7 +97,6 @@
     (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
         (if (not (= (length data) (dim self))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
         (progn
-          
           ;NORMALIZATION
          ; (setf data (print (car (normalize self (list (print data))))))
 
@@ -159,29 +120,51 @@
           (fli:free-foreign-object descr)
           (fli:free-foreign-object resultptr)
           ;(if (< likelihood 0.6) (setf result "notsure"))
-          ;(om::om-print (format nil "~a with ~f likelihood" result likelihood) "XMM")
+          (om::om-print (format nil "~a with ~f likelihood" result likelihood) "XMM")
           )))
     result)
 )
 
 
+;;test : outputs the accuracy for prediction on labelled data
+;;fills errors list with number of error for each actual label
+;;dataset is a list of samples
+;;each sample is a list of 2 (desc-matrix , label) 
+;;descriptor matrix is a list of descriptor vectors
+(om::defmethod! test ((self xmmobj) dataset)
+  (let ((accuracy 0)
+        (num-samples (length dataset)))
+            (setf (errors self) (make-list (length (labls self)) :initial-element 0))
+     (setf (table-result self) (make-list (length (labls self)) :initial-element (make-list (length (labls self)) :initial-element 0)))
+    (loop for sample in dataset
+          do (let* ((pred (run self (car sample)))
+                   (real (cadr sample))
+                   (pos (position real (labls self) :test #'equal)))
+               ;(print (format nil "pred: ~A " pred))
+               ;(print (format nil " actual: ~A " real))
+               (if (not pos) (progn (om::om-print (format nil "Label ~a was not in training..." real) "XMM")  
+                               (decf num-samples))
+                 (if (string= pred (make-string 20 :initial-element #\0)) (decf num-samples)  
 
-(defun to-float (list)
-  (loop for elem in list collect
-        (float elem)
-))
-(defun to-chars (str)
-  (loop for i from 0 to (1- (length str)) collect
-        (char str i)
+                 (progn
+                   ;(if (string= "notsure" pred)  (decf num-samples)
+                     (if (string= pred real) 
+                         (incf accuracy) 
+                       (progn (incf (nth pos (errors self)))
+                     ;(om::om-print (format nil "Predicted ~a instead of ~a on number ~d " pred real count) "XMM")
+                         ));)  
+                   ;MAJ TABLE-RESULT
+                   (setf (nth pos (table-result self)) 
+                         (substnth (1+ (nth (position  pred (labls self) :test #'equal) (nth pos (table-result self))))
+                                   (position pred (labls self) :test #'equal)
+                                   (nth pos (table-result self))))
+                   )))
+               ))
+    
+    (om::om-print (format nil "Accuracy : ~d/~d" accuracy num-samples) "XMM")
+    (/ accuracy num-samples)
 ))
 
-(defun substnth ( a n l )
-    (if l
-        (if (zerop n)
-            (cons a (cdr l))
-            (cons (car l) (substnth a (1- n) (cdr l)))
-        ))
-)
 
 
 ;;Builds the xmm trainingset object with the attibute (dataset) and stores it in data-ptr
@@ -233,7 +216,11 @@
 ))
 
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                  ;;;
+;;;   EXPORT/IMPORT  ;;;
+;;;                  ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (defmethod export-json((self xmmobj) path)
@@ -282,6 +269,15 @@
           (fli:free-foreign-object path-ptr)
           "Import done."
 )))))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                  ;;;
+;;;      GETTERS     ;;;
+;;;                  ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 
 (defmethod get-class-avrg((self xmmobj) label)
@@ -344,12 +340,15 @@
 )
 
 
-(om::defmethod! get-errors((self xmmobj))
+(defmethod get-errors((self xmmobj))
   (loop for i from 0 to (1- (length (labls self)))
        do (print (format nil "~A ~d" (nth i (labls self)) (nth i (errors self))))
 ))
 
-;;; VIEW 
+
+;;;;;;;;;;;;
+;;; VIEW ;;;
+;;;;;;;;;;;;
 
 (defmethod om::display-modes-for-object ((self xmmobj))
   '(:hidden :text :mini-view))
@@ -364,36 +363,36 @@
 
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; GENETIC ALGO FOR HYPER-PARAMETER OPTIMIZATION
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PARAM struct : ("descriptor"   (5 8 7 4 6 8)        15            (0.1 0.05))
-;;             descr extracted   descr lines to keep   states_num      regularization
-
-(defun testaccu (item1 item2)
-  (if  item1
-      (if (> (mean (second item1)) (mean (second item2)))
-          item1
-        item2)
-   item2)
-)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                                                    ;;;
+;;;    GENETIC ALGO FOR HYPER-PARAMETER OPTIMIZATION   ;;;
+;;;                                                    ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defun find4best (results)
-  (if (> (length results) 4) 
-      (let ((ret (make-list 4))
-            (mlist results))
-        (loop for i from 0 to 3 do 
-              (let ((max nil))
-                (loop for item in mlist do 
-                      (if (not (find item ret)) (setf max (testaccu max item)))
-                      )
-                (setf mlist (remove max mlist))
-                (setf (nth i ret) max)
-                ))
-        ret
-        )
-    results)
+
+;; PARAM format : ("descriptor"   (5 8 7 4 6 8)       15            2              (0.1 0.05))
+;;                 pipo module   descr  to keep   states_num    gaussians      regularization
+
+(defun gene-algo (fun firstparams descnum) 
+  (let* ((params firstparams)
+         (condition T)) 
+    (loop while condition do
+          ;(progn 
+            (setf params (reproduce
+                        ;Get 4 best results (( "descr" 10 (0.05 0.01)) (0.3457 0.7575)) 
+                               (print (find4best
+                                ;;collect results
+                                (loop for param in params collect 
+                                      (if (not (= (length param) 2)) 
+                                          (funcall fun (print param))
+                                        ;(funcall fun (car (print param)))
+                                        (print param)
+                                        )
+                                      ))) descnum))
+   ;Terminating condition      
+   ;(if (< 0.9 (car (second (car params)))) (setf condition nil)))
+    ))
 )
 
 (defun reproduce (results descnum) 
@@ -425,28 +424,39 @@
     ret)
 )
 
-(defun gene-algo (fun firstparams descnum) 
-  (let* ((params firstparams)
-         (condition T)) 
-    (loop while condition do
-          ;(progn 
-            (setf params (reproduce
-                        ;Get 4 best results (( "descr" 10 (0.05 0.01)) (0.3457 0.7575)) 
-                               (print (find4best
-                                ;;collect results
-                                (loop for param in params collect 
-                                      (if (not (= (length param) 2)) 
-                                          (funcall fun (print param))
-                                        ;(funcall fun (car (print param)))
-                                        (print param)
-                                        )
-                                      ))) descnum))
-            ;(if (< 0.9 (car (second (car params)))) (setf condition nil)))
-    ))
+(defun testaccu (item1 item2)
+  (if  item1
+      (if (> (mean (second item1)) (mean (second item2)))
+          item1
+        item2)
+   item2)
 )
 
 
-;;;FOR NORMALISATION;;;
+(defun find4best (results)
+  (if (> (length results) 4) 
+      (let ((ret (make-list 4))
+            (mlist results))
+        (loop for i from 0 to 3 do 
+              (let ((max nil))
+                (loop for item in mlist do 
+                      (if (not (find item ret)) (setf max (testaccu max item)))
+                      )
+                (setf mlist (remove max mlist))
+                (setf (nth i ret) max)
+                ))
+        ret
+        )
+    results)
+)
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;                          ;;;;;
+;;;;;      NORMALISATION       ;;;;;
+;;;;;                          ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod normalize ((self xmmobj) data)
   (let ((descnum (length (car data))))
@@ -475,6 +485,10 @@
 )
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;         SIDE TOOLS       ;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defun normfun (x mean std)
   (/ (- x mean) std)
 )
@@ -488,6 +502,23 @@
 (defun mean(lst)
   (/ (reduce '+ lst) (length lst)))
 
+(defun to-float (list)
+  (loop for elem in list collect
+        (float elem)
+))
+
+(defun to-chars (str)
+  (loop for i from 0 to (1- (length str)) collect
+        (char str i)
+))
+
+(defun substnth ( a n l )
+    (if l
+        (if (zerop n)
+            (cons a (cdr l))
+            (cons (car l) (substnth a (1- n) (cdr l)))
+        ))
+)
 
 
 
