@@ -38,6 +38,7 @@
    (states :accessor states :initform 10 :type integer)   ; Number of hidden states for the HHMM
    (gaussians :accessor gaussians :initform 1 :type integer) ; Number of gaussians per state (gaussian mixture models)
    (regularization :accessor regularization :initform (list 0.05 0.01) :type list) ;Relative and absolute regularization values for EM algorithm
+   (normalize-data :accessor normalize-data :initform nil)
    (table-result :accessor table-result :initform '()) ;Number of errors for confusion matrix (computed with the test function)
    (dim :accessor dim :initform 0)
    ))
@@ -63,7 +64,7 @@
   self)
 
 (defmethod om::additional-class-attributes ((self xmmobj)) 
-  '(xmm::states xmm::gaussians xmm::regularization))
+  '(xmm::states xmm::gaussians xmm::regularization xmm::normalize-data))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;       TRAIN, RUN, TEST   ;;;;;
@@ -97,8 +98,10 @@
     (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
         (if (not (= (length data) (dim self))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
         (progn
+
+          (if (normalize-data self)
           ;NORMALIZATION
-         ; (setf data (print (car (normalize self (list (print data))))))
+          (setf data (car (normalize self (list data)))))
 
           ;;Loop for each descriptor, and build data in pointer to send to xmm
           (loop for i from 0 to (1- (length data))  
@@ -175,13 +178,15 @@
         (sizes (fli:allocate-foreign-object :type :int :nelems (length data))))       
     (if (null data) (return-from fill_data "empty data"))
     
-   ; (om::om-print "Normalizing..." "XMM")
-    ;Compute mean and stddev
-  ;  (compute-norms self (car (om::mat-trans data)))
+    (if (normalize-data self)
+        (progn
+          (om::om-print "Normalizing..." "XMM")
+       ;Compute mean and stddev
+          (compute-norms self (car (om::mat-trans data)))
 
-    ;Normalize the data 
-  ;  (setf data (om::mat-trans (list (normalize self (car (om::mat-trans data))) (cadr (om::mat-trans data)))))
-   ; (om::om-print "...done" "XMM")
+       ;Normalize the data 
+          (setf data (om::mat-trans (list (normalize self (car (om::mat-trans data))) (cadr (om::mat-trans data)))))
+          (om::om-print "...done" "XMM")))
 
 
 
