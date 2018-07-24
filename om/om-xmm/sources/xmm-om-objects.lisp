@@ -140,7 +140,7 @@
             (setf (errors self) (make-list (length (labls self)) :initial-element 0))
      (setf (table-result self) (make-list (length (labls self)) :initial-element (make-list (length (labls self)) :initial-element 0)))
     (loop for sample in dataset
-          do (let* ((pred (run self (car sample)))
+          do (let* ((pred (run-model self (car sample)))
                    (real (cadr sample))
                    (pos (position real (labls self) :test #'equal)))
                ;(print (format nil "pred: ~A " pred))

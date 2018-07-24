@@ -14,7 +14,7 @@
   )
  (:symbols 
   (:classes "xmm::xmm-model")
-  (:functions "xmm::run-model" "xmm::test-model" "xmm::get-errors" "xmm::get-confusion-matrix" "xmm::import-json" "xmm::export-json"))
+  (:functions "xmm::run-model" "xmm::test-model" "xmm::get-errors" "xmm::get-confusion-matrix" "xmm::import-json" "xmm::export-json" "xmm::gene-algo"))
  (:author "P. Best (2018)")
  )
 

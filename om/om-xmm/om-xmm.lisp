@@ -31,7 +31,7 @@
 (compile&load (merge-pathnames "sources/xmm-om-objects" *load-pathname*))
 
 (om::fill-library 
- '((nil nil (xmm::xmm-model) (xmm::run-model xmm::get-errors xmm::test-model xmm::import-json xmm::export-json xmm::get-confusion-matrix) nil)))
+ '((nil nil (xmm::xmm-model) (xmm::run-model xmm::get-errors xmm::test-model xmm::import-json xmm::export-json xmm::get-confusion-matrix xmm::gene-algo) nil)))
 
 (print "
  ==============================
