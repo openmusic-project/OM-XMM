@@ -13,8 +13,8 @@
   (:pathname (:directory (:relative "sources")) (:name "xmm-om-objects"))
   )
  (:symbols 
-  (:classes "xmm::xmmobj")
-  (:functions "xmm::run" "xmm::test" "xmm::get-errors"))
+  (:classes "xmm::xmm-model")
+  (:functions "xmm::run-model" "xmm::test-model" "xmm::get-errors" "xmm::get-confusion-matrix" "xmm::import-json" "xmm::export-json"))
  (:author "P. Best (2018)")
  )
 

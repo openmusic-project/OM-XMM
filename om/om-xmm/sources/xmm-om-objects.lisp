@@ -26,7 +26,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(om::defclass! xmmobj (om::om-cleanup-mixin)
+(om::defclass! xmm-model (om::om-cleanup-mixin)
   ((labls :accessor labls :initform nil :type list)
    (dataset :accessor dataset :initform nil :initarg :dataset :type list) ; DATASET = LIST de ((DATA1 LABEL1) (DATA2 LABEL2) ...)      
    (means :accessor means)
@@ -34,7 +34,7 @@
    (data-ptr :accessor data-ptr :initform nil) ; PTR on c++ Trainingset object 
    (model-ptr :accessor model-ptr :initform nil ) ; PTR on c++ HHMM object
    (errors :accessor errors :initform nil :type list) ;Number of errors per ground truth label (computed with the test function)
-   (name :accessor name :initform (gensym "xmmobj"))
+   (name :accessor name :initform (gensym "XMM-Model"))
    (states :accessor states :initform 10 :type integer)   ; Number of hidden states for the HHMM
    (gaussians :accessor gaussians :initform 1 :type integer) ; Number of gaussians per state (gaussian mixture models)
    (regularization :accessor regularization :initform (list 0.05 0.01) :type list) ;Relative and absolute regularization values for EM algorithm
@@ -44,33 +44,33 @@
    ))
 
 
-(defmethod om::om-cleanup ((self xmmobj))
+(defmethod om::om-cleanup ((self xmm-model))
   (when (model-ptr self)
     (om::om-print (format nil "deleting model of ~A (~A) [~A] and dataset [~A]" self (name self) (model-ptr self) (data-ptr self)) "GC")
     (if (and (not (fli::null-pointer-p (model-ptr self))) (not (fli::null-pointer-p (data-ptr self))))
         (xmm-free (model-ptr self) (data-ptr self)))
   ))
 
-(defmethod initialize-instance ((self xmmobj) &rest initargs)
+(defmethod initialize-instance ((self xmm-model) &rest initargs)
   (call-next-method)
   (setf (model-ptr self) (xmm-initmodel (first (regularization self)) (second (regularization self)) (states self) (gaussians self)))
   self)
 
 
 #+o7
-(defmethod om::om-init-instance ((self xmmobj) &optional args)
+(defmethod om::om-init-instance ((self xmm-model) &optional args)
   (call-next-method)
   (train-model self)
   self)
 
-(defmethod om::additional-class-attributes ((self xmmobj)) 
+(defmethod om::additional-class-attributes ((self xmm-model)) 
   '(xmm::states xmm::gaussians xmm::regularization xmm::normalize-data))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;       TRAIN, RUN, TEST   ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod train-model ((self xmmobj))
+(defmethod train-model ((self xmm-model))
   (if (dataset self)
       (progn 
         (om::om-print "init and train......" "XMM")
@@ -87,7 +87,7 @@
 ;;data is a matrix of descriptors for 1 sample 
 ;;descriptor matrix is a list of descriptor vectors
 ;;reset : if nil : the model's passed results will be kept, influencing the next results. else, model's results will be reset
-(om::defmethod! run ((self xmmobj) data &optional (reset 1))
+(om::defmethod! run-model ((self xmm-model) data &optional (reset 1))
   (let ((descr (fli:allocate-foreign-object :type :pointer :nelems (length data)))
         (size (length (car data)))
         (resultptr (fli:allocate-foreign-object :type :char :nelems 20))
@@ -134,7 +134,7 @@
 ;;dataset is a list of samples
 ;;each sample is a list of 2 (desc-matrix , label) 
 ;;descriptor matrix is a list of descriptor vectors
-(om::defmethod! test ((self xmmobj) dataset)
+(om::defmethod! test-model ((self xmm-model) dataset)
   (let ((accuracy 0)
         (num-samples (length dataset)))
             (setf (errors self) (make-list (length (labls self)) :initial-element 0))
@@ -171,7 +171,7 @@
 
 
 ;;Builds the xmm trainingset object with the attibute (dataset) and stores it in data-ptr
-(defmethod fill_data((self xmmobj))
+(defmethod fill_data ((self xmm-model))
   (let* ((data (dataset self))
         (laabels (fli:allocate-foreign-object :type :pointer :nelems (length data)))
         (descrs (fli:allocate-foreign-object :type :pointer :nelems (length data)))
@@ -228,7 +228,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defmethod export-json((self xmmobj) path)
+(om::defmethod! export-json ((self xmm-model) path)
   (let ((path-ptr (fli:allocate-foreign-object :type :char :nelems (length path) :initial-contents (coerce path 'list))))
   (xmm-save path-ptr  (model-ptr self))
   (fli::free-foreign-object path-ptr)
@@ -237,7 +237,7 @@
 
 
 
-(defmethod import-json((self xmmobj) path)
+(om::defmethod! import-json ((self xmm-model) path)
   (when path
     (let* ((path-ptr (fli:allocate-foreign-object :type :char :nelems (length path) :initial-contents (coerce path 'list)))
            (lablptr (fli:allocate-foreign-object :type :pointer :nelems 30))   ;;; /!\ 30 labels maximum
@@ -285,14 +285,14 @@
 
 
 
-(defmethod get-class-avrg((self xmmobj) label)
+(defmethod get-class-avrg ((self xmm-model) label)
   (if (dataset self)
       (let* ((result (fli:allocate-foreign-object :type :pointer :nelems (dim self)))
              (labelptr (fli:allocate-foreign-object :type :char :nelems (length label) :initial-contents (coerce label 'list))) 
              (size  (xmm-classavrg (data-ptr self) labelptr result))
              (ret (make-list (dim self)))
              (ptr))
-        (loop for dim from 0 to (1- (dims self)) do
+        (loop for dim from 0 to (1- (dim self)) do
               (progn 
                 (setf (nth dim ret)  (make-list size))
                 (setf ptr (fli:dereference result :type :pointer :index dim))
@@ -310,16 +310,16 @@
 
 
 
-(defmethod get-labels((self xmmobj))
+(defmethod get-labels ((self xmm-model))
   (labls self)
 )
 
-(defmethod get-model((self xmmobj))
+(defmethod get-model ((self xmm-model))
   (model-ptr self)
 )
 
 
-(defmethod get-confusion-matrix((self xmmobj))
+(om::defmethod! get-confusion-matrix ((self xmm-model))
 (if (null (table-result self)) (print "Please call the test function first")
 (let* ((table (copy-list (table-result self)))
       (labls (labls self))
@@ -345,7 +345,7 @@
 )
 
 
-(defmethod get-errors((self xmmobj))
+(om::defmethod! get-errors ((self xmm-model))
   (loop for i from 0 to (1- (length (labls self)))
        do (print (format nil "~A ~d" (nth i (labls self)) (nth i (errors self))))
 ))
@@ -355,11 +355,11 @@
 ;;; VIEW ;;;
 ;;;;;;;;;;;;
 
-(defmethod om::display-modes-for-object ((self xmmobj))
+(defmethod om::display-modes-for-object ((self xmm-model))
   '(:hidden :text :mini-view))
 
 #+o7
-(defmethod om::draw-mini-view ((self xmmobj) (box t) x y w h &optional time)
+(defmethod om::draw-mini-view ((self xmm-model) (box t) x y w h &optional time)
     (om::om-with-font 
      (om::om-def-font :font1 :size 10)
      (om::om-draw-string (+ x 10) (+ y 20) (concatenate 'string "Labels : " (format nil "~{~A~^,~}" (labls self))) :wrap (om::box-w box))
@@ -463,9 +463,10 @@
 ;;;;;                          ;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod normalize ((self xmmobj) data)
+(defmethod normalize ((self xmm-model) data)
   (let ((descnum (length (car data))))
-
+    (print (means self))
+    (print (stddevs self))
   (loop for sample in data collect
         (loop for idesc from 0 to (1- descnum) collect
               (loop for n in (nth idesc sample) collect
@@ -478,7 +479,7 @@
 
 
 
-(defmethod compute-norms ((self xmmobj) data)
+(defmethod compute-norms ((self xmm-model) data)
   (let ((numdesc (length (car data))))
     (setf (means self) (make-list numdesc))
     (setf (stddevs self) (make-list numdesc))
