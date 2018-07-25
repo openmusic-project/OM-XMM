@@ -41,7 +41,8 @@
    (normalize-data :accessor normalize-data :initform nil)
    (table-result :accessor table-result :initform '()) ;Number of errors for confusion matrix (computed with the test function)
    (dim :accessor dim :initform 0)
-   ))
+   )
+  (:icon 1))
 
 
 (defmethod om::om-cleanup ((self xmm-model))
@@ -96,12 +97,12 @@
         (i 0)
         (result (make-string 20 :initial-element #\0)))
     (if (= 0 size) (om::om-print "Data size is null, frame might be too small" "XMM") 
-        (if (not (= (length data) (dim self))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
+      (if (not (= (length data) (dim self))) (om::om-print "Data must have the same dimension as the training data" "XMM") 
         (progn
 
           (if (normalize-data self)
           ;NORMALIZATION
-          (setf data (car (normalize self (list data)))))
+              (setf data (car (normalize self (list data)))))
 
           ;;Loop for each descriptor, and build data in pointer to send to xmm
           (loop for i from 0 to (1- (length data))  
@@ -379,7 +380,7 @@
 ;; PARAM format : ("descriptor"   (5 8 7 4 6 8)       15            2              (0.1 0.05))
 ;;                 pipo module   descr  to keep   states_num    gaussians      regularization
 
-(defun gene-algo (fun firstparams descnum) 
+(defun gene-algo (fun firstparams descnum &optional (numchildren 4)) 
   (let* ((params firstparams)
          (condition T)) 
     (loop while condition do
@@ -394,20 +395,20 @@
                                         ;(funcall fun (car (print param)))
                                         (print param)
                                         )
-                                      ))) descnum))
+                                      ))) descnum numchildren))
    ;Terminating condition      
    ;(if (< 0.9 (car (second (car params)))) (setf condition nil)))
     ))
 )
 
-(defun reproduce (results descnum) 
+(defun reproduce (results descnum numchildren) 
   (let* ((ret)
          (vardesc)
          (varreg1)
          (varreg2)
          (newgaus)
         (parents (car (om:mat-trans results))))
-    (loop for i from 0 to 5 do
+    (loop for i from 1 to numchildren do
     (loop for parent in parents do 
           (setf ret 
                 (append ret 
@@ -465,8 +466,6 @@
 
 (defmethod normalize ((self xmm-model) data)
   (let ((descnum (length (car data))))
-    (print (means self))
-    (print (stddevs self))
   (loop for sample in data collect
         (loop for idesc from 0 to (1- descnum) collect
               (loop for n in (nth idesc sample) collect

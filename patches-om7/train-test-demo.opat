@@ -5,8 +5,8 @@
  (:doc "")
  (:info
   (:created "2018/07/10 11:29:24")
-  (:modified "2018/07/24 16:17:02"))
- (:window (:size (1065 738)) (:position (465 163)))
+  (:modified "2018/07/25 11:05:30"))
+ (:window (:size (1065 738)) (:position (301 177)))
  (:grid nil)
  (:lock nil)
  (:boxes
@@ -451,8 +451,8 @@
          (:value nil)
          (:reactive nil))
         (:input
-         (:type :standard)
-         (:name "SRC-INDEX")
+         (:type :optional)
+         (:name "src-index")
          (:value 0)
          (:reactive nil))
         (:input
@@ -1059,7 +1059,7 @@
    (:roundness nil)
    (:text-font (:font (:face "Calibri") (:size 12) (:style :italic)))
    (:name nil)
-   (:display :hidden)
+   (:display :mini-view)
    (:showname nil)
    (:group-id nil)
    (:lock nil)
@@ -22620,7 +22620,7 @@
    (:roundness nil)
    (:text-font
     (:font-or-nil
-     (:font (:font (:face "Helvetica") (:size 24.0D0) (:style :bold)))
+     (:font (:font (:face "Helvetica") (:size 24) (:style :bold)))
      (:t-or-nil t)))
    (:align nil)
    (:text
