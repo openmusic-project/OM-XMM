@@ -5,8 +5,8 @@
  (:doc "")
  (:info
   (:created "2018/07/17 11:36:27")
-  (:modified "2018/07/24 15:08:30"))
- (:window (:size (873 535)) (:position (545 369)))
+  (:modified "2018/07/25 11:22:43"))
+ (:window (:size (1323 679)) (:position (545 369)))
  (:grid nil)
  (:lock nil)
  (:boxes
@@ -49,8 +49,8 @@
     (:patch-from-file
      (:pathname
       (:directory (:relative))
-      (:device nil)
-      (:host nil)
+      (:device :unspecific)
+      (:host :unspecific)
       (:name "train-test-demo")
       (:type "opat"))))
    (:type :patch)
