@@ -6,7 +6,7 @@ XMM is a C++ library that implements Gaussian Mixture Models and Hidden Markov M
 
 XMM-OM is a C++ library that manages data preparation, training, and prediction using XMM
 
-OM-XMM is a lisp library for OpenMusic (OM 6.13 / o7) that manages the XMM-OM C++ Library
+OM-XMM is a lisp library for OpenMusic (OM 6.13 / om7) that manages the XMM-OM C++ Library
 
 ### [Documentation](https://github.com/openmusic-project/om-xmm/wiki/)
 

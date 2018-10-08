@@ -1,6 +1,6 @@
 ;============================================================================
 ; OM-XMM
-; A bridge between o7 and the XMM library.
+; A bridge between om7 and the XMM library.
 ;
 ; XMM is a C++ library that implements Gaussian Mixture Models and Hidden Markov Models for recognition and regression. 
 ; The library implements an interactive machine learning workflow with fast training and continuous, real-time inference. 
@@ -57,7 +57,7 @@
   self)
 
 
-#+o7
+#+om7
 (defmethod om::om-init-instance ((self xmm-model) &optional args)
   (call-next-method)
   (train-model self)
@@ -358,7 +358,7 @@
 (defmethod om::display-modes-for-object ((self xmm-model))
   '(:hidden :text :mini-view))
 
-#+o7
+#+om7
 (defmethod om::draw-mini-view ((self xmm-model) (box t) x y w h &optional time)
     (om::om-with-font 
      (om::om-def-font :font1 :size 10)
