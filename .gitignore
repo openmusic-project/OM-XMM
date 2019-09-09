@@ -1,4 +1,4 @@
-*.64xfasl
+*.*fasl
 *.*~
 .DS_Store
 lib2om
