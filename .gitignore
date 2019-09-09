@@ -1,6 +1,8 @@
 *.*fasl
 *.*~
 .DS_Store
+**/reference-pages/**
+
 lib2om
 xmm
 xmm-om/Debug/libxmm-om.dylib
