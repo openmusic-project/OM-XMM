@@ -31,11 +31,13 @@
 
 (defun load-xmm-lib ()
   (let ((libpath (merge-pathnames 
-                  "lib/mac/libxmm-om.dylib" 
+                  #+linux "lib/linux/libxmm-om.so"
+		  #-linux "lib/mac/libxmm-om.dylib"
                   (om::mypathname (om::find-library "om-xmm")))))
     (om-fi::om-load-foreign-library
            "LIBXMM"
-           `((:macosx ,libpath)
+           `((:linux ,libpath)
+	     (:macosx ,libpath)
              (t (:default "libxmm-om"))))
     ))
 
