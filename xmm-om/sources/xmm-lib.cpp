@@ -13,6 +13,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstring>
 
 std::string toString(char c){
     std::stringstream ss;
