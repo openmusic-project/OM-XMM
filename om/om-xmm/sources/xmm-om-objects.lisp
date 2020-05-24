@@ -58,7 +58,7 @@
   self)
 
 
-#+om7
+#+om-sharp
 (defmethod om::om-init-instance ((self xmm-model) &optional args)
   (call-next-method)
   (train-model self)
@@ -359,7 +359,7 @@
 (defmethod om::display-modes-for-object ((self xmm-model))
   '(:hidden :text :mini-view))
 
-#+om7
+#+om-sharp
 (defmethod om::draw-mini-view ((self xmm-model) (box t) x y w h &optional time)
     (om::om-with-font 
      (om::om-def-font :font1 :size 10)
